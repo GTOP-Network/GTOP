@@ -1,5 +1,5 @@
 #==============================================#
-# Extended Fig.6 #
+# Extended Fig.5 #
 #==============================================#
 
 library(data.table)
@@ -37,6 +37,7 @@ pheatmap(cor,
 # Extended Fig.6b: tissue specific QTL number  --------------------------------------------------------
 
 plot_df <- fread("ExtendFig5b.txt") %>% mutate(Specific_Tissue = reorder(Specific_Tissue, -total))
+plot_df$QTL <- factor(plot_df$QTL, levels = c( "SV","TR", "SNV"))
 
 ggplot(plot_df, aes(x = Specific_Tissue, y = n, fill = QTL)) +
   geom_col(width = 0.7) +
@@ -49,7 +50,7 @@ ggplot(plot_df, aes(x = Specific_Tissue, y = n, fill = QTL)) +
 
 # Extended Fig.6c: tissue-sharing with TSS  --------------------------------------------------------
 
-dat <- fread("ExtendFig5c.txt")
+dat <- fread("ExtendFig5c.txt") %>% dplyr::filter(QTL %in% "SNV")
 ggplot(dat, aes(x = TSS_dis, group = tissue_group, color = tissue_group)) +
   geom_density(adjust = 1.5, linewidth = 1) +  
   geom_vline(xintercept = 0, linetype = "dashed", color = "black", linewidth = 0.5) +
@@ -73,13 +74,11 @@ ggplot(dat, aes(x = TSS_dis, group = tissue_group, color = tissue_group)) +
 
 df_binned <- fread("ExtendFig5d.txt")
 ggplot(df_binned,aes(x = tissue_median, y = TSS_median, color = QTL)) +
-  geom_ribbon(aes(ymin = TSS_low, ymax = TSS_high, group = QTL),fill = "grey80", alpha = 0.4, color = NA) +
-  geom_line(linewidth = 1.1) +
-  scale_color_manual(values = c("SV"="#c88565","TR"="#931e2a","SNV"="#ebd1bf","Control"="grey"))+
+  geom_smooth(se = T, linewidth = 1.1, method = "loess", span = 0.8) +
+  scale_color_manual(values = c("SV"="#227a7e","TR"="#931e2a","SNV"="#7c8bad","Control"="grey"))+
   scale_x_continuous(breaks = seq(floor(min(df_binned$tissue_median, na.rm = TRUE)),
                                   ceiling(max(df_binned$tissue_median, na.rm = TRUE)), by = 1) )+
   labs(x = "#Tissues eGenes expressed in", y = "Distance of QTL to TSS (Mb)") +
   theme_classic() +
-  theme( axis.text = element_text(color = "black", size = 10),legend.position = "top") 
-
+  theme( axis.text = element_text(color = "black", size = 10),legend.position = "top")
 
