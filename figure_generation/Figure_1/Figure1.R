@@ -19,7 +19,6 @@ library(ggpubr)
 
 df_pca <- read.table("Fig1b.txt",header=TRUE,check.names=FALSE)
 title <- colnames(df_pca)
-outpre <- as.character(args$outpre)
 pop_tar <- 'GTOP'
 df_gtex <- df_pca[df_pca$superpop == 'GTEX',]
 df_agtex <- df_pca[df_pca$superpop == 'GTOP',]
@@ -99,7 +98,6 @@ all_tissue <- sort(unique(meta$tissue))
 tissue_colors <- unique(meta[, c("tissue", "color")])
 tissue_colors <- setNames(paste0("#", tissue_colors$color), tissue_colors$tissue)
 load("vst_matrix.RData")
-#mds_full_corr <- cmdscale(dist(t(vst_matrix)), k=2, eig=TRUE)
 load("mds_full_corr.RData")
 
 eigvals_corr <- mds_full_corr$eig
@@ -169,109 +167,47 @@ if(ncol(expr_by_tissue) > 1) {
   #dev.off()
 }
 
-# === combine plot ===
-dend <- as.dendrogram(hc)
-dend_data <- dendro_data(dend)
-labels_df <- dend_data$labels
-labels_dend <- labels(dend)
-label_col <- tissue_colors[labels_dend]
-labels_df$color <- label_col
-
-segments_df <- dend_data$segments
-N <- nrow(labels_df)
-
-seg_length <- 0.005
-text_offset <- 0.01
-
-tree_plot <- ggplot() +
-  geom_segment(data = segments_df,
-               aes(x = x, y = y, xend = xend, yend = yend),
-               size = 1.2, color = "grey30", alpha = 0.8
-  ) +
-  geom_segment(data = labels_df,
-               aes(x = x, y = y , xend = x, yend = y ),
-               color = labels_df$color,
-               size = 4, lineend = "round"
-  ) +
-  geom_text(data = labels_df,
-            aes(x = x, y = y , label = label),
-            color = labels_df$color,
-            size = 3.8,
-            fontface = "bold",
-            hjust = 0.5, vjust = 1
-  ) +
-  labs(title = "Tissue Hierarchical Clustering",
-       x = "Tissue",
-       y = "Cluster Distance") +
-  theme_minimal(base_size = 12) +
-  theme(
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    axis.title.y = element_text(size = 12, face = "bold", color = "black"),
-    axis.text.x = element_text(size = 11, color = "black"),
-    axis.ticks.x = element_line(color = "black"),
-    axis.title.x = element_text(size = 12, face = "bold", color = "black"),
-    panel.grid = element_blank(),
-    plot.title = element_text(size = 13, face = "bold", color = "black", hjust = 0.5),
-    plot.margin = margin(5, 5, 5, 5)
-  ) +
-  coord_flip()
-
-gg_mds_corr_adjusted <- gg_mds_corr +
-  theme(
-    plot.title = element_text(size = 13, face = "bold", color = "black", hjust = 0.5),
-    axis.title = element_text(size = 12, face = "bold"),
-    axis.text = element_text(size = 9)
-  )
-
-library(cowplot)
-combined_plot <- plot_grid(
-  gg_mds_corr_adjusted, tree_plot,
-  ncol = 2, rel_widths = c(1.2, 1.2)
-)
-
-
 # Fig.1e: variant number and length ----------------------------------------
 
-variant_counts <- data.frame(SNV = c(7247578, 12434256),SV = c(36735, 63708),TR = c(38615,1056782),
+variant_counts <- data.frame(SNV = c(7247578, 12393297),SV = c(35301,60656),TR = c(38615,1056776),
                              row.names = c("common", "rare")) %>% 
   tibble::rownames_to_column(var = "variant_type") %>% 
-  pivot_longer(cols = -variant_type, names_to = "category",values_to = "count") %>%
-  mutate(category=factor(category,levels=c("SNV","TR","SV")))
+  pivot_longer(
+    cols = -variant_type,  
+    names_to = "category", 
+    values_to = "count") %>%
+  mutate(category=factor(category,levels=c("TR","SNV","SV")))
 variant_counts$variant_type <- factor(variant_counts$variant_type,levels = c("rare","common"))
 
-variant_counts <- variant_counts %>%
-  mutate(range_group = case_when(count < 70000               ~ "Low",
-    count >= 900000 & count < 5000000 ~ "Mid",
-    count >= 5000000              ~ "High"))
+p1 <- ggplot(variant_counts, aes(y = category, x = count/1000, fill = variant_type)) +
+  geom_col(position = "dodge") + 
+  scale_x_log10() +
+  theme_classic() +scale_fill_manual(values = c("#c9c9cb","#939eb2"))+
+  labs(x = "Variant Number (1e3)") +
+  theme(
+    axis.text = element_text(color = "black", size = 10),
+    axis.ticks = element_line(color = "black"),
+    legend.position = "none")
 
-
-p1 <- ggplot(variant_counts, aes(y = category, x = count, fill = variant_type)) +
-  geom_col(position = "dodge") +
-  facet_wrap(~factor(range_group, levels = c("Low", "Mid", "High")),scales = "free_x", nrow = 1) +
-  theme_classic() +
-  scale_fill_grey() +
-  labs(x = "Variant Number (1e4)") +
-  theme(axis.text = element_text(color = "black", size = 10),
-    axis.ticks = element_line(color = "black"),legend.position = "none")
-
-variant_length <- data.frame(SNV = c(5774020+6375135, 10428404+12348887),
-                             SV = c(29293416, 96216228),TR = c(3214629, 17818302),
+variant_length <- data.frame(SNV = c(5893095+6435260, 10398324+12288707),
+                             SV = c(26283328, 94303927),TR = c(3214629, 17818221),
                              row.names = c("common", "rare")) %>% 
   tibble::rownames_to_column(var = "variant_type") %>% 
-  pivot_longer(cols = -variant_type,  names_to = "category", values_to = "count") %>%
-  mutate(category=factor(category,levels=c("SNV","TR","SV")))
+  pivot_longer(cols = -variant_type, names_to = "category", values_to = "count") %>%
+  mutate(category=factor(category,levels=c("TR","SNV","SV")))
 variant_length$variant_type <- factor(variant_length$variant_type,levels = c("rare","common"))
+
 p2 <- ggplot(variant_length, aes(y = category, x = count, fill = variant_type)) +
   geom_col(position="dodge") +
   scale_x_continuous(labels = function(x) ifelse(x >= 1000000, paste0(x/1000000), x)) +
   theme_classic()+
-  scale_fill_grey()+
+  scale_fill_manual(values = c("#c9c9cb","#939eb2"))+
   labs(x="Varinat length(Mb)")+
   theme(axis.text = element_text(color = "black", size = 12), 
         axis.ticks = element_line(color = "black"),
         legend.position = "none")
 
+cowplot::plot_grid(p2,p1)
 
 # Fig.1f: LRS/SRS per Genome variant number --------------------------------
 source("geom_boxplot2.R")
