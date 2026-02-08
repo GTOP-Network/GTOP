@@ -61,7 +61,7 @@ cowplot::plot_grid(p1,p2,ncol = 2,align = "h")
 
 
 # Extended.Fig.1b-c: SV/TR number compare with GTEx  --------------------------------------------------------
-var <- data.frame(type = c("SV", "STR", "VNTR"),Count = c(100443, 1056782, 38615))
+var <- data.frame(type = c("SV", "STR", "VNTR"),Count = c(95957,1056776,38615))
 var$label <- paste0(var$Count,"\n", " (", scales::percent(var$Count/sum(var$Count)), ")")
 var$dataset <- "GTOP"
 var2 <- data.frame(type = c("SV", "STR", "VNTR"),Count = c( 23602, 175226, 10264))
@@ -98,7 +98,7 @@ p2 <- ggplot(dat[dat$type=="STR" | dat$type=="VNTR",],
 p1
 p2
 
-# Extended Fig.1d: LRS specific allele diversity ---------------------------------------------------
+# Extended.Fig.1d: LRS specific allele diversity ---------------------------------------------------
 
 ac_df <- fread("ExtendFig1d.txt")
 p4 <- ggplot(ac_df, aes(x = factor(threshold), y = OR)) +
@@ -112,7 +112,7 @@ p4 <- ggplot(ac_df, aes(x = factor(threshold), y = OR)) +
 
 p4
 
-# Extended Fig.1e: variant number and length ----------------------------------------
+# Extended.Fig.1e: variant number and length ----------------------------------------
 info <- fread("ExtendFig1e_PathogenicTR.txt")
 info <- info %>% mutate(gene=word(word(V4,start=1,end=1,sep=":"),start=-1L,end=-1L,sep="\\="),
                         TRID=word(word(V4,start=1,end=1,sep=";"),start=-1L,end=-1L,sep="\\:"))
@@ -180,7 +180,7 @@ p1 <- ggplot() +
   theme(axis.text = element_text(color = "black"),axis.text.x = element_text(angle = 90, hjust = 1)) +
   labs(x = "CNV_LRS", y = "Gene", color = "Class") +
   coord_flip()
-
+p1 
 
 
 
