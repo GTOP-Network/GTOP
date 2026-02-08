@@ -3,12 +3,10 @@
 # Extend Data Figure 2 #
 #==================================#
 library(data.table)
-
+library(ggplot2)
 setwd("/media/london_A/mengxin/GTOP_code/extend/extend_2/input")
 
-# Extend.Data Fig.2a  ------------------------------------------------------
-library(data.table)
-library(ggplot2)
+# Extended.Fig.2a  ------------------------------------------------------
 
 dat<-fread("ext2a.LR_transcript_novel_stat_Gene.txt")
 dat_long <- melt(
@@ -39,13 +37,65 @@ ggplot(dat_long, aes(x = index, y = Count, fill = Type)) +
     y = "Number of genes (x10³)",
     fill = "Category"
   ) +
-  theme_classic(base_size = 13)
+  theme_classic(base_size = 13) + 
+  theme(
+    axis.text.x = element_text(
+      angle = 50,
+      hjust = 1,
+      vjust = 1
+    )
+  )
+# Extended.Fig.2b  ------------------------------------------------------
 
-# Extend Data Fig.2b  ------------------------------------------------------
+dat <- fread("ext2b.LR_transcript_tissue_contribute.txt", sep = "\t")
+dat$tissue <- factor(dat$tissue, levels = dat[order(-number_transcript)]$tissue)
+tissue_colors <- setNames(dat$color, dat$tissue_matched)
+tissue_colors <- tissue_colors[!duplicated(names(tissue_colors))]
+
+ggplot(dat, aes(x = tissue, y = number_transcript, fill = tissue_matched)) +
+  geom_col(width = 0.7) +
+  scale_fill_manual(values = tissue_colors) +
+  labs(
+    x = "",
+    y = "Number of novel isoforms",
+    fill = ""
+  ) +
+  theme_classic(base_size = 13) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top"
+  ) +
+  guides(fill = guide_legend(ncol = 1))
+
+
+# Extended.Fig.2c  ------------------------------------------------------
+
+dat <- fread("ext2c.LR_transcript_tissue_group_contribute.txt", sep = "\t")
+dat$tissue_group <- factor(dat$tissue_group, levels = dat$tissue_group)
+
+tissue_colors <- setNames(dat$color, dat$tissue_group)
+
+ggplot(dat, aes(x = tissue_group, y = number_transcript, fill = tissue_group)) +
+  geom_col(width = 0.7) +
+  scale_fill_manual(values = tissue_colors) +
+  labs(
+    x = "",
+    y = "Number of novel isoforms",
+    fill = ""
+  ) +
+  theme_classic(base_size = 13) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "top",
+  ) +
+  guides(fill = guide_legend(ncol = 1))
+
+
+# Extended.Fig.2d  ------------------------------------------------------
 library(data.table)
 library(UpSetR)
 
-dat <- fread("ext2b.LR_transcript_compare_database_upset.txt", sep = "\t")
+dat <- fread("ext2d.LR_transcript_compare_database_upset.txt", sep = "\t")
 setDT(dat)
 
 cols <- c("CHESS3", "GTEx long-read", "GTOP")
@@ -57,7 +107,7 @@ dat[, (count_col) := as.integer(get(count_col))]
 dat_expand <- dat[rep(seq_len(.N), get(count_col))]
 dat_expand[, (cols) := lapply(.SD, as.integer), .SDcols = cols]
 dat_expand[, (count_col) := NULL]
-upset(
+UpSetR::upset(
   dat_expand,
   sets = cols,
   order.by = "freq",
@@ -70,8 +120,8 @@ upset(
   text.scale = c(1.6, 1.6, 1.2, 1.2, 1.4, 1.2)
 )
 
-# Extend Data Fig.2c  ------------------------------------------------------
-df <- fread("ext2c.LR_transcript_compare_database_bar.txt", sep = "\t")
+# Extended.Fig.2e  ------------------------------------------------------
+df <- fread("ext2e.LR_transcript_compare_database_bar.txt", sep = "\t")
 df_long <- melt(df, id.vars = "index", variable.name = "Type", value.name = "Count")
 df_long$Type <- factor(df_long$Type, levels = rev(c("Annotated", "Novel")))
 type_colors <- c(
@@ -95,53 +145,8 @@ ggplot(df_long, aes(x = index, y = Count, fill = Type)) +
     legend.text = element_text(size = 11)
   )
 
-# Extend.Data.Fig.2d  ------------------------------------------------------
 
-dat <- fread("ext2d.LR_transcript_tissue_contribute.txt", sep = "\t")
-dat$tissue <- factor(dat$tissue, levels = dat[order(-number_transcript)]$tissue)
-tissue_colors <- setNames(dat$color, dat$tissue_matched)
-tissue_colors <- tissue_colors[!duplicated(names(tissue_colors))]
-
-ggplot(dat, aes(x = tissue, y = number_transcript, fill = tissue_matched)) +
-  geom_col(width = 0.7) +
-  scale_fill_manual(values = tissue_colors) +
-  labs(
-    x = "",
-    y = "Number of novel isoforms",
-    fill = ""
-  ) +
-  theme_classic(base_size = 13) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "top"
-  ) +
-  guides(fill = guide_legend(ncol = 1))
-
-
-# Extend.Data.Fig.2e  ------------------------------------------------------
-
-dat <- fread("ext2e.LR_transcript_tissue_group_contribute.txt", sep = "\t")
-dat$tissue_group <- factor(dat$tissue_group, levels = dat$tissue_group)
-
-tissue_colors <- setNames(dat$color, dat$tissue_group)
-
-ggplot(dat, aes(x = tissue_group, y = number_transcript, fill = tissue_group)) +
-  geom_col(width = 0.7) +
-  scale_fill_manual(values = tissue_colors) +
-  labs(
-    x = "",
-    y = "Number of novel isoforms",
-    fill = ""
-  ) +
-  theme_classic(base_size = 13) +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "top",
-  ) +
-  guides(fill = guide_legend(ncol = 1))
-
-
-# Extend.Data.Fig.2fg -----------------------------------------------------
+# Extended.Fig.2fg -----------------------------------------------------
 
 load("tpm_matrix.RData")
 load("LRS_RNA_metadata.RData")
@@ -230,7 +235,7 @@ pheatmap(
   main = "annotated"
 )
 
-# Extend Data Fig.2h  ------------------------------------------------------
+# Extended.Fig.2h  ------------------------------------------------------
 
 library(ggplot2)
 library(dplyr)
@@ -300,7 +305,7 @@ p2 <- ggplot(df_gene, aes(x = tissue, y = value, group = group)) +
   ) +
   labs(x = "Tissue", y = "Number of genes")
 
-title <- textGrob("Gene & Transcript Values by Tissue", gp = gpar(fontsize = 14, fontface = "bold"))
+title <- textGrob("Expressed Gene & Transcript by Tissue", gp = gpar(fontsize = 14, fontface = "bold"))
 final_plot <- grid.arrange(title, p1, p2, 
                            ncol = 1, 
                            heights = c(0.1, 0.45, 0.45))
@@ -308,20 +313,19 @@ final_plot <- grid.arrange(title, p1, p2,
 print(final_plot)
 
 
-# Extend Data Fig.2i  ------------------------------------------------------
+# Extended.Fig.2i  ------------------------------------------------------
 library(data.table)
 library(pheatmap)
 df <- fread("ext2i.SR_novel_isoform_example_expression_heatmap.txt", sep = "\t")
 expr_mat <- as.matrix(df[, -1, with = FALSE])
-rownames(expr_mat) <- df$Transcript
-expr_mat <- log2(expr_mat + 1)
+rownames(expr_mat) <- df$Name
 my_colors <- colorRampPalette(c("#F2F2F2", "#B2182B"))(256)
 
 pheatmap(
   expr_mat,
   color = my_colors,
   cluster_rows = FALSE,
-  cluster_cols = TRUE,
+  cluster_cols = FALSE,
   show_rownames = TRUE,
   show_colnames = TRUE,
   fontsize_row = 6,
@@ -332,6 +336,8 @@ pheatmap(
   treeheight_col = 10
 )
 
+# Extended.Fig.2j  ------------------------------------------------------
+# generated using Adobe Illustrator.
 
 
 
