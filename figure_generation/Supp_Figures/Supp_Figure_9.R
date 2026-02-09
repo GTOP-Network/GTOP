@@ -4,15 +4,55 @@
 #===============================================#
 library(ggplot2)
 library(ggpubr)
-
+library(ComplexUpset)
+library(tidyverse)
+library(data.table)
 
 setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig9/input")
 
+
+# Supp.Fig.9a Candidate transcripts --------------------------------------------
+
+df <- read_tsv("supp9a.LR_candidate_isoform_tool_upset.txt",
+  show_col_types = FALSE
+)
+df <- df %>%
+  rename(
+    Bambu   = bambu,
+    FLAIR   = flair,
+    `Iso-Seq` = isoseq
+  )
+tool_cols <- c("Bambu", "FLAIR", "Iso-Seq")
+
+upset(
+  df,
+  intersect = tool_cols,
+  base_annotations = list(
+    "Intersection size" = intersection_size(
+      counts  = FALSE
+    )
+  ),
+  
+  width_ratio = 0.3
+)  +
+  theme(
+    text = element_text(size = 12, color = "black"),
+    axis.text  = element_text(color = "black"),
+    axis.title = element_text(color = "black"),
+    axis.line  = element_line(color = "black", linewidth = 0.6),
+    panel.background = element_blank(),
+    panel.grid = element_blank(), 
+    legend.title = element_text(size = 12),
+    legend.text  = element_text(size = 11),
+    strip.background = element_blank(),
+    strip.text = element_text(color = "black")
+  )
+
+
 # Supp.Fig.9c FLNC read counts --------------------------------------------
 
-
 # Load data
-df <- fread("supp9c.LR_isoform_QC_prefilter.txt.gz")
+df <- fread("supp9c.LR_isoform_QC_reads.txt.gz")
 flnc_reads <- df[, rowSums(.SD), .SDcols = patterns("^")]
 log_flnc_reads <- log10(flnc_reads)
 
@@ -85,6 +125,7 @@ ggplot(plot_df) +
     drop = FALSE
   ) +
   scale_x_continuous(
+    limits = c(0,log10(max(flnc_reads))+0.2),
     breaks = seq(0, max_log_val + 1, by = 1),
     expand = c(0, 0)
   ) +
@@ -102,71 +143,134 @@ ggplot(plot_df) +
 # Supp.Fig.9d -------------------------------------------------------------
 
 
-plot_df <- fread("supp9d.LR_read_QC_intra_priming.txt")
+plot_df <- fread("supp9d.LR_isoform_QC_support_samples.txt.gz")
+binwidth <- (max(plot_df$support_samples) - min(plot_df$support_samples)) / 20
+ggplot(plot_df, aes(x = support_samples)) +
+  geom_histogram(binwidth = binwidth, 
+                 fill = "#7f8080", center = min(plot_df$support_samples) + binwidth/2,
+                 color = "black") +
+  xlab("Number of supporting samples") +
+  ylab("Frequency") +
+  theme_pubr()
 
-
-ggplot(plot_df)+
-  geom_bar(aes(x=A_number, y=frequency, fill=type), stat = "identity")+
-  scale_fill_manual(values=setNames(plot_df$color, plot_df$type))+
-  xlab("# A in 20pb downstream TTS")+
-  ylab("Number of transcripts")+
-  theme_pubr()+
-  theme(legend.position = "none")
 
 
 # Supp.Fig.9e -------------------------------------------------------------
 
 
-plot_df <- fread("supp9e.LR_read_QC_pass_category.Passed filters.txt")
-color <- plot_df %>% distinct(type, color)
+plot_df <- fread("supp9e.LR_read_QC_intra_priming.txt")
 
-plot_df$category <- factor(plot_df$category, levels = plot_df$category)
 
-ggplot(plot_df)+
-  geom_bar(aes(x=category, y=count, fill=type), stat = "identity")+
-  scale_fill_manual(values=setNames(color$color, color$type))+
-  xlab("")+
-  ylab("Transcript count")+
-  theme_pubr()+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1),
-        legend.position = "none")
+ggplot(plot_df) +
+  geom_bar(
+    aes(x = A_number, y = frequency, fill = type),
+    stat = "identity",
+    color = "black",
+    size = 0.2, 
+    width = 1     
+  ) +
+  scale_fill_manual(values = setNames(plot_df$color, plot_df$type)) +
+  xlab("# A in 20bp downstream TTS") +
+  ylab("Number of transcripts") +
+  theme_pubr() +
+  theme(legend.position = "none")
 
 
 # Supp.Fig.9f -------------------------------------------------------------
 
 
-plot_df <- fread("supp9f.LR_read_QC_pass_category.Filtered out.txt")
+plot_df <- fread("supp9f.LR_read_QC_pass_category.Passed filters.txt")
 color <- plot_df %>% distinct(type, color)
+
 plot_df$category <- factor(plot_df$category, levels = plot_df$category)
 
 ggplot(plot_df)+
-  geom_bar(aes(x=category, y=count, fill=type), stat = "identity")+
+  geom_bar(aes(x=category, y=count, fill=type), stat = "identity", color = "black")+
   scale_fill_manual(values=setNames(color$color, color$type))+
   xlab("")+
   ylab("Transcript count")+
   theme_pubr()+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
         legend.position = "none")
 
 
 # Supp.Fig.9g -------------------------------------------------------------
 
 
-plot_df <- fread("supp9g.LR_isoform_QC_read_cutoff_per_sample.txt")
+plot_df <- fread("supp9g.LR_read_QC_pass_category.Filtered out.txt")
+color <- plot_df %>% distinct(type, color)
+plot_df$category <- factor(plot_df$category, levels = plot_df$category)
+
+ggplot(plot_df)+
+  geom_bar(aes(x=category, y=count, fill=type), stat = "identity", color = "black")+
+  scale_fill_manual(values=setNames(color$color, color$type))+
+  xlab("")+
+  ylab("Transcript count")+
+  theme_pubr()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        legend.position = "none")
 
 
-ggplot(plot_df, aes(x = `Read cutoff`)) +
-  geom_line(aes(y = `Novel count`), 
-          color = "#3875ab") +
-  geom_point(aes(y = `Novel count`),
-             color = "#3875ab")+
-  geom_line(aes(y = Percent * max(`Novel count`) / max(Percent)), 
-            color = "#c56f33") +
-  geom_point(aes(y = Percent * max(`Novel count`) / max(Percent)), 
-             color = "#c56f33") +
-  scale_y_continuous(
-    name = "Novel count",
-    sec.axis = sec_axis(~ . * max(plot_df$Percent) / max(plot_df$`Novel count`),
-                        name = "Percent (%)")
-  ) +
-  theme_pubr()
+# Supp.Fig.9h -------------------------------------------------------------
+
+df <- read_tsv(
+  "supp9h.LR_final_isoform_tool_with_cate_upset.txt",
+  show_col_types = FALSE
+)
+
+df <- df %>%
+  rename(
+    Bambu   = bambu,
+    FLAIR   = flair,
+    `Iso-Seq` = isoseq
+  )
+tool_cols <- c("Bambu", "FLAIR", "Iso-Seq")
+
+sorted_cate <- c('FSM', 'ISM', 'NIC', 'NNC', 'Fusion', 'Antisense', 'Genic', 'Intergenic')
+
+df <- df %>%
+  mutate(
+    struct_class = factor(
+      struct_class,
+      levels = c(
+        intersect(sorted_cate, unique(struct_class)),
+        setdiff(unique(struct_class), sorted_cate)
+      )
+    )
+  )
+
+fill_colors <- c(
+  "FSM"       = "#226ca0",
+  "ISM"       = "#f39800",
+  "NIC"       = "#65a066",
+  "NNC"       = "#00a29a",
+  "Fusion"    = "#595757",
+  "Antisense" = "#e94651",
+  "Genic"     = "#7861a8",
+  "Intergenic"= "#c17272"
+)
+
+
+upset(
+  df,tool_cols,
+  base_annotations=list(
+    'Intersection size'=intersection_size(
+      counts=FALSE,
+      mapping=aes(fill=struct_class)
+    ) + scale_fill_manual(values=fill_colors)
+  ),
+  width_ratio=0.3
+)  +
+  theme(
+    text = element_text(size = 12, color = "black"),
+    axis.text  = element_text(color = "black"),
+    axis.title = element_text(color = "black"),
+    axis.line  = element_line(color = "black", linewidth = 0.6),
+    panel.background = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    legend.title = element_text(size = 12),
+    legend.text  = element_text(size = 11),
+    strip.background = element_blank(),
+    strip.text = element_text(color = "black")
+  )
