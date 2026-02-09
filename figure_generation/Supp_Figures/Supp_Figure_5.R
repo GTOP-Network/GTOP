@@ -62,8 +62,8 @@ p <- ggplot(datap, aes(x = PC)) +
   theme_classic() +
   theme(axis.title.y.left  = element_text(color = "black"),
         axis.title.y.right = element_text(color = "black"))
-
-# Supp.Fig.5c: LRS specific allele diversity ---------------------------------------------------
+p
+# Supp.Fig.5c: ADMIXTURE cv error ---------------------------------------------------
 
 cv_df <- fread("Supp_Fig5c.cv_error.txt")
 p <- ggplot(cv_df, aes(x = K, y = CV)) +
@@ -77,7 +77,7 @@ p <- ggplot(cv_df, aes(x = K, y = CV)) +
     axis.line = element_line(color = "black"),
     axis.text = element_text(color = "black"),
     axis.title = element_text(face = "bold", size = 13))
-
+p
 # Supp.Fig.5d: variant number and length ----------------------------------------
 
 k <- 5
