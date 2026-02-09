@@ -15,17 +15,25 @@ setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig4/input")
 df <- fread("supp4a.LR_read_QC_number.txt")
 
 ggplot(df)+
+  geom_abline(
+    slope = 1,
+    intercept = 0,
+    color = "grey80",
+    linewidth = 0.5
+  ) +
   geom_point(aes(x=`Number of all reads`/1000000, y=`Number of aligned reads`/1000000,
-                 color=Tissue))+
+                 color=Tissue),size=3)+
   scale_color_manual(values=setNames(df$Tissue_Color_Code, df$Tissue))+
-  xlab("Number of all reads (million)")+
-  ylab("Number of aligned reads (million)")+
-  theme_pubr()
-
+  xlab("Number of all reads (million)") +
+  ylab("Number of aligned reads (million)") +
+  theme_pubr() +
+  theme(
+    legend.position = "none"
+  )
 # Supp.Figure.4b distribution of Qscore -----------------------------------
 
 
-df <- fread("supp8b.LR_read_QC_Qscore.txt.gz")
+df <- fread("supp4b.LR_read_QC_Qscore.txt.gz")
 plot_df <- df %>% 
   pivot_longer(cols = everything(), names_to = "sample", values_to = "Qscore") %>% 
   separate(sample, into = c("sample", "tissuecolor"), sep = ";")
@@ -56,5 +64,5 @@ ggplot(plot_df)+
   xlab("")+
   ylab("log10(read length)")+
   theme_pubr()+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+  theme(axis.text.x = element_text(angle = 55, hjust = 1),
         legend.position = "none")
