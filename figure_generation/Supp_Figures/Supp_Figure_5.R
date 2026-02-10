@@ -15,7 +15,7 @@ library(magrittr)
 library(ggrepel)
 library(scales)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig2567/input")
+setwd("/path/to/GTOP_code/supp/supp_fig5/input")
 
 
 # Supp.Fig.5a: Gtop Genotype PCA with 1KGP and GTEx in EAS population ------------------------------------------------------------------
