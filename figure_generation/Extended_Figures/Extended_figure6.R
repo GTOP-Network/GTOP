@@ -3,7 +3,7 @@
 # Extended Figure-6 #
 #==================================#
 
-setwd("/media/london_A/mengxin/GTOP_code/extend/extend_6")
+setwd("/path/to/GTOP_code/extend/extend_6")
 
 library(data.table)
 library(tidyverse)
