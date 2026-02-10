@@ -3,13 +3,13 @@
 # Extended Figure-6 #
 #==================================#
 
-setwd("./")
+setwd("/media/london_A/mengxin/GTOP_code/extend/extend_6")
 
 library(data.table)
 library(tidyverse)
 library(reticulate)
 
-## Extended data Fig. 6a, Fine-mapped eQTLs and sQTLs --------------------------
+## Extended.Fig.6a, Fine-mapped eQTLs and sQTLs --------------------------
 
 fm_proxy_count <- fread("./input/Extended_fig6a_data.txt")
 
@@ -21,7 +21,7 @@ ggplot(fm_proxy_count, aes(x=cs_num, y=phenotype_count, fill=xQTL_type)) +
     scale_fill_manual(values = c("eQTL"="#9ac294", "sQTL"="#7b86a7"))
 
 
-## Extended data Fig. 6b, Geographic frequencies of eQTL -----------------------
+## Extended.Fig.6b, Geographic frequencies of eQTL -----------------------
 
 if (!py_module_available("matplotlib")) {
     py_install("matplotlib")
@@ -56,7 +56,7 @@ plt.savefig("./ExtendFig6b.pdf", dpi=300, bbox_inches=\'tight\')
 ')
 
 
-## Extended data Fig. 6c, Geographic frequencies of sQTL -----------------------
+## Extended.Fig.6c, Geographic frequencies of sQTL -----------------------
 
 py_run_string('
 import numpy as np
@@ -83,8 +83,11 @@ plt.savefig("./ExtendedFig6c.pdf", dpi=300, bbox_inches=\'tight\')
 ')
 
 
-## Extended data Fig. 6d, Compared with GTEx -----------------------------------
+## Extended.Fig.6d, Compared with GTEx -----------------------------------
 GTE_comparison <- fread("./input/Extended_fig6d.txt")
+
+tissue_oder<-c(unique(GTE_comparison$ntissue))
+GTE_comparison$ntissue<-factor(GTE_comparison$ntissue,levels=rev(tissue_oder))
 
 ggplot(GTE_comparison, aes(x = count, y=ntissue, fill = Type)) +
     geom_col(position = "fill") +
@@ -96,11 +99,9 @@ ggplot(GTE_comparison, aes(x = count, y=ntissue, fill = Type)) +
         axis.text = element_text(color = "black", size = 10),
         axis.title = element_text(color = "black", size = 12)
     ) +
-    scale_fill_manual(values = c("#9d3929", "#fc9272", "#ab889a", "#3578ac","1")) +
-    scale_color_manual(values = color_vec)
+    scale_fill_manual(values = c("#9d3929", "#fc9272", "#ab889a", "#3578ac","1")) 
 
-
-## Extended data Fig. 6e, Number of tissues sharing fd-QTLs --------------------
+## Extende.Fig.6e, Number of tissues sharing fd-QTLs --------------------
 EASspecific_genelist <- readRDS("./input/Extended_fig6e_data.RDS")
 
 ggvenn::ggvenn(EASspecific_genelist, fill_color=c("#7d8cad", "#0f3d7b"), show_percentage = F)
@@ -122,8 +123,8 @@ ggplot(ff_tissue_summary, aes(x=gene_count, y=sum, fill=new_Type_GTEx)) +
     scale_x_continuous(position = "top") 
 
 
-## Extended data Fig. 6f, beta value of he-QTLs --------------------------------
-sig_res_df <-  fwrite("./input/Extended_fig6f_data.txt")
+## Extended.Fig.6f, beta value of he-QTLs --------------------------------
+sig_res_df <-  fread("./input/Extended_fig6f_data.txt")
 
 ggplot(data = sig_res_df, aes(x = GTOP_beta, y = GTEx_beta)) + 
     geom_point(color="#0c0d0c", size=0.3) +
@@ -141,7 +142,7 @@ ggplot(data = sig_res_df, aes(x = GTOP_beta, y = GTEx_beta)) +
     ggh4x::coord_axes_inside(labels_inside = T)
 
 
-## Extended data Fig. 6g, Example of he-QTLs --------------------------------
+## Extended.Fig.6g, Example of he-QTLs --------------------------------
 GTOP_GTEx_data <- readRDS("./input/Extended_fig6g_data.RDS")
 GTOP_GTEx_data$source <- factor(GTOP_GTEx_data$source, levels = c("GTOP", "GTEx"))
 
@@ -164,6 +165,4 @@ ggplot(GTOP_GTEx_data, aes(genotype_label, scale_counts, fill = source)) +
         legend.position = 'top',
         plot.title = element_text(size = 10),
         axis.text = element_text(colour = "black")
-    ) +
-    xlab(SNP_name) +
-    ylab(xGene_name)
+    ) 
