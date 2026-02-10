@@ -3,8 +3,7 @@
 # # Supp-Figure-12 # #
 #===================================#
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig12/input")
-
+setwd("/path/to/GTOP_code/supp/supp_fig12/input")
 
 # supp.Figure.12a proportion of novel & annotated in module ---------------
 
