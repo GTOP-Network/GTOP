@@ -39,7 +39,7 @@ color <- c(
   "transcript_ablation"="#CBE5C7",
   "start_retained"="#CBE5C7")
 
-# Extended.Fig.7a:  VEP annotation ------------------------------------------------------------------
+# Supp.Fig.7a:  VEP annotation ------------------------------------------------------------------
 
 vep <- fread("Supp_Fig7a.txt")
 consequence_order <- vep %>%
@@ -61,7 +61,7 @@ ggplot(vep, aes(x = type, y = percentage, fill = consequence_severe)) +
   scale_fill_manual(values = color)
 
 
-# Extended.Fig.7b: SV subtype feature  --------------------------------------------------------
+# Supp.Fig.7b: SV subtype feature  --------------------------------------------------------
 
 type_pro <- fread("Supp_Fig7b.txt")
 type_pro$region <- factor(type_pro$consequence_severe,
@@ -89,7 +89,7 @@ p2 <- ggplot(type_pro, aes(x = type, y = pro, fill = region)) +
 cowplot::plot_grid(p2,p1,ncol = 2)
 
 
-# Extended.Fig.7c: TR subtype feature  --------------------------------------------------------
+# Supp.Fig.7c: TR subtype feature  --------------------------------------------------------
 
 subtype_pro <- fread("Supp_Fig7c.txt")
 
