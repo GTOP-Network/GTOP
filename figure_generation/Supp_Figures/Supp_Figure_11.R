@@ -7,7 +7,7 @@ library(ggpubr)
 library(tidyverse)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig11")
+setwd("/path/to/GTOP_code/supp/supp_fig11")
 
 
 # Supp.Fig.11a rho between Salmon and RSEM ----------------------------------
