@@ -8,7 +8,7 @@ library(ggpubr)
 library(data.table)
 
 setwd("/path/to/GTOP_code/supp/supp_fig23")
-# Supp.Fig.24a correlation of eQTL effects between GTOP and GTEx -----------
+# Supp.Fig.23a correlation of eQTL effects between GTOP and GTEx -----------
 
 
 plotdf <- fread("./input/Figure S23a.txt")
@@ -33,7 +33,7 @@ for (tis in unique(plotdf$tissue_gtop)) {
 cowplot::plot_grid(plotlist = figlist, ncol = 3)
 
 
-# Supp.Fig.24b rb of eQTL between GTOP and GTEx -----------
+# Supp.Fig.23b rb of eQTL between GTOP and GTEx -----------
 
 df <- readRDS("input/Figure S23b.rds")
 
