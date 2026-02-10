@@ -9,7 +9,7 @@ library(PCAForQTL)
 library(cowplot)
 
 setwd("/path/to/GTOP_code/supp/supp_fig17")
-# Supp.Fig.19 splicing PCA ------------------------------------------------
+# Supp.Fig.17 splicing PCA ------------------------------------------------
 
 
 reslist <- readRDS("./input/Figure S17.rds")
