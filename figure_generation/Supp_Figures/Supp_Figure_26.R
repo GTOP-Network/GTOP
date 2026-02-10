@@ -9,7 +9,7 @@ library(magrittr)
 library(ggplot2)
 library(ggpubr)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig26")
+setwd("/path/to/GTOP_code/supp/supp_fig26")
 df_plotall <- fread("./input/Figure S26.txt")
 
 # supp.Figure.26a join finemapping res of juQTL ---------------------------
