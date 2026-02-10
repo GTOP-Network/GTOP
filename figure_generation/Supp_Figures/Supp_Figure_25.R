@@ -6,7 +6,7 @@
 library(ggplot2)
 library(tidyverse)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig25")
+setwd("/path/to/GTOP_code/supp/supp_fig25")
 
 
 # Supp.Fig.25a AF difference -----------------------------------------
