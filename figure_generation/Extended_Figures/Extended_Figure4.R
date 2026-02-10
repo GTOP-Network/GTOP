@@ -35,7 +35,8 @@ ggsave(
 
 dat <- readRDS("ExtendFig4b.RDS")
 
-ggplot(dat,aes(x=distance,color=VarType)) + geom_density(size=1.5) + theme_pubr() +
+ggplot(dat,aes(x=distance,color=group)) + geom_density(size=1.5) + 
+  theme_pubr() + 
   scale_color_manual(values = c("#7B88A8","#609561","#983927"))
 
 # Extended.Fig.4c:  torus enrichment ------------------------------------------------------------------
