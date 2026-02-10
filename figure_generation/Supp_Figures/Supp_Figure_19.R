@@ -8,7 +8,7 @@ library(dplyr)
 library(ggpubr)
 library(cowplot)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig19")
+setwd("/path/to/GTOP_code/supp/supp_fig19")
 
 
 # Supp.Fig.19 Cumulative PVE-------------------------------------------------
