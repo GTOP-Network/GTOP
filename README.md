@@ -20,7 +20,6 @@ Code used for data processing and downstream analyses is made available in the 
 
 Code used to produce major figures/panels in the manuscript is made available in the [figure_generation/](https://github.com/GTOP-Network/GTOP-Phase1/tree/main/figure_generation) directory.
 
-READMEs are provided for all code.
 
 ## The GTOP manuscript
 
