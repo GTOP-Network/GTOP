@@ -10,7 +10,7 @@ Newly generated sequencing data for the 160 individuals is available on the Sequ
 
 ### Processed data
 
-Processed gene expression matrices and QTL mapping results (as well as a host of other downstream data) are currently available on Website (**[GTOP Website link](https://bioinfo.szbl.ac.cn/GTOP/expression)**).
+Processed gene expression matrices and QTL mapping results (as well as a host of other downstream data) are currently available on Website (**[GTOP Website link](https://bioinfo.szbl.ac.cn/GTOP/download)**).
 
 If you are having trouble accessing these data, please feel free to contact us to explore other options.
 
