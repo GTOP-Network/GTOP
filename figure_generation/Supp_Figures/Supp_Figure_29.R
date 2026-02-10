@@ -8,7 +8,7 @@ library(tidyverse)
 library(locuszoomr)
 library(EnsDb.Hsapiens.v86)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig29")
+setwd("/path/to/GTOP_code/supp/supp_fig29")
 
 
 # Supp.Fig.29a evolution -----------------------------------------
