@@ -18,7 +18,7 @@ library(ggdensity)
 library(viridis)
 library(ggh4x)
 
-setwd("/media/london_A/mengxin/GTOP_code/fig-3/input")
+setwd("/path/to/GTOP_code/fig-3/input")
 # Fig.3a: summary of eQTL/sQTL ------------------
 rm_version <- function(x){
   return(strsplit(x,split = ".",fixed = T)[[1]][1])
