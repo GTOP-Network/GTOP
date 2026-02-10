@@ -13,7 +13,7 @@ library(ggpubr)
 library(magrittr)
 library(ggExtra)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig2567/input")
+setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig2/input")
 
 
 # Supp.Fig.2a-c:  LRS WGS QC Statistics ------------------------------------------------------------------
