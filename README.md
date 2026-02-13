@@ -21,8 +21,8 @@ Code used to produce major figures/panels in the manuscript is made available in
 
 For more information about the GTOP resource as well as analyses performed using this resource, please see our paper:
 
-**A long-read multi-omics atlas broadens discovery of regulatory variation across 33 human tissues** [submitted]
-Xudong Zou, Xing Li, Ting Zhang, Gang Xu, Yinuo Wang, Chao Xue, Xin Meng, Dinglin Luo, Guangwen Ai, Huanjun Wu, Jian Yang, Jiayin Yang*, Lei Li
+**A long-read multi-omics atlas broadens discovery of regulatory variation across 33 human tissues** (*submitted)
+<br>Xudong Zou, Xing Li, Ting Zhang, Gang Xu, Yinuo Wang, Chao Xue, Xin Meng, Dinglin Luo, Guangwen Ai, Huanjun Wu, Jian Yang, Jiayin Yang, Lei Li</br>
  
 
 ### Citing GTOP
