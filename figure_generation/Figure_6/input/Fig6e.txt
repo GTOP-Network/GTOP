@@ -1,0 +1,9 @@
+variant	type	variable	value
+eQTL	GWAS (EUR)	tested	67636
+eQTL	TPMI	tested	43923
+eQTL	Pruning GWAS (EUR)	tested	3786
+eQTL	Pruning TPMI	tested	1240
+eQTL	GWAS (EUR)	signif	20644
+eQTL	TPMI	signif	20677
+eQTL	Pruning GWAS (EUR)	signif	587
+eQTL	Pruning TPMI	signif	358

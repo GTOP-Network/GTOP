@@ -1,0 +1,16 @@
+Type	ratio	type2
+eQTL + sQTL	49.6466833827217	"At least 
+ one ancestry 
+ MAF <0.01"
+eQTL	37.3717802598587	"At least 
+ one ancestry 
+ MAF <0.01"
+sQTL	37.9454448750095	"At least 
+ one ancestry 
+ MAF <0.01"
+eQTL + sQTL	42.3349699945445	"All ancestries 
+ MAF <0.01"
+eQTL	30.6873977086743	"All ancestries 
+ MAF <0.01"
+sQTL	35.4882705946536	"All ancestries 
+ MAF <0.01"
