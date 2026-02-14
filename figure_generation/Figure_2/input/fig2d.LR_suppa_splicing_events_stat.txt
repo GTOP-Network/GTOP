@@ -1,0 +1,8 @@
+index	Novel	GENCODE v47
+Alternative 3' splice site	6228	42138
+Alternative 5' splice site	7567	39314
+Alternative first exon	85719	308095
+Alternative last exon	16674	157777
+Mutually exclusive exon	10403	23926
+Retained intron	9381	14971
+Skipped exon	35983	92896

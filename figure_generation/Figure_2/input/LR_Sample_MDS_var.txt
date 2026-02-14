@@ -1,0 +1,2 @@
+coordinate1 coordinate2
+20.8% 14.8%

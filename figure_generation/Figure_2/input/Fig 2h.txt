@@ -1,0 +1,8 @@
+number	class
+81938	Annotated genes
+53896	Genes expressed
+43257	Expressed genes with heterozygous SNVs
+16441	Genes included in ASE analysis
+6816	Genes exhibited ASE
+7971	Genes included in ASTS analysis
+1184	Genes exhibited ASTS
