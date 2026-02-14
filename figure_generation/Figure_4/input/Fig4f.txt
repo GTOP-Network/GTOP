@@ -1,0 +1,11 @@
+tissue	count
+Adipose	11
+Adrenal_Gland	27
+Liver	52
+Muscle	8
+Pancreas_Body	17
+Pancreas_Head	13
+Pancreas_Tail	26
+Skin	3
+Spleen	7
+Whole_Blood	22

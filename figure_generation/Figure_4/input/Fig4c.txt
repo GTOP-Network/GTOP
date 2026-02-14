@@ -1,0 +1,13 @@
+proxy_delta_group	variable	value
+|ΔAF| >= 0	EUR_unobserved	2.4315443592552
+|ΔAF| >= 0.1	EUR_unobserved	1.5942482025633
+|ΔAF| >= 0.2	EUR_unobserved	0.159404888416578
+|ΔAF| >= 0.3	EUR_unobserved	0.106269925611052
+|ΔAF| >= 0.4	EUR_unobserved	0
+|ΔAF| >= 0.5	EUR_unobserved	0.497512437810945
+|ΔAF| >= 0	EUR_rare	5.78313253012048
+|ΔAF| >= 0.1	EUR_rare	6.56455142231947
+|ΔAF| >= 0.2	EUR_rare	5.15409139213603
+|ΔAF| >= 0.3	EUR_rare	3.93198724760893
+|ΔAF| >= 0.4	EUR_rare	4.40771349862259
+|ΔAF| >= 0.5	EUR_rare	8.95522388059701
