@@ -65,7 +65,7 @@ def submit_job(
     :param STEP: keyword matching `iso-seq_pipline`
     :return:
     '''
-    # assign task to nodes, build a sample list file as para for pipeline script per node.
+    # assign task to nodes, build a sample list file as para for pipeline scripts per node.
     output_dir=f'{OUTPUT_DIR}/{COMPUTER}/output'
     if df is not None:
         sub_dfs = np.array_split(df, NODES)
