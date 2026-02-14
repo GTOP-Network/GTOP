@@ -3,21 +3,17 @@
 # # Supp-Figure-12 # #
 #===================================#
 
-setwd("/path/to/GTOP_code/supp/supp_fig12/input")
+setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig12/input")
+
 
 # supp.Figure.12a proportion of novel & annotated in module ---------------
 
 library(dplyr)
 library(stringr)
 
-load("all_gene_in_module.RData")
-length(unique(all$gene_id))
 
-all$type<-ifelse(str_detect(all$gene_id,"GTOP"),"novel","annotated")
-table(all$type)
+load("bar_plot.RData")
 
-bar_plot<- all %>%
-  dplyr::count(Tissue, type, name = "n")
 tissue_order <- bar_plot %>%
   filter(type == "annotated") %>%
   arrange(desc(n)) %>%
@@ -55,9 +51,7 @@ ggplot(bar_plot, aes(
 # Supp.Figure.12b annotated modules & unannotated modules -----------------
 
 load("need_module.RData")
-all_tissue_module<- all %>%
-  distinct(Tissue, module) %>%   
-  dplyr::count(Tissue, name = "n_modules")
+load("all_tissue_module.RData")
 
 all_go_module<-need_module %>%
   distinct(Tissue, Module) %>%  
@@ -121,10 +115,8 @@ ggplot(plot_long, aes(x = Tissue, y = Count, fill = Module_type)) +
 # group2:gene with multiple isofrom all in same module
 # group3:gene with multiple isofrom across multiple modules
 
-load("all_results.RData")
-plot_df<-unique(all_results[,3:5])
-plot_df <- data.frame(table(plot_df$Tissue,plot_df$group))
-colnames(plot_df)<-c("tissue","group","count")
+load("plot_df_s12.RData")
+
 
 library(dplyr)
 
