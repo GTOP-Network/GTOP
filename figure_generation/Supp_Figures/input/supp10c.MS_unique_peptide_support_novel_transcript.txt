@@ -1,0 +1,32 @@
+tissue	1	2 - 5	> 5
+Abdominal aorta	103	179	134
+Adipose	81	170	196
+Adrenal gland	106	190	244
+Aortic arch	75	139	132
+Colon	91	183	167
+Common iliac artery	85	162	107
+Esophagus	74	172	176
+Gallbladder	79	149	191
+Heart left atrium	54	89	99
+Heart left ventricle	54	98	110
+Heart mitral valve	68	145	92
+Heart right atrium	48	95	104
+Heart right ventricle	70	97	103
+Heart tricuspid valve	84	106	68
+Liver	76	101	117
+Lung apex	96	146	162
+Lung base	78	128	149
+Lymph node	86	114	125
+Muscle	60	69	62
+Ovary	88	176	143
+Pancreas body	39	60	53
+Pancreas head	24	46	21
+Pancreas tail	30	49	47
+Prostate	88	154	167
+Skin	77	143	122
+Small intestine	88	141	151
+Spleen	93	139	113
+Stomach	69	143	146
+Thoracic aorta	87	134	120
+Trachea	68	110	108
+Uterus	83	155	110
