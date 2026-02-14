@@ -13,7 +13,7 @@ library(ggpubr)
 library(magrittr)
 library(ggbreak)
 library(ggrastr)
-setwd("/path/to/GTOP_code/extend/extend_145/input")
+setwd("/media/london_A/mengxin/GTOP_code/extend/extend_145/input")
 
 # Extended.Fig.4a ---------------------------------------------------------
 
@@ -145,7 +145,7 @@ ggplot(fet_plot, aes(y = VarSubType, x = log2OR, fill = VarSubType)) +
   scale_fill_manual(values = c("SNV"="#c9c9c9","STR"="#0f3c7a","VNTR"="#ab889a","INS"="#b55f60","DEL"="#577b95"))
 
 
-# Extended.Fig.5f: eGene constraint score correlated with effect size---------------------------------------------
+# Extended.Fig.4g: eGene constraint score correlated with effect size---------------------------------------------
 library(broom)
 bin_stats <- readRDS("ExtendFig4g.RDS")
 
@@ -182,6 +182,109 @@ ggplot(bin_stats, aes(x = mean_effect, y = mean_score, color = score_type)) +
   theme_classic(base_size = 14) +
   labs(x = "Absolute effect size", y = "Mean(Exac Score)") +
   theme(legend.position = "top")
+
+# Extended.Fig.4h functional enrichment -----------------------------------
+
+group_order <- c("Splice Site","5UTR","Coding Exon",  "3UTR", "Non-coding Exon",
+                 "Intron", "Upstream","Downstream", "Intergenic")
+
+group_labels <- c("Splice Site","5UTR","Coding Exon",  "3UTR", "Non-coding Exon",
+                  "Intron", "Upstream","Downstream", "Intergenic")
+results <- fread("./ExtendFig4h.txt")
+results$Group <- factor(results$Group, levels = rev(group_order), labels = rev(group_labels))
+
+ggplot(results, aes(x = OR, y = Group, color = QTL_type)) +
+  geom_point(size = 3.5, position = position_dodge(0.7)) +
+  geom_errorbarh(aes(xmin = CI_low, xmax = CI_high),
+                 position = position_dodge(0.7), height = 0.2, size = 0.8) +
+  geom_vline(xintercept = 1, linetype = "dashed", color = "gray30") +
+  scale_color_manual(values = c("sQTL" = "#7c8bad", "eQTL" = "#9fc999")) +
+  scale_x_log10() +
+  labs(title = "Enrichment of QTL TRs in Genomic Regions",
+       x = "Odds Ratio (95% CI)", 
+       y = "",
+       color = "QTL Type") +
+  theme_classic(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    axis.text.y = element_text(size = 11),
+    legend.position = "top")
+
+
+# Extended.Fig.4i motif enrichment ----------------------------------------
+
+
+motif_enrichment_results <- fread("./ExtendFig4i.txt")
+significant_motifs <- motif_enrichment_results %>%
+  filter(P_adjusted < 0.05, Enrichment_Fold > 1) %>%
+  arrange(P_adjusted, desc(Enrichment_Fold))%>%
+  mutate(sig_label = case_when(
+    P_adjusted < 0.001 ~ "***",
+    P_adjusted < 0.01  ~ "**",
+    P_adjusted < 0.05  ~ "*",
+    TRUE               ~ ""),
+    Enrichment_Fold_log2 = log2(Enrichment_Fold),
+    CI_lower_log2 = log2(CI_lower),
+    CI_upper_log2 = log2(CI_upper))
+
+ggplot(significant_motifs[1:20,], aes(x = reorder(Motif, Enrichment_Fold_log2), y = Enrichment_Fold_log2)) +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = CI_lower_log2, ymax = CI_upper_log2), width = 0.3) +
+  geom_text(aes(y = Enrichment_Fold_log2 + 0.1, label = sig_label),) +
+  coord_flip() +
+  theme_classic() +
+  labs(y = "log2(OR)")
+
+
+# Extended.Fig.4j RBP enrichment ------------------------------------------
+
+
+dat <- fread("./ExtendFig4j.txt")
+colnames(dat) <- c("RBP","Tissue","peak","qtl_peak","shuffle_peak","qtl","pvalue","odds_ratio","ci_down","ci_up","stats")
+
+dat <- dat %>%
+  mutate(cell=word(RBP,start=1,end=1,sep="\\-"),
+         RBP=word(RBP,start=2,end=2,sep="\\-"),
+         odds_ratio=ifelse(pvalue < 0.05,odds_ratio,1),
+         odds_ratio=ifelse(is.infinite(odds_ratio),1,odds_ratio))
+
+dat[, logOR := log2(odds_ratio)]
+
+cell_types <- unique(dat$cell)
+cell_type="HepG2"
+dat_cell <- dat[cell == cell_type]
+motif_order <- dat_cell %>%
+  group_by(RBP) %>%
+  summarise(mean_logOR = mean(logOR, na.rm = TRUE),tissue_count = n_distinct(Tissue)  ) %>%
+  arrange(desc(mean_logOR), desc(tissue_count)) %>% head(15) %>% 
+  pull(RBP)
+
+tissue_order<-c("Liver","Pancreas_Tail","Pancreas_Head","Spleen","Adrenal_Gland","Pancreas_Body","Adipose","Whole_Blood","Gallbladder","Muscle","Skin")
+
+plot_data <- dat_cell %>%filter(RBP %in% motif_order) %>% 
+  mutate(RBP = factor(RBP, levels = rev(motif_order)),
+         Tissue = factor(Tissue, levels = rev(tissue_order)),
+         signif_label = case_when(
+           pvalue < 0.001 ~ "***",
+           pvalue < 0.01 ~ "**",
+           pvalue < 0.05 ~ "*",
+           TRUE ~ ""), fill_value = logOR)
+
+ggplot(plot_data, aes(x = Tissue, y = RBP, fill = fill_value)) +
+  geom_tile(color = "white", linewidth = 0.1) +
+  #geom_text(aes(label = signif_label), size = 3, color = "black",vjust = 0.8) +
+  #scale_fill_gradient2(low = "#D73027", mid = "white",high = "#4575B4",midpoint = 0,
+  #  name = "log2(OR)",na.value = "gray90") +
+  scale_fill_steps2(low = "#D73027",mid = "white",
+                    high = "#0a3a6e",midpoint = 0,
+                    n.breaks = 20, name = "log2(OR)",na.value = "gray90" ) +
+  labs() +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 10),
+        axis.text.y = element_text(size = 8),legend.position = "right")
+
+
+
 
 
 
