@@ -1,0 +1,13 @@
+proxy_group,proxy_delta_group,allcount,count
+EAS < EUR,|ΔAF| >= 0,4150,1874
+EAS < EUR,|ΔAF| >= 0.1,4150,1126
+EAS < EUR,|ΔAF| >= 0.2,4150,663
+EAS < EUR,|ΔAF| >= 0.3,4150,335
+EAS < EUR,|ΔAF| >= 0.4,4150,107
+EAS < EUR,|ΔAF| >= 0.5,4150,45
+EAS > EUR,|ΔAF| >= 0,7001,2691
+EAS > EUR,|ΔAF| >= 0.1,7001,2073
+EAS > EUR,|ΔAF| >= 0.2,7001,1219
+EAS > EUR,|ΔAF| >= 0.3,7001,606
+EAS > EUR,|ΔAF| >= 0.4,7001,256
+EAS > EUR,|ΔAF| >= 0.5,7001,156
