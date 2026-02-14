@@ -1,0 +1,22 @@
+A_number	frequency	type	color
+0	8863	Passed filters	#4682B4
+1	23376	Passed filters	#4682B4
+2	34307	Passed filters	#4682B4
+3	40774	Passed filters	#4682B4
+4	40164	Passed filters	#4682B4
+5	34392	Passed filters	#4682B4
+6	26114	Passed filters	#4682B4
+7	18500	Passed filters	#4682B4
+8	12332	Passed filters	#4682B4
+9	7817	Passed filters	#4682B4
+10	5391	Passed filters	#4682B4
+11	3840	Passed filters	#4682B4
+12	3587	Filtered out	#FFA07A
+13	4000	Filtered out	#FFA07A
+14	5277	Filtered out	#FFA07A
+15	5650	Filtered out	#FFA07A
+16	5941	Filtered out	#FFA07A
+17	5945	Filtered out	#FFA07A
+18	4692	Filtered out	#FFA07A
+19	3129	Filtered out	#FFA07A
+20	4476	Filtered out	#FFA07A

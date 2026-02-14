@@ -1,0 +1,67 @@
+tissue	annotation	Number of tissue-specific transcripts	Median RIN	Median number of reads	Sample size
+Abdominal aorta	Annotated	199	7.35	5064120.0	2
+Abdominal aorta	Novel	333	7.35	5064120.0	2
+Adipose	Annotated	136	7.6	6949839.0	9
+Adipose	Novel	150	7.6	6949839.0	9
+Adrenal gland	Annotated	253	7.85	7629166.0	10
+Adrenal gland	Novel	330	7.85	7629166.0	10
+Aortic arch	Annotated	35	7.35	6851075.5	4
+Aortic arch	Novel	24	7.35	6851075.5	4
+Colon	Annotated	239	7.5	7673669.5	4
+Colon	Novel	331	7.5	7673669.5	4
+Common iliac artery	Annotated	219	7.1	6218727.0	1
+Common iliac artery	Novel	258	7.1	6218727.0	1
+Diaphragm	Annotated	49	7.15	6138767.5	10
+Diaphragm	Novel	47	7.15	6138767.5	10
+Esophagus	Annotated	110	7.8	6626950.0	9
+Esophagus	Novel	55	7.8	6626950.0	9
+Gallbladder	Annotated	306	7.9	6083105.0	9
+Gallbladder	Novel	165	7.9	6083105.0	9
+Heart left atrium	Annotated	30	7.85	6408878.0	4
+Heart left atrium	Novel	13	7.85	6408878.0	4
+Heart left ventricle	Annotated	27	8.2	6937087.5	4
+Heart left ventricle	Novel	45	8.2	6937087.5	4
+Heart mitral valve	Annotated	61	7.5	5103342.0	3
+Heart mitral valve	Novel	42	7.5	5103342.0	3
+Heart right atrium	Annotated	81	7.5	7540249.0	4
+Heart right atrium	Novel	61	7.5	7540249.0	4
+Heart right ventricle	Annotated	28	7.75	6507748.0	4
+Heart right ventricle	Novel	29	7.75	6507748.0	4
+Heart tricuspid valve	Annotated	66	7.4	5273676.5	4
+Heart tricuspid valve	Novel	58	7.4	5273676.5	4
+Liver	Annotated	407	8.2	7367331.5	10
+Liver	Novel	588	8.2	7367331.5	10
+Lung apex	Annotated	43	7.7	7481789.5	4
+Lung apex	Novel	37	7.7	7481789.5	4
+Lung base	Annotated	35	8.5	6582008.0	3
+Lung base	Novel	31	8.5	6582008.0	3
+Lymph node	Annotated	200	8.3	5905791.0	3
+Lymph node	Novel	102	8.3	5905791.0	3
+Muscle	Annotated	166	7.6	7498644.0	10
+Muscle	Novel	228	7.6	7498644.0	10
+Ovary	Annotated	380	7.8	6087354.0	1
+Ovary	Novel	313	7.8	6087354.0	1
+Pancreas body	Annotated	14	7.300000000000001	7614863.0	10
+Pancreas body	Novel	40	7.300000000000001	7614863.0	10
+Pancreas head	Annotated	5	7.8999999999999995	7393269.5	4
+Pancreas head	Novel	11	7.8999999999999995	7393269.5	4
+Pancreas tail	Annotated	8	7.7	7142726.5	4
+Pancreas tail	Novel	22	7.7	7142726.5	4
+Prostate	Annotated	223	7.45	5923942.5	4
+Prostate	Novel	169	7.45	5923942.5	4
+Skin	Annotated	265	7.75	6693518.5	10
+Skin	Novel	190	7.75	6693518.5	10
+Small intestine	Annotated	155	7.7	7393766.0	3
+Small intestine	Novel	149	7.7	7393766.0	3
+Spleen	Annotated	158	8.1	7298372.5	10
+Spleen	Novel	132	8.1	7298372.5	10
+Stomach	Annotated	106	7.45	6324456.0	4
+Stomach	Novel	123	7.45	6324456.0	4
+Thoracic aorta	Annotated	72	7.7	5174554.0	3
+Thoracic aorta	Novel	29	7.7	5174554.0	3
+Trachea	Annotated	447	8.8	5533589.0	1
+Trachea	Novel	317	8.8	5533589.0	1
+Uterus	Annotated	299	7.35	6069710.5	2
+Uterus	Novel	274	7.35	6069710.5	2
+Whole blood	Annotated	331	7.8	8195849.0	9
+Whole blood	Novel	510	7.8	8195849.0	9
