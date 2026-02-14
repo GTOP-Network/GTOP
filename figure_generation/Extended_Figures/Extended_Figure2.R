@@ -4,7 +4,7 @@
 #==================================#
 library(data.table)
 library(ggplot2)
-setwd("/path/to/GTOP_code/extend/extend_2/input")
+setwd("/media/london_A/mengxin/GTOP_code/extend/extend_2/input")
 
 # Extended.Fig.2a  ------------------------------------------------------
 
@@ -148,17 +148,17 @@ ggplot(df_long, aes(x = index, y = Count, fill = Type)) +
 
 # Extended.Fig.2fg -----------------------------------------------------
 
-load("tpm_matrix.RData")
+
 load("LRS_RNA_metadata.RData")
+
 
 # novel&annotated -------------------------------------------------------
 
-novel<-tpm_matrix[grepl("GTOP",rownames(tpm_matrix)),]
-annotated<-tpm_matrix[grepl("ENS",rownames(tpm_matrix)),]
-
+load("novel.RData")
+load("annotated.RData")
 # remove batch (使用ComBat) -------------------------------------------------
 library(sva)
-metadata<-metadata[metadata$sample %in% colnames(tpm_matrix),]
+metadata<-metadata[metadata$sample %in% colnames(novel),]
 identical(metadata$sample,colnames(novel))
 
 batch <- metadata$batch  
