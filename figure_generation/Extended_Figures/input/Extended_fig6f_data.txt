@@ -1,0 +1,11 @@
+tissue,count,eGene
+Adipose,9,3466
+Adrenal_Gland,21,4230
+Liver,23,4004
+Muscle,4,982
+Pancreas_Body,13,4306
+Pancreas_Head,10,4374
+Pancreas_Tail,16,4543
+Skin,5,247
+Spleen,12,1766
+Whole_Blood,29,4633

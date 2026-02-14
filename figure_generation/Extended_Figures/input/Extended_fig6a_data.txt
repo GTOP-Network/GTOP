@@ -1,0 +1,15 @@
+cs_num	phenotype_count	xQTL_type
+1	7106	eQTL
+2	1728	eQTL
+3	447	eQTL
+4	149	eQTL
+5	40	eQTL
+6	14	eQTL
+7	11	eQTL
+1	5948	sQTL
+2	2066	sQTL
+3	760	sQTL
+4	251	sQTL
+5	77	sQTL
+6	23	sQTL
+7	20	sQTL
