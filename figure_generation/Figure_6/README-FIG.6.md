@@ -8,4 +8,4 @@ This directory contains the scripts for generating Figure 6:
 * Figure 6E: Proportion of GWAS variants overlapping QTLs.
 * Figure 6F: Proportion of GWAS risk variants overlapping with QTL variants, stratified by variant frequency across ancestry groups.
 * Figure 6G: Upset plot characterizes the number of colocalized signals containing fine-mapped SV/TRs.
-* Figure 6H: LocusZoom plots for breast cancer GWAS signal and CASP8 SNV-eQTL signal and SV-eQTL signal.
+* Figure 6H: LocusZoom plots for hyperlipidemia GWAS signal and HP SNV-eQTL signal and SV-eQTL signal.
