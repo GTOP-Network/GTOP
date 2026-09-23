@@ -8,7 +8,7 @@ library(dplyr)
 library(magrittr)
 library(ggplot2)
 library(ggpubr)
-setwd("/path/to/GTOP_code/extend/extended_7")
+setwd("/media/london_A/mengxin/GTOP_code/extend/extended_7")
 
 # Extended.Data.Fig.7a ----------------------------------------------------
 
@@ -26,10 +26,10 @@ df_gtex$Var2 <- factor(df_gtex$Var2,levels = c("specific","shared"))
 df_gtop$Var2 <- factor(df_gtop$Var2,levels = c("specific","shared"))
 p1 <- ggplot(df_gtex,aes(x=Var1,y=Freq,fill=Var2)) +
   geom_bar(stat="identity",position = position_stack()) + theme_pubr() +
-  ylim(0,150000);p1
+  ylim(0,100000);p1
 p2 <- ggplot(df_gtop,aes(x=Var1,y=Freq,fill=Var2)) +
   geom_bar(stat="identity",position = position_stack()) + theme_pubr() +
-  ylim(0,150000);p2
+  ylim(0,100000);p2
 
 cowplot::plot_grid(p2,p1,ncol=1,align="v")
 
@@ -39,24 +39,9 @@ df_gtop.w <- dcast(df_gtop,Var1~Var2,value.var = "Freq")
 df_gtex.w %<>% mutate(prp_s=specific/(specific+shared))
 df_gtop.w %<>% mutate(prp_s=specific/(specific+shared))
 
+median(df_gtop.w$prp_s)#0.737912
+median(df_gtex.w$prp_s)#0.6522528
 
-df_gtex <- as.data.frame(table(xy_gtex$Tissue,xy_gtex$share))
-df_gtop <- as.data.frame(table(xy_gtop$Tissue,xy_gtop$share))
-df_tissue <- as.data.frame(table(xy_gtop$Tissue))
-df_tissue <- df_tissue[order(-df_tissue$Freq),]
-
-df_gtex$Var1 <- factor(df_gtex$Var1,levels = df_tissue$Var1)
-df_gtop$Var1 <- factor(df_gtop$Var1,levels = df_tissue$Var1)
-df_gtex$Var2 <- factor(df_gtex$Var2,levels = c("specific","shared"))
-df_gtop$Var2 <- factor(df_gtop$Var2,levels = c("specific","shared"))
-p1 <- ggplot(df_gtex,aes(x=Var1,y=Freq,fill=Var2)) +
-  geom_bar(stat="identity",position = position_stack()) + theme_pubr() +
-  ylim(0,150000);p1
-p2 <- ggplot(df_gtop,aes(x=Var1,y=Freq,fill=Var2)) +
-  geom_bar(stat="identity",position = position_stack()) + theme_pubr() +
-  ylim(0,150000);p2
-
-cowplot::plot_grid(p2,p1,ncol=1,align="v")
 
 # Extended.Data.Fig.7b ----------------------------------------------------
 
@@ -65,8 +50,8 @@ rm_version_num <- function(x){
   return(strsplit(x,split=".",fixed = T)[[1]][1])
 }
 
-dat.gtex <- readRDS("./input/dat.fm_gtex.RDS")
-dat.gtop <- readRDS("./input/dat.fm_gtop.RDS")
+dat.gtex <- fread("./input/GTEx.eQTL_finemap.all_tissues.txt",header=T,sep="\t")
+dat.gtop <- fread("./input/GTOP.finemap_ALL_tissues.snv_eQTL.txt",header=T,sep="\t")
 
 
 dat.gtex$locus_id <- sapply(dat.gtex$locus_id,rm_version_num)
@@ -77,20 +62,19 @@ dat.gtex$Tissue[dat.gtex$Tissue=="Muscle_Skeletal"] <- "Muscle"
 dat.gtex$Tissue[dat.gtex$Tissue=="Skin_Not_Sun_Exposed_Suprapubic"] <- "Skin"
 dat.gtex$Tissue[dat.gtex$Tissue=="Pancreas"] <- "Pancreas_Body"
 
-selected_tissues <- c("Adipose","Adrenal_Gland","Liver","Muscle","Pancreas_Body","Spleen","Whole_Blood")
+selected_tissues <- c("Adipose","Adrenal_Gland","Liver","Muscle","Pancreas_Body","Spleen","Whole_Blood","Skin")
 
 
-
-dat.gtex %<>% filter(Tissue %in% selected_tissues)
-dat.gtop %<>% filter(Tissue %in% selected_tissues)
+dat.gtex %<>% dplyr::filter(Tissue %in% selected_tissues)
+dat.gtop %<>% dplyr::filter(Tissue %in% selected_tissues)
 
 dat.gtex$tissue_gene <- paste(dat.gtex$locus_id,dat.gtex$Tissue,sep=":")
 dat.gtop$tissue_gene <- paste(dat.gtop$locus_id,dat.gtop$Tissue,sep=":")
 
 
 # find single cs genes
-df.gtex <- dat.gtex %>% select(locus_id,cs,Tissue) %>% distinct(.keep_all = T)
-df.gtop <- dat.gtop %>% select(locus_id,cs,Tissue) %>% distinct(.keep_all = T)
+df.gtex <- dat.gtex %>% dplyr::select(locus_id,cs,Tissue) %>% distinct(.keep_all = T)
+df.gtop <- dat.gtop %>% dplyr::select(locus_id,cs,Tissue) %>% distinct(.keep_all = T)
 
 
 df_count.gtex <- df.gtex %>% group_by(locus_id,Tissue) %>% summarise(cs_count=n())
@@ -106,12 +90,12 @@ x.gtop <- as.character(df_count.gtop$tissue_gene[df_count.gtop$cs_count==1])
 
 overlap_tissuegenes <- intersect(x.gtex,x.gtop) # 5945
 
-df.gtex <- dat.gtex %>% filter(tissue_gene %in% overlap_tissuegenes) %>% select(locus_id,cs,pip,cs_size,Tissue,tissue_gene) %>% 
-  group_by(locus_id,cs,Tissue) %>% mutate(max_pip = max(pip)) %>% ungroup() %>% filter(pip==max_pip) %>% 
-  select(locus_id,cs,max_pip,cs_size,Tissue,tissue_gene) %>% distinct(.keep_all = T)
-df.gtop <- dat.gtop %>% filter(tissue_gene %in% overlap_tissuegenes) %>% select(locus_id,cs,pip,cs_size,Tissue,tissue_gene) %>% 
-  group_by(locus_id,cs,Tissue) %>% mutate(max_pip = max(pip)) %>% ungroup() %>% filter(pip==max_pip) %>% 
-  select(locus_id,cs,max_pip,cs_size,Tissue,tissue_gene) %>% distinct(.keep_all = T)
+df.gtex <- dat.gtex %>% dplyr::filter(tissue_gene %in% overlap_tissuegenes) %>% dplyr::select(locus_id,cs,pip,cs_size,Tissue,tissue_gene) %>% 
+  group_by(locus_id,cs,Tissue) %>% mutate(max_pip = max(pip)) %>% ungroup() %>% dplyr::filter(pip==max_pip) %>% 
+  dplyr::select(locus_id,cs,max_pip,cs_size,Tissue,tissue_gene) %>% distinct(.keep_all = T)
+df.gtop <- dat.gtop %>% dplyr::filter(tissue_gene %in% overlap_tissuegenes) %>% dplyr::select(locus_id,cs,pip,cs_size,Tissue,tissue_gene) %>% 
+  group_by(locus_id,cs,Tissue) %>% mutate(max_pip = max(pip)) %>% ungroup() %>% dplyr::filter(pip==max_pip) %>% 
+  dplyr::select(locus_id,cs,max_pip,cs_size,Tissue,tissue_gene) %>% distinct(.keep_all = T)
 
 
 df_plot.gtex <- df.gtex[,c(3,6)]
@@ -148,9 +132,9 @@ dat.gtex <- readRDS("./input/dat.gtex.RDS")
 dat.gtop <- readRDS("./input/dat.gtop.RDS")
 dat.cran <- readRDS("./input/dat.cran.RDS")
 # examine CS number per gene
-df.gtex <- dat.gtex %>% select(locus_id,cs,Tissue) %>% distinct(.keep_all = T)
-df.gtop <- dat.gtop %>% select(locus_id,cs,Tissue) %>% distinct(.keep_all = T)
-df.cran <- dat.cran %>% select(Gene,CS_ID,Tissue) %>% distinct(.keep_all = T)
+df.gtex <- dat.gtex %>% dplyr::select(locus_id,cs,Tissue) %>% distinct(.keep_all = T)
+df.gtop <- dat.gtop %>% dplyr::select(locus_id,cs,Tissue) %>% distinct(.keep_all = T)
+df.cran <- dat.cran %>% dplyr::select(Gene,CS_ID,Tissue) %>% distinct(.keep_all = T)
 
 
 df_count.cran <- df.cran %>% group_by(Gene,Tissue) %>% summarise(cs_count=n())
@@ -175,13 +159,13 @@ x.gtop <- as.character(df_count.gtop$tissue_gene[df_count.gtop$cs_count==1])
 
 overlap_tissuegenes <- intersect(intersect(x.gtex,x.gtop),x.cran)
 
-df.cran <- dat.cran %>% filter(tissue_gene %in% overlap_tissuegenes) %>% select(Gene,CS_ID,MAX_PIP,CS_LENGTH,Tissue,tissue_gene)
-df.gtex <- dat.gtex %>% filter(tissue_gene %in% overlap_tissuegenes) %>% select(locus_id,cs,pip,cs_size,Tissue,tissue_gene) %>% 
-  group_by(locus_id,cs,Tissue) %>% mutate(max_pip = max(pip)) %>% ungroup() %>% filter(pip==max_pip) %>% 
-  select(locus_id,cs,max_pip,cs_size,Tissue,tissue_gene) %>% distinct(.keep_all = T)
-df.gtop <- dat.gtop %>% filter(tissue_gene %in% overlap_tissuegenes) %>% select(locus_id,cs,pip,cs_size,Tissue,tissue_gene) %>% 
-  group_by(locus_id,cs,Tissue) %>% mutate(max_pip = max(pip)) %>% ungroup() %>% filter(pip==max_pip) %>% 
-  select(locus_id,cs,max_pip,cs_size,Tissue,tissue_gene) %>% distinct(.keep_all = T)
+df.cran <- dat.cran %>% dplyr::filter(tissue_gene %in% overlap_tissuegenes) %>% dplyr::select(Gene,CS_ID,MAX_PIP,CS_LENGTH,Tissue,tissue_gene)
+df.gtex <- dat.gtex %>% dplyr::filter(tissue_gene %in% overlap_tissuegenes) %>% dplyr::select(locus_id,cs,pip,cs_size,Tissue,tissue_gene) %>% 
+  group_by(locus_id,cs,Tissue) %>% mutate(max_pip = max(pip)) %>% ungroup() %>% dplyr::filter(pip==max_pip) %>% 
+  dplyr::select(locus_id,cs,max_pip,cs_size,Tissue,tissue_gene) %>% distinct(.keep_all = T)
+df.gtop <- dat.gtop %>% dplyr::filter(tissue_gene %in% overlap_tissuegenes) %>% dplyr::select(locus_id,cs,pip,cs_size,Tissue,tissue_gene) %>% 
+  group_by(locus_id,cs,Tissue) %>% mutate(max_pip = max(pip)) %>% ungroup() %>% dplyr::filter(pip==max_pip) %>% 
+  dplyr::select(locus_id,cs,max_pip,cs_size,Tissue,tissue_gene) %>% distinct(.keep_all = T)
 
 df.cran$group <- "GTEx+GTOP"
 df.gtex$group <- "GTEx"
@@ -195,16 +179,16 @@ p2 <- ggplot(df_plot1,aes(x=Tissue,y=log2(cs_size),fill=group)) +
   scale_fill_manual(breaks =c("GTOP","GTEx","GTEx+GTOP"), values = c("#B65844","#E2C396","#7784A3") );p2
 
 # Extended Data Fig.7d correlation of PIP between single population fine-mapping and cross-ancestry fine-mapping
-x <- df.cran %>% mutate(maxPIP_cran=max_pip,CS_size_cran=cs_size) %>% select(tissue_gene,maxPIP_cran,CS_size_cran)
-y <- df.gtex %>% mutate(maxPIP_gtex=max_pip,CS_size_gtex=cs_size) %>% select(tissue_gene,maxPIP_gtex,CS_size_gtex) 
-z <- df.gtop %>% mutate(maxPIP_gtop=max_pip,CS_size_gtop=cs_size) %>% select(tissue_gene,maxPIP_gtop,CS_size_gtop) 
+x <- df.cran %>% mutate(maxPIP_cran=max_pip,CS_size_cran=cs_size) %>% dplyr::select(tissue_gene,maxPIP_cran,CS_size_cran)
+y <- df.gtex %>% mutate(maxPIP_gtex=max_pip,CS_size_gtex=cs_size) %>% dplyr::select(tissue_gene,maxPIP_gtex,CS_size_gtex) 
+z <- df.gtop %>% mutate(maxPIP_gtop=max_pip,CS_size_gtop=cs_size) %>% dplyr::select(tissue_gene,maxPIP_gtop,CS_size_gtop) 
 xy <- merge(x,y,by="tissue_gene")
 xyz <- merge(xy,z,by="tissue_gene")
 
 xyz$maxPIP_gtex_gtop <- apply(xyz[,c(4,6)],1,max)
 xyz$maxPIP_all <- apply(xyz[,c(2,4,6)],1,max)
 
-xyz.f <- xyz %>% filter(CS_size_cran>1)
+xyz.f <- xyz %>% dplyr::filter(CS_size_cran>1)
 p3.1 <- ggplot(xyz,aes(x=maxPIP_cran,y=maxPIP_gtex)) + geom_point(aes(color=maxPIP_all)) + theme_pubr() + stat_density2d(color="grey")+scale_color_distiller(palette = "OrRd");p3.1
 p3.2 <- ggplot(xyz,aes(x=maxPIP_cran,y=maxPIP_gtop)) + geom_point(aes(color=maxPIP_all)) + theme_pubr()+ stat_density2d(color="grey")+scale_color_distiller(palette = "OrRd");p3.2
 p3.3 <- ggplot(xyz,aes(x=maxPIP_cran,y=maxPIP_gtex_gtop)) + geom_point(aes(color=maxPIP_all)) + theme_pubr()+ stat_density2d(color="grey") + scale_color_distiller(palette = "OrRd");p3.3
@@ -213,3 +197,44 @@ p3.3 <- ggplot(xyz,aes(x=maxPIP_cran,y=maxPIP_gtex_gtop)) + geom_point(aes(color
 #pdf(file="ext7d.pdf",width = 4.5,height = 6.0)
 print(p3.3)
 #dev.off()
+
+
+# Extended.Data.Fig.7e: MPRA permutation  --------
+color <- readRDS("./input/tis_color.rds")
+cs_sum <- fread("./input/perm.cs_mpraratio.txt")
+
+cs_observed <- cs_sum |> 
+  dplyr::filter(permutation_id=="observed")
+
+pcs <- ggplot(cs_sum |> dplyr::filter(permutation_id!="observed"))+
+  geom_density(aes(x=cs_ratio, fill=tissue, alpha=.75, color=tissue))+
+  geom_vline(data=cs_observed, aes(xintercept=cs_ratio, color=tissue))+
+  scale_fill_manual(values=color)+
+  scale_color_manual(values=color)+
+  facet_grid(tissue ~ .)+
+  theme_pubr();pcs
+
+var_sum <- fread("./input/perm.var_mpraratio.txt")
+
+var_observed <- var_sum |> 
+  dplyr::filter(permutation_id=="observed")
+
+pvar <- ggplot(var_sum |> dplyr::filter(permutation_id!="observed"))+
+  geom_density(aes(x=var_ratio, fill=tissue, alpha=.75, color=tissue))+
+  geom_vline(data=var_observed, aes(xintercept=var_ratio, color=tissue))+
+  scale_fill_manual(values=color)+
+  scale_color_manual(values=color)+
+  facet_grid(tissue ~ .)+
+  theme_pubr();pvar
+
+# Extended.Data.Fig.7f: MPRA permutation enrichment --------
+
+enplotdf <- fread("./input/obs.vs.random.fisher.txt")
+
+ggplot(enplotdf, aes(x = class, y = odds_ratio)) +
+  geom_boxplot(width = 0.5,outlier.shape = NA,fill = "white") +
+  geom_jitter(aes(color = class),width = 0.15,alpha = 0.5,size = 1) +
+  scale_color_manual(values=c("cs_mpra_hit"="#3B5B92", "var_mpra_hit"="#B85C38"))+
+  theme_pubr() +
+  labs(  x = NULL,  y = "Odds ratio") +
+  theme(legend.position = "none",axis.text.x = element_text(angle = 45, hjust = 1))

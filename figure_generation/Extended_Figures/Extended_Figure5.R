@@ -12,7 +12,7 @@ library(tidyverse)
 library(ggpubr)
 library(magrittr)
 library(pheatmap)
-setwd("/path/to/GTOP_code/extend/extend_145/input")
+setwd("/media/london_A/mengxin/GTOP_code/extend/extend_145/input")
 
 
 # Extended.Fig.5a:  Visualization of the effect size of the same QTL pair in different tissues ------------------------------------------------------------------
@@ -36,10 +36,10 @@ pheatmap(cor,
 
 # Extended.Fig.5b: tissue specific QTL number  --------------------------------------------------------
 
-plot_df <- fread("ExtendFig5b.txt") %>% mutate(Specific_Tissue = reorder(Specific_Tissue, -total))
-plot_df$QTL <- factor(plot_df$QTL, levels = c( "SV","TR", "SNV"))
+dat <- fread("ExtendFig5b.txt") %>% mutate(Specific_Tissue = reorder(Specific_Tissue, -total))
+dat$QTL <- factor(dat$QTL, levels = c( "SV","TR", "SNV"))
 
-ggplot(plot_df, aes(x = Specific_Tissue, y = n, fill = QTL)) +
+ggplot(dat, aes(x = Specific_Tissue, y = n, fill = QTL)) +
   geom_col(width = 0.7) +
   labs(x = "Tissue",y = "Number of tissue-specific QTL",fill = "QTL") +
   theme_classic() +
@@ -72,12 +72,12 @@ ggplot(dat, aes(x = TSS_dis, group = tissue_group, color = tissue_group)) +
 
 # tissue sharing QTL with TSS  --------------------------------------------
 
-df_binned <- fread("ExtendFig5d.txt")
-ggplot(df_binned,aes(x = tissue_median, y = TSS_median, color = QTL)) +
+dat <- fread("ExtendFig5d.txt")
+ggplot(dat,aes(x = tissue_median, y = TSS_median, color = QTL)) +
   geom_smooth(se = T, linewidth = 1.1, method = "loess", span = 0.8) +
   scale_color_manual(values = c("SV"="#227a7e","TR"="#931e2a","SNV"="#7c8bad","Control"="grey"))+
-  scale_x_continuous(breaks = seq(floor(min(df_binned$tissue_median, na.rm = TRUE)),
-                                  ceiling(max(df_binned$tissue_median, na.rm = TRUE)), by = 1) )+
+  scale_x_continuous(breaks = seq(floor(min(dat$tissue_median, na.rm = TRUE)),
+                                  ceiling(max(dat$tissue_median, na.rm = TRUE)), by = 1) )+
   labs(x = "#Tissues eGenes expressed in", y = "Distance of QTL to TSS (Mb)") +
   theme_classic() +
   theme( axis.text = element_text(color = "black", size = 10),legend.position = "top")

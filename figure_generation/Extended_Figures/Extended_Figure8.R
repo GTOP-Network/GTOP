@@ -1,12 +1,12 @@
 #==================================#
-# SV-eQTLs and TR-eQTLs #
+# SV-sQTLs and TR-sQTLs #
 # Extended Figure-8 #
 #==================================#
 
 library(ggplot2)
 library(ggpubr)
 
-setwd("/path/to/GTOP_code/extend/extend_8")
+setwd("/media/london_A/mengxin/GTOP_code/extend/extend_8")
 
 
 # Extended.Fig.8 ----------------------------------------------------------

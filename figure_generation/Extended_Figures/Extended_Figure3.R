@@ -9,7 +9,7 @@ library(data.table)
 library(ggplot2)
 library(ggpubr)
 
-setwd("/path/to/GTOP_code/extend/extend_3")
+setwd("/media/london_A/mengxin/GTOP_code/extend/extend_3")
 # Extended.Fig.3ab ASE & ASTS ----------------------------------------------
 df_plot <- fread("./input/Exfig 3a.txt")
 reg <- lm(formula = sig ~ total,data=df_plot)
@@ -21,7 +21,9 @@ p1 <- ggplot(df_plot,aes(x=total,y=sig,color=Abbreviation)) + geom_point(size=3)
   xlab("Number of genes tested") + ylab("Number of significant genes") + 
   geom_abline(intercept = intercept,slope = slope,color="black",linetype="dashed",size=1.5)
 p1
-#Extended.fig.3b
+
+# Extended.fig.3b ---------------------------------------------------------
+
 df_plot <- fread("./input/Exfig 3b.txt")
 reg <- lm(formula = sig.asts ~ total.asts,data=df_plot)
 coeff <- coefficients(reg)
@@ -52,7 +54,7 @@ p3 <- ggplot(df_sample.l,aes(x=Var1,y=Freq,fill=Var2)) + geom_bar(stat = "identi
   theme(axis.text.x = element_text(angle = 90,hjust=1,vjust=.5)) + xlab("")+ylab("# ASE events")+
   scale_y_log10() + 
   scale_fill_manual(breaks = c("0","1"),labels=c("non-significant events", "significant events"),values = c("grey","#4380b8"))+
-  theme(axis.text.x = element_blank())
+  theme(axis.text.x = element_blank());p3
 
 # Extended.fig.3e  ---------------------------------------------------------
 df_sample <- fread("./input/Exfig 3e.txt") %>% 
@@ -61,7 +63,7 @@ p4 <- ggplot(df_sample,aes(x=Var1,y=Freq,fill=Var2)) + geom_bar(stat = "identity
   theme(axis.text.x = element_text(angle = 90,hjust=1,vjust=.5)) + xlab("")+ylab("# ASTS events")+
   scale_y_log10() + 
   scale_fill_manual(breaks = c("0","1"), labels=c("non-significant events", "significant events"),values = c("grey","#4380b8"))+
-  theme(axis.text.x = element_blank())
+  theme(axis.text.x = element_blank());p4
 
 
 
