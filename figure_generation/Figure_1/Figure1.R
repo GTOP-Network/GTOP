@@ -1,7 +1,7 @@
 #==============================================#
 # Figure-1#
 #==============================================#
-setwd("/path/to/GTOP_code/fig-1/input")
+setwd("/media/london_A/mengxin/GTOP_code/fig-1/input")
 
 library(data.table)
 library(ggplot2)
@@ -58,7 +58,7 @@ suppressPackageStartupMessages({
   library(patchwork)     
   library(dplyr)         
 })
-set.seed(1202)
+set.seed(2026)
 options(stringsAsFactors = FALSE)
 
 # Theme settings
@@ -81,23 +81,16 @@ unified_theme <- theme_bw(base_size = THEME_SIZE) +
   )
 
 
+load("sample_annot_full_1613.RData")
 
-# Load data ---------------------------------------------------------------
-load("sample_annot_full_1586.RData")
-
-final_annot <- sample_annot_full[, c("sample_id", "Subject", "Tissue","Batch", "Tissue_Color_Code")]
-colnames(final_annot) <- c("sample", "individual", "tissue", "batch", "color")
-rownames(final_annot) <- final_annot$sample
-
-meta <- final_annot[, c("sample", "individual", "tissue","batch", "color")]
+meta <- sample_annot_full[, c("sample_id", "Subject", "Tissue","Batch", "Tissue_Color_Code")]
+colnames(meta) <- c("sample", "individual", "tissue", "batch", "color")
 rownames(meta) <- meta$sample
-
-# Color setup -------------------------------------------------------------
 
 all_tissue <- sort(unique(meta$tissue))
 tissue_colors <- unique(meta[, c("tissue", "color")])
 tissue_colors <- setNames(paste0("#", tissue_colors$color), tissue_colors$tissue)
-load("vst_matrix.RData")
+load("expr_by_tissue.RData")
 load("mds_full_corr.RData")
 
 eigvals_corr <- mds_full_corr$eig
@@ -107,41 +100,34 @@ prop2_corr <- round(100 * eigvals_corr[2] / sum(eigvals_corr[eigvals_corr > 0]),
 mds_df_corrected <- data.frame(
   MDS1 = mds_full_corr$points[,1],
   MDS2 = mds_full_corr$points[,2],
-  sample = colnames(vst_matrix)
+  sample = rownames(mds_full_corr$points)
 )
 mds_df_corrected <- merge(mds_df_corrected, meta, by="sample", all.x=TRUE)
 
-# MDS plot  ---------------------------------------------------------------
-
 gg_mds_corr <- ggplot(mds_df_corrected, aes(x=MDS1, y=MDS2, color=tissue)) +
-  geom_point(size=POINT_SIZE, alpha=ALPHA_NORMAL) +
+  geom_point(size=3, alpha=ALPHA_NORMAL) +
   scale_color_manual(values=tissue_colors) +
   unified_theme +
   theme(legend.position="none") +
   labs(
     x=paste0("Coordinate 1 (", prop1_corr, "%)"),
     y=paste0("Coordinate 2 (", prop2_corr, "%)"),
-    title="Multidimensional Scaling Analysis",
+    #title="Multidimensional Scaling Analysis",
     color="Tissue"
+  )+
+  theme_classic() +   
+  theme(
+    legend.position = "right"   
   )
 print(gg_mds_corr)
 
 
 # Fig.1d: tissue cluster ---------------------------------------------------
 
-expr_by_tissue <- sapply(all_tissue, function(grp) {
-  idx <- meta$tissue == grp
-  if(sum(idx) > 0) {
-    rowMedians(vst_matrix[, idx, drop=FALSE], na.rm = TRUE)
-  } else {
-    rep(NA, nrow(vst_matrix))
-  }
-})
-expr_by_tissue <- expr_by_tissue[, !apply(is.na(expr_by_tissue), 2, any), drop=FALSE]
 
 if(ncol(expr_by_tissue) > 1) {
-  dist_mat_tissue <- as.dist(1 - cor(expr_by_tissue,method="spearman"))
-  hc <- hclust(dist_mat_tissue, method="ward.D2")
+  dist_mat_tissue <- as.dist(1 - cor(expr_by_tissue, method = "spearman"))
+  hc <- hclust(dist_mat_tissue, method = "average")
   dend <- as.dendrogram(hc)
   
   labels_cex(dend) <- 0.7
@@ -149,27 +135,34 @@ if(ncol(expr_by_tissue) > 1) {
   labels_dend <- labels(dend)
   label_col <- tissue_colors[labels_dend]
   
-  # pdf(paste0(output_prefix,"_test.pdf"), width=10, height=8)
-  # par(mar=c(7,4,2,2))
-  plot(dend, horiz=FALSE, main="Tissue Hierarchical Clustering",
-       xlab="", ylab="Distance (1 - Pearson correlation)", axes=TRUE,
-       cex.main=1.2, cex.lab=1.1, cex.axis=0.9, lwd=1.5)
-  
-  xticks <- seq_along(labels_dend)
-  ypos_start <- par("usr")[3] + 0.02 * diff(par("usr")[3:4])
-  ypos_end <- ypos_start + 0.03 * diff(par("usr")[3:4])
-  
-  for(i in seq_along(xticks)){
-    segments(xticks[i], ypos_start, xticks[i], ypos_end,
-             lwd=6, col=label_col[i], xpd=TRUE)
+  plot_dend <- function(){
+    par(mar = c(4, 10, 2, 2)) 
+    
+    max_h <- attr(dend, "height")
+    dend_noLabels <- dend
+    labels(dend_noLabels) <- rep("", length(labels_dend))
+    
+    plot(dend_noLabels, horiz = TRUE, main = "",
+         xlab = "Cluster distance", ylab = "", axes = TRUE,
+         xlim = c(0, max_h),
+         cex.main = 1.2, cex.lab = 1.1, cex.axis = 0.9, lwd = 1.5)
+    
+    mtext("b", side = 3, line = 0.5, at = par("usr")[1], adj = 1.5, cex = 1.4, font = 2)
+    
+    yticks <- seq_along(labels_dend)
+    dot_x <- par("usr")[1] + 0.01 * diff(par("usr")[1:2])
+    
+    for(i in seq_along(yticks)){
+      points(dot_x, yticks[i], pch = 19, col = label_col[i], cex = 1.1, xpd = TRUE)
+      text(dot_x, yticks[i], labels_dend[i], col = label_col[i], cex = 0.7,
+           pos = 2, offset = 0.3, xpd = TRUE)
+    }
   }
-  
-  #dev.off()
 }
-
+plot_dend()
 # Fig.1e: variant number and length ----------------------------------------
 
-variant_counts <- data.frame(SNV = c(7247578, 12393297),SV = c(35301,60656),TR = c(38615,1056776),
+variant_counts <- data.frame(SNV = c(7748122, 14044743),SV = c(33219,53753),TR = c(38615,1056776),
                              row.names = c("common", "rare")) %>% 
   tibble::rownames_to_column(var = "variant_type") %>% 
   pivot_longer(
@@ -189,16 +182,21 @@ p1 <- ggplot(variant_counts, aes(y = category, x = count/1000, fill = variant_ty
     axis.ticks = element_line(color = "black"),
     legend.position = "none")
 
-variant_length <- data.frame(SNV = c(5893095+6435260, 10398324+12288707),
-                             SV = c(26283328, 94303927),TR = c(3214629, 17818221),
+variant_length <- data.frame(SNV = c(6031603+7320975, 10958697+16907410),
+                             SV = c(25353740, 88516072),TR = c(3214629, 17818221),
                              row.names = c("common", "rare")) %>% 
   tibble::rownames_to_column(var = "variant_type") %>% 
-  pivot_longer(cols = -variant_type, names_to = "category", values_to = "count") %>%
+  pivot_longer(
+    cols = -variant_type,  
+    names_to = "category", 
+    values_to = "count") %>%
   mutate(category=factor(category,levels=c("TR","SNV","SV")))
 variant_length$variant_type <- factor(variant_length$variant_type,levels = c("rare","common"))
 
 p2 <- ggplot(variant_length, aes(y = category, x = count, fill = variant_type)) +
   geom_col(position="dodge") +
+  #geom_text(aes(label = ifelse(count >= 1e6, 
+  #                            paste0(round(count/1e6, 1), "Mb"),count))) +
   scale_x_continuous(labels = function(x) ifelse(x >= 1000000, paste0(x/1000000), x)) +
   theme_classic()+
   scale_fill_manual(values = c("#c9c9cb","#939eb2"))+
@@ -233,45 +231,40 @@ ggplot(plot, aes(x = tec, y = Total_count, fill = tec)) +
 
 
 
-# Fig.1g: compare small variants number between LRS and SRS ---------------
+# Fig.1g: compare SV between GTOP LRS and external and internal datasets ---------------
+
+plot <- fread("Fig.1g.txt")
+plot$svtype<-factor(plot$svtype,levels = c("INS","DEL"))
+ggplot( plot,aes(x=svtype,y = value,fill = category)) +
+  geom_col( width = 0.7) +
+  facet_wrap(~AF_group, nrow = 1) +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c( "Reported" = "#bfbebe", "Novel" = "#66869b" )) +
+  labs(x = NULL, y = "Proportion",fill = NULL ) +
+  theme_classic() +
+  theme(axis.line = element_line(color = "black"),
+        legend.position = "bottom",
+        axis.text = element_text( color = "black",size = 12),
+        strip.background = element_rect(fill = "white"),
+        strip.text = element_text(size = 12,face = "bold"))
 
 
-df_plot <- readRDS("Fig.1g.RDS")
-df_plot$ShareStatus <- factor(df_plot$ShareStatus,levels = c("Specific","Share"))
-p1 <- ggplot(df_plot,aes(x=Tech,y=Count_variants,fill=ShareStatus)) + geom_bar(stat = "identity",width=.8,position = position_stack()) + theme_pubr() + 
-  scale_fill_manual(breaks = c("Share","Specific"),values = c("#8da0cb","#9d3929"));p1
-
-
-# Fig.1h: compare total SV count in LRS and SRS ---------------------------
-
-
-df_sv.lrs_vs_srs <- readRDS("Fig.1h.SV.LRS_vs_SRS.RDS")
-p2 <- ggplot(df_sv.lrs_vs_srs,aes(x=Var1,y=Freq,fill=Var2)) + geom_bar(stat = "identity",width=.8) + theme_pubr() + 
-  scale_fill_manual(breaks = c(0,1),values = c("#983628","#8da0cb"));p1
-df_sv.srs_vs_lrs <- readRDS("Fig.1h.SV.SRS_vs_LRS.RDS")
-p3 <- ggplot(df_sv.srs_vs_lrs,aes(x=Var1,y=Freq,fill=Var2)) + geom_bar(stat = "identity",width=.8) + theme_pubr() + 
-  scale_fill_manual(breaks = c(0,1),values = c("#247E85","#8da0cb"));p3
-
-
-cowplot::plot_grid(p2,p3,align="h")
-
-
-# Fig.1i: compare total TR count in LRS and SRS ------------------------------------------------
+# Fig.1h: compare total TR count in LRS and SRS ------------------------------------------------
 
 col_overlap  <- "#8b9dc5"
 col_lrs_spec <- "#933628"
 col_srs_spec <- "#247e87"
-dat <- fread("Fig1i.txt")%>%
+dat <- fread("Fig1h.txt")%>%
   mutate( group = factor(group, levels = c("Specific","Overlap")),
           TR_type = factor(TR_type, levels = c("2","3","4","5","6","VNTR")))
 
 fill_map <- c("Overlap.LRS"  = col_overlap,"Overlap.SRS"  = col_overlap,
               "Specific.LRS" = col_lrs_spec,"Specific.SRS" = col_srs_spec)
 ggplot() +
-  geom_col(data = dat %>% filter(tec == "LRS"),
+  geom_col(data = dat %>% dplyr::filter(tec == "LRS"),
            aes(y = count, x = TR_type, fill = interaction(group, tec)),
            position = "stack" ) +
-  geom_col(data = dat %>% filter(tec == "SRS"),
+  geom_col(data = dat %>% dplyr::filter(tec == "SRS"),
            aes(y = -count, x = TR_type, fill = interaction(group, tec)),
            position = "stack") +
   scale_fill_manual(values = fill_map, name = "Group") +
@@ -285,10 +278,10 @@ ggplot() +
         legend.position = "top")
 
 ggplot() +
-  geom_col(data = dat %>% filter(tec == "LRS",TR_type=="VNTR"),
+  geom_col(data = dat %>% dplyr::filter(tec == "LRS",TR_type=="VNTR"),
            aes(y = count, x = TR_type, fill = interaction(group, tec)),
            position = "stack" ) +
-  geom_col(data = dat %>% filter(tec == "SRS",TR_type=="VNTR"),
+  geom_col(data = dat %>% dplyr::filter(tec == "SRS",TR_type=="VNTR"),
            aes(y = -count, x = TR_type, fill = interaction(group, tec)),
            position = "stack") +
   scale_fill_manual(values = fill_map, name = "Group") +
