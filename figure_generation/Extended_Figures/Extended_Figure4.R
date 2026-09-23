@@ -89,7 +89,7 @@ p2
 
 # Extended Fig.4d:  effect size distrbution ------------------------------------------------------------------
 
-effect_data <- fread("ExtendFig4d.txt")
+effect_data <- fread("ExtendFig4d.txt.gz")
 effect_data$VarSubType<-factor(effect_data$VarSubType,levels = rev(c("INS","DEL","VNTR","STR","SNV")))
 effect_data$QTL<-factor(effect_data$QTL,levels = rev(c("eQTL","juQTL","tuQTL")))
 p1 <- ggplot(effect_data)+ geom_violin(aes(y=QTL, x=slope, fill=VarSubType), 

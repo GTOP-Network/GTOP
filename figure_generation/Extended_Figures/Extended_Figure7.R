@@ -33,8 +33,8 @@ p2 <- ggplot(df_gtop,aes(x=Var1,y=Freq,fill=Var2)) +
 
 cowplot::plot_grid(p2,p1,ncol=1,align="v")
 
-df_gtex.w <- dcast(df_gtex,Var1~Var2,value.var = "Freq")
-df_gtop.w <- dcast(df_gtop,Var1~Var2,value.var = "Freq")
+df_gtex.w <- reshape2::dcast(df_gtex,Var1~Var2,value.var = "Freq")
+df_gtop.w <- reshape2::dcast(df_gtop,Var1~Var2,value.var = "Freq")
 
 df_gtex.w %<>% mutate(prp_s=specific/(specific+shared))
 df_gtop.w %<>% mutate(prp_s=specific/(specific+shared))
@@ -50,8 +50,8 @@ rm_version_num <- function(x){
   return(strsplit(x,split=".",fixed = T)[[1]][1])
 }
 
-dat.gtex <- fread("./input/GTEx.eQTL_finemap.all_tissues.txt",header=T,sep="\t")
-dat.gtop <- fread("./input/GTOP.finemap_ALL_tissues.snv_eQTL.txt",header=T,sep="\t")
+dat.gtex <- fread("./input/GTEx.eQTL_finemap.all_tissues.txt.gz",header=T,sep="\t")
+dat.gtop <- fread("./input/GTOP.finemap_ALL_tissues.snv_eQTL.txt.gz",header=T,sep="\t")
 
 
 dat.gtex$locus_id <- sapply(dat.gtex$locus_id,rm_version_num)
