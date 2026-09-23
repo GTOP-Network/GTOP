@@ -1,0 +1,3 @@
+group	threshold	label	Annotated	Novel	All
+db	0	GTOP	126704	78651	205355
+db	1	CHESS3 overlap	41043	7338	48381

@@ -1,0 +1,34 @@
+tissue	gene_gencode	gene_enhanced	transcript_gencode	transcript_enhanced	tissue_label	tissue_color
+Abdominal_Aorta	31630	34576	81232	106274	Abdominal aorta	#cbc5d3
+Adipose	32831	35956	93212	123642	Adipose	#E59525
+Adrenal_Gland	31659	34593	93107	121449	Adrenal gland	#A8D650
+Aortic_Arch	29736	32689	75836	85097	Aortic arch	#758E90
+Colon	31166	34093	85194	109545	Colon	#E7C08D
+Common_Iliac_Artery	27441	30140	74889	93170	Common iliac artery	#d0d1e6
+Diaphragm	33176	36400	85912	116109	Diaphragm	#00CED1
+Esophagus	33299	36409	95396	125964	Esophagus	#AF8C5C
+Gallbladder	33932	37100	98178	129537	Gallbladder	#8F8495
+Heart_Left_Atrium	30674	33644	83611	109061	Heart left atrium	#6F1F71
+Heart_Left_Ventricle	30412	33295	85320	112057	Heart left ventricle	#9C5CA1
+Heart_Mitral_Valve	34375	37487	92329	119473	Heart mitral valve	#BA91BC
+Heart_Right_Atrium	31568	34578	86686	113332	Heart right atrium	#8466A6
+Heart_Right_Ventricle	31173	34090	85872	112728	Heart right ventricle	#A780A0
+Heart_Tricuspid_Valve	34631	37759	93475	122192	Heart tricuspid valve	#9F98BF
+Liver	29183	32212	81507	104635	Liver	#69AE6A
+Lung_Apex	32899	35962	89726	117462	Lung apex	#76ADB8
+Lung_Base	34070	37221	97766	129125	Lung base	#AECBD1
+Lymph_node	35682	38721	87404	116165	Lymph node	#ACAA95
+Muscle	29964	33037	82924	111331	Muscle	#7080BD
+Ovary	34492	37544	84315	90099	Ovary	#DF898D
+Pancreas_Body	29075	32555	79051	100547	Pancreas body	#902222
+Pancreas_Head	29152	32696	79238	100513	Pancreas head	#AB5F2C
+Pancreas_Tail	28889	32455	78384	99350	Pancreas tail	#E59276
+Prostate	39343	42650	104831	138083	Prostate	#0CE3C3
+Skin	33992	37207	90793	119946	Skin	#3A71A4
+Small_Intestine	34244	37370	96170	126479	Small intestine	#535426
+Spleen	32627	35651	94729	124463	Spleen	#768454
+Stomach	32492	35565	86086	110802	Stomach	#F8D895
+Thoracic_Aorta	30505	33334	78858	100204	Thoracic aorta	#7e888e
+Trachea	26534	29292	58293	75064	Trachea	#D285A5
+Uterus	31668	34532	80834	119397	Uterus	#E35656
+Whole_Blood	26091	28474	62651	78216	Whole blood	#CC418D

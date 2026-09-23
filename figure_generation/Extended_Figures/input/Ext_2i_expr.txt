@@ -1,0 +1,19 @@
+transcript_id	tissue	log2_tpm	tissue_label
+GTOPT000378535	Heart left ventricle	3.510013553124038	Heart left ventricle
+ENST00000228841.15	Heart left ventricle	12.809423507222848	Heart left ventricle
+ENST00000548438.1	Heart left ventricle		Heart left ventricle
+GTOPT000378535	Heart right ventricle	2.537629225429108	Heart right ventricle
+ENST00000228841.15	Heart right ventricle	12.000045328265422	Heart right ventricle
+ENST00000548438.1	Heart right ventricle	3.0700798675211014	Heart right ventricle
+GTOPT000378535	Heart left atrium	1.077044385942048	Heart left atrium
+ENST00000228841.15	Heart left atrium	10.05833899572071	Heart left atrium
+ENST00000548438.1	Heart left atrium	1.7222631416074274	Heart left atrium
+GTOPT000378535	Heart right atrium	0.1699250014423123	Heart right atrium
+ENST00000228841.15	Heart right atrium	7.117553352837293	Heart right atrium
+ENST00000548438.1	Heart right atrium	0.2141248053528473	Heart right atrium
+GTOPT000378535	Heart mitral valve		Heart mitral valve
+ENST00000228841.15	Heart mitral valve	0.538851644063539	Heart mitral valve
+ENST00000548438.1	Heart mitral valve		Heart mitral valve
+GTOPT000378535	Heart tricuspid valve		Heart tricuspid valve
+ENST00000228841.15	Heart tricuspid valve	0.7528684589262791	Heart tricuspid valve
+ENST00000548438.1	Heart tricuspid valve		Heart tricuspid valve

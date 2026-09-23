@@ -1,0 +1,34 @@
+tissue	tissue_label	tissue_group	tissue_color	all_count	exclusive_count
+Skin	Skin	GTEx-matched tissue	#3A71A4	31848	1486
+Spleen	Spleen	GTEx-matched tissue	#768454	29275	792
+Adipose	Adipose	GTEx-matched tissue	#E59525	27678	427
+Esophagus	Esophagus	GTEx-matched tissue	#AF8C5C	27163	293
+Gallbladder	Gallbladder	Novel tissue	#8F8495	24591	459
+Adrenal_Gland	Adrenal gland	GTEx-matched tissue	#A8D650	24484	802
+Whole_Blood	Whole blood	GTEx-matched tissue	#CC418D	24088	2511
+Stomach	Stomach	GTEx-matched tissue	#F8D895	24061	283
+Heart_Tricuspid_Valve	Heart tricuspid valve	Novel tissue	#9F98BF	23364	95
+Diaphragm	Diaphragm	Novel tissue	#00CED1	22662	191
+Muscle	Muscle	GTEx-matched tissue	#7080BD	21961	661
+Lung_Base	Lung base	GTEx-matched tissue	#AECBD1	21832	233
+Small_Intestine	Small intestine	GTEx-matched tissue	#535426	21472	174
+Heart_Left_Atrium	Heart left atrium	Novel tissue	#6F1F71	21292	39
+Heart_Mitral_Valve	Heart mitral valve	Novel tissue	#BA91BC	21106	49
+Prostate	Prostate	GTEx-matched tissue	#0CE3C3	19432	256
+Heart_Right_Ventricle	Heart right ventricle	Novel tissue	#A780A0	19106	14
+Heart_Right_Atrium	Heart right atrium	GTEx-matched tissue	#8466A6	19080	67
+Colon	Colon	GTEx-matched tissue	#E7C08D	18840	236
+Liver	Liver	GTEx-matched tissue	#69AE6A	18736	2019
+Heart_Left_Ventricle	Heart left ventricle	GTEx-matched tissue	#9C5CA1	17221	30
+Thoracic_Aorta	Thoracic aorta	GTEx-matched tissue	#7e888e	15265	13
+Pancreas_Body	Pancreas body	GTEx-matched tissue	#902222	14994	171
+Aortic_Arch	Aortic arch	Novel tissue	#758E90	14005	8
+Lymph_node	Lymph node	Novel tissue	#ACAA95	13812	36
+Lung_Apex	Lung apex	GTEx-matched tissue	#76ADB8	10939	2
+Uterus	Uterus	GTEx-matched tissue	#E35656	9547	4
+Ovary	Ovary	GTEx-matched tissue	#DF898D	9157	0
+Abdominal_Aorta	Abdominal aorta	Novel tissue	#cbc5d3	8231	0
+Pancreas_Head	Pancreas head	GTEx-matched tissue	#AB5F2C	7984	8
+Pancreas_Tail	Pancreas tail	GTEx-matched tissue	#E59276	7814	8
+Common_Iliac_Artery	Common iliac artery	Novel tissue	#d0d1e6	6716	0
+Trachea	Trachea	Novel tissue	#D285A5	5430	0

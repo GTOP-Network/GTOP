@@ -1,0 +1,4 @@
+gtop	chess	count
+False	True	119755
+True	False	156992
+True	True	48363

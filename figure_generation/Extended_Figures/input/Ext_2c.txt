@@ -1,0 +1,5 @@
+group	component	count
+GTEx-matched tissue	Exclusive transcripts	27349
+GTEx-matched tissue	Shared transcripts	49510
+Novel tissue	Exclusive transcripts	1792
+Novel tissue	Shared transcripts	49510
