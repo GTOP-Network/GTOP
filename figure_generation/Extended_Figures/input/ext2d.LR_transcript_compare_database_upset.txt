@@ -1,8 +1,0 @@
-CHESS3	GTEx long-read	GTOP	0
-False	False	True	120436
-False	True	False	51138
-False	True	True	17191
-True	False	False	109117
-True	False	True	33822
-True	True	False	5103
-True	True	True	20076

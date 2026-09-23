@@ -1,3 +1,0 @@
-tissue_group	number_transcript	color
-GTEx-matched tissue	82251	#b5b5b6
-uncharacterized tissue	61572	#4a6da6
