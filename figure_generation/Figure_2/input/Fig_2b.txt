@@ -1,0 +1,5 @@
+group	component	count
+GTOP	Annotated	126704
+GTOP	Novel	78651
+GENCODE	GENCODE v47	385659
+GTOP + GENCODE	Merged reference	477065

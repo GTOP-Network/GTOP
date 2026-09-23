@@ -1,0 +1,94 @@
+tissue	validate_status	count	ratio	tissue_label	tissue_color
+Abdominal_Aorta	No peptide	893	0.46149870801033593	Abdominal aorta	#cbc5d3
+Abdominal_Aorta	Shared peptide	850	0.4392764857881137	Abdominal aorta	#cbc5d3
+Abdominal_Aorta	Unique peptide	192	0.09922480620155039	Abdominal aorta	#cbc5d3
+Adipose	No peptide	1749	0.3824622785917341	Adipose	#E59525
+Adipose	Shared peptide	2509	0.5486551497922589	Adipose	#E59525
+Adipose	Unique peptide	315	0.068882571616007	Adipose	#E59525
+Adrenal_Gland	No peptide	1991	0.3616055212495459	Adrenal gland	#A8D650
+Adrenal_Gland	Shared peptide	3005	0.5457682528151108	Adrenal gland	#A8D650
+Adrenal_Gland	Unique peptide	510	0.09262622593534327	Adrenal gland	#A8D650
+Aortic_Arch	No peptide	864	0.38348868175765644	Aortic arch	#758E90
+Aortic_Arch	Shared peptide	1142	0.5068797159343098	Aortic arch	#758E90
+Aortic_Arch	Unique peptide	247	0.10963160230803373	Aortic arch	#758E90
+Colon	No peptide	1026	0.37901736239379386	Colon	#E7C08D
+Colon	Shared peptide	1412	0.5216106390838566	Colon	#E7C08D
+Colon	Unique peptide	269	0.09937199852234946	Colon	#E7C08D
+Common_Iliac_Artery	No peptide	586	0.44393939393939397	Common iliac artery	#d0d1e6
+Common_Iliac_Artery	Shared peptide	560	0.42424242424242425	Common iliac artery	#d0d1e6
+Common_Iliac_Artery	Unique peptide	174	0.1318181818181818	Common iliac artery	#d0d1e6
+Esophagus	No peptide	1238	0.34755755193711396	Esophagus	#AF8C5C
+Esophagus	Shared peptide	2026	0.5687815833801235	Esophagus	#AF8C5C
+Esophagus	Unique peptide	298	0.08366086468276249	Esophagus	#AF8C5C
+Gallbladder	No peptide	1447	0.37741262389149716	Gallbladder	#8F8495
+Gallbladder	Shared peptide	2074	0.5409494001043297	Gallbladder	#8F8495
+Gallbladder	Unique peptide	313	0.08163797600417319	Gallbladder	#8F8495
+Heart_Left_Atrium	No peptide	1751	0.46668443496801704	Heart left atrium	#6F1F71
+Heart_Left_Atrium	Shared peptide	1671	0.44536247334754797	Heart left atrium	#6F1F71
+Heart_Left_Atrium	Unique peptide	330	0.08795309168443496	Heart left atrium	#6F1F71
+Heart_Left_Ventricle	No peptide	981	0.39572408229124645	Heart left ventricle	#9C5CA1
+Heart_Left_Ventricle	Shared peptide	1280	0.5163372327551432	Heart left ventricle	#9C5CA1
+Heart_Left_Ventricle	Unique peptide	218	0.08793868495361033	Heart left ventricle	#9C5CA1
+Heart_Mitral_Valve	No peptide	2324	0.51875	Heart mitral valve	#BA91BC
+Heart_Mitral_Valve	Shared peptide	1907	0.42566964285714287	Heart mitral valve	#BA91BC
+Heart_Mitral_Valve	Unique peptide	249	0.05558035714285714	Heart mitral valve	#BA91BC
+Heart_Right_Atrium	No peptide	1136	0.41734019103600295	Heart right atrium	#8466A6
+Heart_Right_Atrium	Shared peptide	1321	0.485304922850845	Heart right atrium	#8466A6
+Heart_Right_Atrium	Unique peptide	265	0.0973548861131521	Heart right atrium	#8466A6
+Heart_Right_Ventricle	No peptide	1098	0.413715146948003	Heart right ventricle	#A780A0
+Heart_Right_Ventricle	Shared peptide	1332	0.5018839487565938	Heart right ventricle	#A780A0
+Heart_Right_Ventricle	Unique peptide	224	0.08440090429540316	Heart right ventricle	#A780A0
+Heart_Tricuspid_Valve	No peptide	2613	0.5910427505089346	Heart tricuspid valve	#9F98BF
+Heart_Tricuspid_Valve	Shared peptide	1591	0.3598733318253789	Heart tricuspid valve	#9F98BF
+Heart_Tricuspid_Valve	Unique peptide	217	0.0490839176656865	Heart tricuspid valve	#9F98BF
+Liver	No peptide	905	0.28414442700156983	Liver	#69AE6A
+Liver	Shared peptide	1967	0.6175824175824176	Liver	#69AE6A
+Liver	Unique peptide	313	0.09827315541601256	Liver	#69AE6A
+Lung_Apex	No peptide	452	0.31719298245614036	Lung apex	#76ADB8
+Lung_Apex	Shared peptide	744	0.5221052631578947	Lung apex	#76ADB8
+Lung_Apex	Unique peptide	229	0.1607017543859649	Lung apex	#76ADB8
+Lung_Base	No peptide	1749	0.40561224489795916	Lung base	#AECBD1
+Lung_Base	Shared peptide	2199	0.5099721706864564	Lung base	#AECBD1
+Lung_Base	Unique peptide	364	0.08441558441558442	Lung base	#AECBD1
+Lymph_node	No peptide	484	0.3723076923076923	Lymph node	#ACAA95
+Lymph_node	Shared peptide	595	0.4576923076923077	Lymph node	#ACAA95
+Lymph_node	Unique peptide	221	0.17	Lymph node	#ACAA95
+Muscle	No peptide	1222	0.4537690308206461	Muscle	#7080BD
+Muscle	Shared peptide	1322	0.4909023393984404	Muscle	#7080BD
+Muscle	Unique peptide	149	0.05532862978091348	Muscle	#7080BD
+Ovary	No peptide	604	0.3647342995169082	Ovary	#DF898D
+Ovary	Shared peptide	838	0.5060386473429952	Ovary	#DF898D
+Ovary	Unique peptide	214	0.1292270531400966	Ovary	#DF898D
+Pancreas_Body	No peptide	553	0.3289708506841166	Pancreas body	#902222
+Pancreas_Body	Shared peptide	938	0.5580011897679953	Pancreas body	#902222
+Pancreas_Body	Unique peptide	190	0.11302795954788816	Pancreas body	#902222
+Pancreas_Head	No peptide	339	0.349124613800206	Pancreas head	#AB5F2C
+Pancreas_Head	Shared peptide	537	0.553038105046344	Pancreas head	#AB5F2C
+Pancreas_Head	Unique peptide	95	0.09783728115345006	Pancreas head	#AB5F2C
+Pancreas_Tail	No peptide	291	0.27349624060150374	Pancreas tail	#E59276
+Pancreas_Tail	Shared peptide	647	0.6080827067669173	Pancreas tail	#E59276
+Pancreas_Tail	Unique peptide	126	0.11842105263157894	Pancreas tail	#E59276
+Prostate	No peptide	1448	0.44843604831217093	Prostate	#0CE3C3
+Prostate	Shared peptide	1445	0.4475069681015794	Prostate	#0CE3C3
+Prostate	Unique peptide	336	0.10405698358624961	Prostate	#0CE3C3
+Skin	No peptide	2731	0.4979033728350046	Skin	#3A71A4
+Skin	Shared peptide	2481	0.45232452142206014	Skin	#3A71A4
+Skin	Unique peptide	273	0.04977210574293528	Skin	#3A71A4
+Small_Intestine	No peptide	1005	0.34871616932685634	Small intestine	#535426
+Small_Intestine	Shared peptide	1582	0.5489243580846634	Small intestine	#535426
+Small_Intestine	Unique peptide	295	0.10235947258848022	Small intestine	#535426
+Spleen	No peptide	1333	0.42077020202020204	Spleen	#768454
+Spleen	Shared peptide	1566	0.4943181818181818	Spleen	#768454
+Spleen	Unique peptide	269	0.08491161616161616	Spleen	#768454
+Stomach	No peptide	2500	0.43713936002797693	Stomach	#F8D895
+Stomach	Shared peptide	2810	0.49134464067144606	Stomach	#F8D895
+Stomach	Unique peptide	409	0.07151599930057702	Stomach	#F8D895
+Thoracic_Aorta	No peptide	1621	0.46195497292675974	Thoracic aorta	#7e888e
+Thoracic_Aorta	Shared peptide	1626	0.46337988030778	Thoracic aorta	#7e888e
+Thoracic_Aorta	Unique peptide	262	0.07466514676546024	Thoracic aorta	#7e888e
+Trachea	No peptide	226	0.30376344086021506	Trachea	#D285A5
+Trachea	Shared peptide	377	0.5067204301075269	Trachea	#D285A5
+Trachea	Unique peptide	141	0.18951612903225806	Trachea	#D285A5
+Uterus	No peptide	759	0.5128378378378379	Uterus	#E35656
+Uterus	Shared peptide	558	0.377027027027027	Uterus	#E35656
+Uterus	Unique peptide	163	0.11013513513513513	Uterus	#E35656

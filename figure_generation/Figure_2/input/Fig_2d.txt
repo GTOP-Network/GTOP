@@ -1,0 +1,15 @@
+event	component	count
+Alternative 3' splice site	GENCODE v47	42138
+Alternative 3' splice site	Novel	12480
+Alternative 5' splice site	GENCODE v47	39314
+Alternative 5' splice site	Novel	13272
+Alternative first exon	GENCODE v47	308095
+Alternative first exon	Novel	84570
+Alternative last exon	GENCODE v47	157777
+Alternative last exon	Novel	23167
+Mutually exclusive exon	GENCODE v47	23926
+Mutually exclusive exon	Novel	5953
+Retained intron	GENCODE v47	14971
+Retained intron	Novel	9719
+Skipped exon	GENCODE v47	92896
+Skipped exon	Novel	23324
