@@ -18,7 +18,7 @@ library(ggdensity)
 library(viridis)
 library(ggh4x)
 
-setwd("/path/to/GTOP_code/fig-3/input")
+setwd("/media/london_A/mengxin/GTOP_code/fig-3/input")
 # Fig.3a: summary of eQTL/sQTL ------------------
 rm_version <- function(x){
   return(strsplit(x,split = ".",fixed = T)[[1]][1])
@@ -33,52 +33,26 @@ extract_transcript <- function(x){
 }
 #load eqtl data
 ## input files
-df_eQTL <- readRDS("Fig3a.df_eQTL.RDS")
-df_sQTL <- readRDS("Fig3a.df_sQTL.RDS")
+df_plot.eqtl <- readRDS("df_plot.eqtl.RDS")
+df_plot.juqtl <- readRDS("df_plot.juqtl.RDS")
+df_plot.tuqtl <- readRDS("df_plot.tuqtl.RDS")
 
-df_juQTL <- df_sQTL %>% filter(QTLtype=="juQTL")
-df_tuQTL <- df_sQTL %>% filter(QTLtype=="tuQTL")
-df_tuQTL$transcript <- sapply(df_tuQTL$phenotype_id,extract_transcript)
-df_tuQTL$novel <- "NO"
-df_tuQTL$novel[grepl("PB",df_tuQTL$transcript)] <- "YES" # 22.37%
 
-##count QTLs
-df_plot.eqtl <- as.data.frame(table(df_eQTL$Tissue,df_eQTL$VarType))
-
-df_snv_eqtl <- df_plot.eqtl %>% filter(Var2=="SNV") %>% arrange(desc(Freq))
-tissue_orders_1 <- df_snv_eqtl$Var1
-rm(df_snv_eqtl)
-df_plot.eqtl$Var1 <- factor(df_plot.eqtl$Var1,levels = tissue_orders_1)
 p1 <- ggplot(df_plot.eqtl,aes(x=Var1,y=Freq)) + geom_bar(stat="identity",width=.8,fill="#aac79c") + theme_pubr() + 
   facet_wrap(~Var2,scales = "free_y",ncol=1);p1
 
-
-df_plot.juqtl <- as.data.frame(table(df_juQTL$Tissue,df_juQTL$VarType))
-df_snv_juqtl <- df_plot.juqtl %>% filter(Var2=="SNV") %>% arrange(desc(Freq))
-tissue_orders_2 <- df_snv_juqtl$Var1
-rm(df_snv_juqtl)
-
-df_plot.juqtl$Var1 <- factor(df_plot.juqtl$Var1,levels = tissue_orders_2)
 p2 <- ggplot(df_plot.juqtl,aes(x=Var1,y=Freq)) + geom_bar(stat="identity",width=.8,fill="#7d8bad") + theme_pubr() + 
   facet_wrap(~Var2,scales = "free_y",ncol=1);p2
 
-df_plot.tuqtl <- as.data.frame(table(df_tuQTL$Tissue,df_tuQTL$VarType,df_tuQTL$novel))
-df_snv_tuqtl <- df_tuQTL %>%  filter(VarType=="SNV")
-df_count_snv_tu <- as.data.frame(table(df_snv_tuqtl$Tissue))
-df_count_snv_tu <- df_count_snv_tu[order(-df_count_snv_tu$Freq),]
-tissue_orders_3 <- df_count_snv_tu$Var1
-rm(df_count_snv_tu)
-
-df_plot.tuqtl$Var1 <- factor(df_plot.tuqtl$Var1,levels = tissue_orders_3)
-df_plot.tuqtl$Var3 <- factor(df_plot.tuqtl$Var3,levels = c("YES","NO"))
-p3 <- ggplot(df_plot.tuqtl,aes(x=Var1,y=Freq,fill = Var3)) + geom_bar(stat="identity",width=.8,position = position_stack()) + theme_pubr() + 
-  scale_fill_manual(breaks = c("NO","YES"),values = c("#CF928F","#9d3929")) +
+p3 <- ggplot(df_plot.tuqtl,aes(x=Var1,y=Freq,fill = Var3)) + geom_bar(stat="identity",width=.8,position = position_stack()) + theme_pubr() +
+  scale_fill_manual(breaks = c("NO","YES"),values = c("#CF928F","#9D3929")) +
   facet_wrap(~Var2,scales = "free_y",ncol=1);p3
 
 cowplot::plot_grid(p1,p2,p3,ncol=3,align = "vh")
 
 
 # Fig.3b: distance of finemapped eQTL to TSS ------------------
+
 # load data
 df_plot_snv <- readRDS("Fig3b.snv_to_tss.dist.RDS")
 df_plot_sv <- readRDS("Fig3b.sv_to_tss.dist.RDS")
@@ -102,7 +76,7 @@ cowplot::plot_grid(p1,p2,p3,ncol = 1,align = "v")
 # Fig.3c: effect compare between GTEx and GTOP ----------------------------
 
 
-df_plot <- fread("Fig3c.txt")
+df_plot <- fread("Fig 3c.txt")
 
 ggplot(df_plot, aes(x=slope_gtop, y=slope_gtex) ) +
   scale_fill_continuous(type = "viridis") +
@@ -111,7 +85,7 @@ ggplot(df_plot, aes(x=slope_gtop, y=slope_gtex) ) +
   ggdensity::geom_hdr_lines( linetype="dashed", linewidth=0.5)+
   labs(x="GTOP effect size", y="GTEx effect size")+
   theme_classic()+
-  stat_cor(aes(x=slope_gtop, y=slope_gtex),method = "pearson", label.x =-3, label.y = 3)+
+  stat_cor(aes(x=slope_gtop, y=slope_gtex),method = "spearman", label.x =-3, label.y = 3)+
   theme(
     axis.line = element_line(color="black", linewidth=1),
     axis.ticks = element_line(color="black", linewidth=1),
@@ -135,15 +109,34 @@ set.seed(101)
 ggVennDiagram(egene_list) + scale_fill_gradient(low="grey90",high = "red")
 
 
-# Fig.3e:  Pathogenic TR QTL ------------------------------------------------------------------
 
-count <- fread("Fig3e.pathogenic_TR-xQTL.txt") %>%dplyr::select(QTL, Tissue, TR_GeneName) %>%
+# Fig.3e:  SV effect size correlation with SV length ------------------------------------------------------------------
+
+
+sv_qtl <- fread("Fig3e.sv_length_effect.txt")
+sv_qtl$group <- factor(sv_qtl$group,levels = c("50-100bp","100-200bp","200-500bp","500-10kb",">10kb"))
+groups2 <- levels(sv_qtl$group)
+comparisons2 <- list( c("50-100bp", "100-200bp"), c("100-200bp", "200-500bp"),c("200-500bp", "500-10kb"),c("500-10kb", ">10kb"))
+ggplot(sv_qtl, aes(x = group, y = abs(slope), fill = group)) +
+  geom_violin(trim = FALSE) +
+  geom_boxplot(width = 0.15, outlier.size = 0.3, color = "black") +
+  scale_fill_manual(values = c("#f1eef6","#bdc9e1","#74a9cf","#2b8cbe","#045a8d")) +
+  stat_summary(aes(group = 1),fun = median,geom = "line",linewidth = 1,color = "black") +
+  theme_classic(base_size = 14) +
+  theme(axis.text.x = element_text(colour = "black"),legend.position = "none") +
+  labs(y = "|Effect Size|") +
+  stat_compare_means( comparisons = comparisons2,method = "wilcox.test", label = "p",step.increase = 0.08 )
+
+
+# Fig.3f:  Pathogenic TR QTL ------------------------------------------------------------------
+
+count <- fread("Fig3f.pathogenic_TR-xQTL.txt") %>%dplyr::select(QTL, Tissue, TR_GeneName) %>%
   mutate(QTL=ifelse(QTL=="eQTL","eQTL","sQTL")) %>%
   distinct() %>%group_by(Tissue, TR_GeneName) %>%
   summarise(Class = case_when(all(QTL == "eQTL") ~ "eQTL",all(QTL == "sQTL") ~ "sQTL",
                               any(QTL == "eQTL") & any(QTL == "sQTL") ~ "eQTL & sQTL",
                               TRUE ~ "Other"),.groups = "drop")
-dosage <- fread("Fig3e.pathogenic_TR_dosage.txt")
+dosage <- fread("Fig3f.pathogenic_TR_dosage.txt")
 dosage <- dosage %>% mutate(TR_GeneName=factor(TR_GeneName,levels=c(dosage %>% group_by(TR_GeneName) %>% 
                                                    summarise(cnv=median(CNV,na.rm = TRUE))%>% 
                                                    arrange(cnv) %>% pull(TR_GeneName))))
@@ -174,27 +167,34 @@ ggplot(dosage, aes(x = TR_GeneName, y = CNV)) +
   coord_flip()
 
 
-# Fig.3F: pathogenic TR-example --------------------------------------------------------------
+# Fig.3g: pathogenic TR-example --------------------------------------------------------------
 
-
-dat <- fread("./Fig3f.txt") %>% mutate(CNV_f = factor(as.character(CNV), levels = sort(unique(CNV))))
-
-ggplot(data = dat, aes(x = CNV_f, y = pheno)) +
+dat2 <- fread("./Fig3g.junction2.txt") %>% mutate(CNV_f = factor(as.character(CNV), levels = sort(unique(CNV))))
+ggplot(data = dat2, aes(x = CNV_f, y = pheno,colour = Tissue)) +
   geom_boxplot(width = 0.5, outlier.shape = NA) +
-  geom_jitter(width = 0.15, size = 1, na.rm = TRUE) +
+  geom_jitter(width = 0.15, size = 2, na.rm = TRUE) +
+  theme_classic()+theme(legend.position = "none")+
+  scale_color_manual(values = c("Pancreas_Head"="#AB5F2C")) +
   geom_smooth(aes(x = as.numeric(factor(CNV_f)), y = pheno, group = Tissue),
-              method = "lm", formula = y ~ x,se = T, size = 1, linetype = "solid") +
-  labs( x= "MUC1 60bp VNTR length (number of repeats)",
-        color = "Tissue") +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, size = 8),
-        strip.text = element_text(size = 10, face = "bold")) +
-  facet_grid( ~ Tissue, scales = "free_x", space = "free_x")
+              method = "lm", formula = y ~ x,se = T, size = 1, linetype = "solid")+
+  labs(y = paste0( "Normalized Junction Usage", " | ", unique(dat2$pheno)))
+
+dat1 <- fread("./Fig3g.junction1.txt") %>% mutate(CNV_f = factor(as.character(CNV), levels = sort(unique(CNV))))
+ggplot(data = dat1, aes(x = CNV_f, y = pheno,colour = Tissue)) +
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  geom_jitter(width = 0.15, size = 2, na.rm = TRUE) +
+  theme_classic()+theme(legend.position = "none")+
+  scale_color_manual(values = c("Pancreas_Head"="#AB5F2C")) +
+  geom_smooth(aes(x = as.numeric(factor(CNV_f)), y = pheno, group = Tissue),
+              method = "lm", formula = y ~ x,se = T, size = 1, linetype = "solid")+
+  labs(y = paste0( "Normalized Junction Usage", " | ", unique(dat1$pheno)))
 
 
 # Fig.3g:  MASH -------------------------------------------------------------
 
-plot_data_all <- fread("Fig3g.MASH.txt")
+plot_data_all <- fread("Fig3h.MASH.txt")
+plot_data_all$Group <- factor(plot_data_all$Group,
+                              levels = c("sv_eQTL", "tr_eQTL", "snv_eQTL"))
 ggplot(plot_data_all, aes(x = factor(Number, levels = c("1","2","3","4","5","6","7","8","9","10","11")),
                                 y = Density_sum, fill = Group)) +
   geom_bar(stat = "identity", position = position_dodge(width=0.9), color="black") +
