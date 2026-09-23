@@ -4,10 +4,8 @@
 #==================================#
 library(data.table)
 library(ggplot2)
-setwd("/path/to/GTOP_code/fig-2/input/")
-# Fig.2a LRS_RNA_MDS ------------------------------------------------------
-
-
+setwd("/media/london_A/mengxin/GTOP_code/fig-2/input/")
+# Fig.2a LRS_RNA_MDS + hc------------------------------------------------------
 
 THEME_SIZE <- 12
 TITLE_SIZE <- 14
@@ -27,16 +25,11 @@ unified_theme <- theme_bw(base_size = THEME_SIZE) +
     plot.margin = margin(10, 10, 10, 10)
   )
 
-load("sample_annot_full_1586.RData")
+load("sample_annot_full_1613.RData")
 
-final_annot <- sample_annot_full[, c("sample_id", "Subject", "Tissue","Batch", "Tissue_Color_Code")]
-colnames(final_annot) <- c("sample", "individual", "tissue", "batch", "color")
-rownames(final_annot) <- final_annot$sample
-
-meta <- final_annot[, c("sample", "individual", "tissue", "batch", "color")]
+meta <- sample_annot_full[, c("sample_id", "Subject", "Tissue","Batch", "Tissue_Color_Code")]
+colnames(meta) <- c("sample", "individual", "tissue", "batch", "color")
 rownames(meta) <- meta$sample
-
-# Color setup -------------------------------------------------------------
 
 all_tissue <- sort(unique(meta$tissue))
 tissue_colors <- unique(meta[, c("tissue", "color")])
@@ -47,20 +40,17 @@ mds_coor<-fread("LR_Sample_MDS_var.txt")
 
 prop1_corr<-mds_coor[1,1]
 prop2_corr<-mds_coor[1,2]
-# MDS plot  ---------------------------------------------------------------
 
 gg_mds_corr <- ggplot(mds_df_corrected, aes(x = MDS1, y = MDS2, color = Tissue)) +
   geom_point(size = 2, alpha = 1) +
   scale_color_manual(values = tissue_colors) +
-  scale_y_continuous(
-    breaks = seq(-75, 75, by = 25)
-  ) +
   unified_theme +
   theme(
     legend.position = "none",
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank()
   ) +
+  theme_classic()+
   labs(
     x = paste0("Coordinate 1 (", prop1_corr, ")"),
     y = paste0("Coordinate 2 (", prop2_corr, ")"),
@@ -68,216 +58,213 @@ gg_mds_corr <- ggplot(mds_df_corrected, aes(x = MDS1, y = MDS2, color = Tissue))
   )
 print(gg_mds_corr)
 
+library(dendextend)
+load("LRS_expr_by_tissue.RData")
+
+if(ncol(expr_by_tissue) > 1) {
+  dist_mat_tissue <- as.dist(1 - cor(expr_by_tissue, method = "spearman"))
+  hc <- hclust(dist_mat_tissue, method = "average")
+  dend <- as.dendrogram(hc)
+  
+  labels_cex(dend) <- 0.7
+  labels_colors(dend) <- tissue_colors[labels(dend)]
+  labels_dend <- labels(dend)
+  label_col <- tissue_colors[labels_dend]
+  
+  plot_dend <- function(){
+    par(mar = c(4, 10, 2, 2)) 
+    
+    max_h <- attr(dend, "height")
+    dend_noLabels <- dend
+    labels(dend_noLabels) <- rep("", length(labels_dend))
+    
+    plot(dend_noLabels, horiz = TRUE, main = "",
+         xlab = "Cluster distance", ylab = "", axes = TRUE,
+         xlim = c(0, max_h),
+         cex.main = 1.2, cex.lab = 1.1, cex.axis = 0.9, lwd = 1.5)
+    
+    mtext("b", side = 3, line = 0.5, at = par("usr")[1], adj = 1.5, cex = 1.4, font = 2)
+    
+    yticks <- seq_along(labels_dend)
+    dot_x <- par("usr")[1] + 0.01 * diff(par("usr")[1:2])
+    
+    for(i in seq_along(yticks)){
+      points(dot_x, yticks[i], pch = 19, col = label_col[i], cex = 1.1, xpd = TRUE)
+      text(dot_x, yticks[i], labels_dend[i], col = label_col[i], cex = 0.7,
+           pos = 2, offset = 0.3, xpd = TRUE)
+    }
+  }
+}
+plot_dend()
 
 # Fig.2b LR_transcript_novel_stat_Transcript --------------------------------------------
 library(data.table)
 library(ggplot2)
 
-dat<-fread("fig2b.LR_transcript_novel_stat_Transcript.txt")
-dat_long <- melt(
-  dat,
-  id.vars = "index",
-  variable.name = "Type",
-  value.name = "Count"
-)
-dat_long$Type <- factor(
-  dat_long$Type,
-  levels = c( "Novel","Annotated", "GENCODE v47")
-)
-dat_long$index <- factor(
-  dat_long$index,
-  levels = c("GTOP", "GENCODE", "GTOP + GENCODE")
-)
-type_colors <- c(
-  "GENCODE v47"        = "#9faac1",
-  "Annotated"  = "#c3968f",
-  "Novel"          = "#9d3929"
-)
-dat_long$Count<-dat_long$Count/1000
-ggplot(dat_long, aes(x = index, y = Count, fill = Type)) +
-  geom_col(width = 0.7) +
-  scale_fill_manual(values = type_colors) +
-  labs(
-    x = NULL,
-    y = "Number of transcripts (x10³)",
-    fill = "Category"
-  ) +
-  theme_classic(base_size = 13) +
-  theme(
-    axis.text.x = element_text(
-      angle = 50,
-      hjust = 1,
-      vjust = 1
-    ))
+theme_gtop <- function(base_size = 10) {
+    theme_classic(base_size = base_size) +
+      theme(
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.title = element_blank()
+      )
+  }
+gtop_ref_colors <- c(
+    "Annotated" = "#cf928f",
+    "Novel" = "#ad3b2b",
+    "GENCODE v47" = "#9aaac2",
+    "GTOP + GENCODE" = "#6f86ad"
+  )
+data <- read.delim("Fig_2b.txt", check.names = FALSE)
+data$component <- ifelse(data$component == "Merged reference", "GTOP + GENCODE", data$component)
+data$group <- factor(data$group, levels = c("GTOP", "GENCODE", "GTOP + GENCODE"))
+data$component <- factor(data$component, levels = c("Annotated", "Novel", "GENCODE v47", "GTOP + GENCODE"))
+ggplot(data, aes(group, count / 1000, fill = component)) +
+    geom_col(width = 0.65, color = NA, position = position_stack(reverse = TRUE)) +
+    scale_fill_manual(values = gtop_ref_colors, breaks = c("Annotated", "Novel"), drop = FALSE) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+    labs(x = NULL, y = "Number of transcripts (x10^3)") +
+    theme_gtop()
 
 # Fig.2c LR_SQANTI3_annot_coding_status -----------------------------------
+library(patchwork)
+  
+theme_gtop <- function(base_size = 10) {
+    theme_classic(base_size = base_size) +
+      theme(
+        legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.title = element_blank(),
+        panel.background = element_rect(fill = "white", colour = NA),
+        plot.background  = element_rect(fill = "white", colour = NA)
+      )
+  }
+  
+data <- read.delim("Fig_2c.txt", check.names = FALSE)
+long <- reshape(
+    data,
+    direction = "long",
+    varying = c("Protein-coding", "Noncoding", "NMD-sensitive"),
+    v.names = "count",
+    timevar = "coding_status",
+    times = c("Protein-coding", "Noncoding", "NMD-sensitive")
+  )
+long$structural_category <- factor(long$structural_category, levels = data$structural_category)
+long$coding_status <- factor(long$coding_status, levels = c("Protein-coding", "Noncoding", "NMD-sensitive"))
+  
+total_counts <- rowSums(data[, setdiff(names(data), "structural_category"), drop = FALSE])
+y_cut <- 3.8
+y_upper <- max(total_counts, na.rm = TRUE) * 1.15
+  
+coding_colors <- c("Protein-coding" = "#c0392b", "Noncoding" = "#f39c12", "NMD-sensitive" = "#16a085")
+  
 
+breaks_top    <- c(20, 40, 60,80)     
+breaks_bottom <- c(0, 2)           
 
-dat<-fread("fig2c.LR_SQANTI3_annot_coding_status.txt")
-
-dat_long <- melt(
-  dat,
-  id.vars = "index",
-  variable.name = "Type",
-  value.name = "Count"
-)
-dat_long$Type <- factor(
-  dat_long$Type,
-  levels = rev(c( "Protein-coding","Noncoding", "NMD-sensitive"))
-)
-dat_long$index <- factor(
-  dat_long$index,
-  levels = dat$index
-)
-type_colors <- c(
-  "Protein-coding" = "#ac4630",
-  "Noncoding"= "#e2a234",
-  "NMD-sensitive"= "#559e87"
-)
-dat_long$Count<-dat_long$Count/1000
-
-ggplot(dat_long, aes(x = index, y = Count, fill = Type)) +
-  geom_col(width = 0.7) +
-  scale_y_continuous(
-    breaks = seq(0, 100, by = 20)
-  ) +
-  scale_fill_manual(values = type_colors) +
-  labs(
-    x = NULL,
-    y = "Number of transcripts (x10³)",
-    fill = "Coding status"
-  ) +
-  theme_classic(base_size = 13) +
-  theme(
-    axis.text.x = element_text(
-      angle = 50,
-      hjust = 1,
-      vjust = 1
-    ))
-
-
+  
+p_top <- ggplot(long, aes(structural_category, count, fill = coding_status)) +
+    geom_col(width = 0.72, position = position_stack(reverse = TRUE)) +
+    coord_cartesian(ylim = c(y_cut, y_upper), clip = "on") +
+    scale_y_continuous(
+      breaks = breaks_top,
+      expand = expansion(mult = c(0, 0.05))
+    ) +
+    scale_fill_manual(values = coding_colors, drop = FALSE) +
+    labs(x = NULL, y = NULL, fill = "Coding status") +
+    theme_gtop() +
+    theme(
+      axis.text.x = element_blank(),
+      axis.ticks.x = element_blank(),
+      axis.line.x = element_blank(),
+      plot.margin = margin(5.5, 5.5, 2, 22)
+    )
+  
+p_bottom <- ggplot(long, aes(structural_category, count, fill = coding_status)) +
+    geom_col(width = 0.72, position = position_stack(reverse = TRUE)) +
+    coord_cartesian(ylim = c(0, y_cut), clip = "on") +
+    scale_y_continuous(
+      breaks = breaks_bottom,
+      expand = expansion(mult = c(0, 0.05))
+    ) +
+    scale_fill_manual(values = coding_colors, drop = FALSE, guide = "none") +
+    labs(x = NULL, y = "Number of transcripts (x10^3)") +
+    theme_gtop() +
+    theme(plot.margin = margin(2, 5.5, 5.5, 22))
+  
+(p_top / p_bottom) +
+  plot_layout(heights = c(2, 1), guides = "collect") &
+  theme(legend.position = "right")
+  
 # Fig2.d LR_suppa_splicing_events_stat ------------------------------------
 
-dat<-fread("fig2d.LR_suppa_splicing_events_stat.txt")
-dat_long <- melt(
-  dat,
-  id.vars = "index",
-  variable.name = "Type",
-  value.name = "Count"
-)
-dat_long$Type <- factor(
-  dat_long$Type,
-  levels = rev(c( "GENCODE v47", "Novel"))
-)
-dat_long$index <- factor(
-  dat_long$index,
-  levels = dat$index
-)
-type_colors <- c(
-  "GENCODE v47"        = "#9faac1",
-  "Novel"          = "#9d3929"
-)
-dat_long$Count<-dat_long$Count/1000
-
-ggplot(dat_long, aes(x = index, y = Count, fill = Type)) +
-  geom_col(width = 0.7) +
-  scale_y_continuous(
-    breaks = seq(0, 400, by = 100)
-  ) +
-  scale_fill_manual(values = type_colors) +
-  labs(
-    x = NULL,
-    y = "Number of splicing events (x10³)",
-    fill = "Coding status"
-  ) +
-  theme_classic(base_size = 13) +
-  theme(
-    axis.text.x = element_text(
-      angle = 50,
-      hjust = 1,
-      vjust = 1
-    ))
-
-
-
-# Fig2.e LR_transcript_tissue_specificity ---------------------------------
+data<-fread("Fig_2d.txt")
+theme_gtop <- function(base_size = 10) {
+  theme_classic(base_size = base_size) +
+    theme(
+      legend.title = element_blank(),
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      plot.title = element_blank()
+    )
+}
+data$event <- factor(data$event, levels = unique(data$event))
+data$component <- factor(data$component, levels = c("GENCODE v47", "Novel"))
+ggplot(data, aes(event, count / 1000, fill = component)) +
+  geom_col(width = 0.65, color = NA, position = position_stack(reverse = TRUE)) +
+  scale_fill_manual(values = c("GENCODE v47" = "#9aaac2", "Novel" = "#ad3b2b")) +
+  labs(x = "Splicing events", y = "Number of splicing events (x10^3)") +
+  theme_gtop()
+# Fig2.e tissue breadth distribution for annotated and novel transcripts using the min-10-samples table.-----------------------------
 library(tidyr)
-dat<-fread("fig2e.LR_transcript_tissue_specificity.txt")
+data<-fread("Fig_2e.txt")
 
-dat_long <- pivot_longer(
-  dat,
-  cols = c("Annotated", "Novel"),
-  names_to = "Type",
-  values_to = "Proportion"
-)
-
-ggplot(dat_long, aes(x = index, y = Proportion, color = Type)) +
-  geom_point(size = 2) +           
-  geom_line(size = 1) +  
-  scale_y_continuous(
-    breaks = seq(0, 0.30, by = 0.05)
-  ) +
-  scale_color_manual(values = c("Annotated" = "#c3968f", "Novel" = "#9d3929")) +  
-  labs(x = "Tissue number", y = "Proportion of transcripts", color = "Type") +
-  theme_classic(base_size = 13)
+data$x_num <- suppressWarnings(as.numeric(data$x))
+data$category <- factor(data$category, levels = c("Annotated", "Novel"))
+ggplot(data, aes(x_num, proportion, color = category)) +
+  geom_line(linewidth = 0.7) +
+  geom_point(size = 1.6) +
+  scale_color_manual(values = c("Annotated" = "#cf928f", "Novel" = "#ad3b2b")) +
+  labs(x = "Number of tissues", y = "Proportion of transcripts") +
+  theme_gtop() +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
 
 
-# Fig2.f MS_all_peptide_validate ------------------------------------------
+# Fig2.f tissue-level peptide support for novel transcripts. ------------------------------------------
 library(dplyr)
-dat<-fread("fig2f.MS_all_peptide_validate.txt")
-dat_long <- melt(
-  dat,
-  id.vars = "index",
-  measure.vars = c("Unique peptide", "Shared peptide"),
-  variable.name = "Type",
-  value.name = "Count"
-)
-dat_long$Type <- factor(
-  dat_long$Type,
-  levels = rev(c( "Unique peptide", "Shared peptide"))
-)
-dat_long$index <- factor(
-  dat_long$index,
-  levels = dat$index
-)
-type_colors <- c(
-  "Unique peptide"        = "#6b8ec4",
-  "Shared peptide"          = "#abc0df"
-)
-
-tissue_colors <- setNames(dat[[4]], dat[[1]])
-
-
-dat_long<-dat_long %>%
-  left_join(dat[,c(1,4)],by="index")
-
-point_data <- unique(dat_long[, .(index)]) 
-
-ggplot(dat_long, aes(x = factor(index), y = Count, fill = Type)) +
-  geom_col(width = 0.7) +   
+pretty_label <- function(x) {
+  x <- gsub("_", " ", as.character(x))
+  x <- tolower(x)
+  ifelse(nchar(x) > 0, paste0(toupper(substr(x, 1, 1)), substr(x, 2, nchar(x))), x)
+}
+first_existing_col <- function(data, cols, default = NA_character_) {
+  for (col in cols) {
+    if (col %in% names(data)) return(data[[col]])
+  }
+  rep(default, nrow(data))
+}
+data <- read.delim("Fig_2f.txt", check.names = FALSE)
+data <- data[data$validate_status %in% c("Unique peptide", "Shared peptide"), ]
+data$tissue_label <- first_existing_col(data, c("tissue_label"), NA_character_)
+data$tissue_label[is.na(data$tissue_label)] <- pretty_label(data$tissue[is.na(data$tissue_label)])
+data$tissue_color <- first_existing_col(data, c("tissue_color"), "#7f8080")
+data$tissue_label <- factor(data$tissue_label, levels = sort(unique(as.character(data$tissue_label))))
+data$validate_status <- factor(data$validate_status, levels = c("Unique peptide", "Shared peptide"))
+tissue_points <- data[!duplicated(data$tissue_label), c("tissue_label", "tissue_color")]
+ggplot(data, aes(tissue_label, ratio, fill = validate_status)) +
+  geom_col(width = 0.8, position = position_stack(reverse = TRUE)) +
   geom_point(
-    data = point_data, 
-    mapping = aes(x = factor(index), y = -0.05, color = index), 
-    inherit.aes = FALSE, 
-    size = 4
+    data = tissue_points,
+    aes(x = tissue_label, y = -0.03, color = tissue_color),
+    inherit.aes = FALSE,
+    size = 2
   ) +
-  scale_fill_manual(values = type_colors) +
-  scale_color_manual(values = tissue_colors) +
-  scale_y_continuous(
-    breaks = seq(0.0, 1.0, by = 0.2),
-    expand = expansion(mult = c(0.05, 0.1))
-  ) +
-  labs(
-    x = NULL,
-    y = "Proportion of isoform with peptides",
-    fill = "Type",
-    color = NULL
-  ) +
-  theme_classic(base_size = 13) +
-  theme(
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank(),
-    legend.position = "top")
+  scale_fill_manual(values = c("Unique peptide" = "#5b8fc7", "Shared peptide" = "#a3c1e1")) +
+  scale_color_identity() +
+  scale_y_continuous(breaks = seq(0,1,by=0.2))+
+  coord_cartesian(ylim = c(0, 1), clip = "off") +
+  labs(x = "Tissues", y = "Proportion of isoform with peptides") +
+  theme_gtop() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 # Fig2.g WGCNA ------------------------------------------------------------
 
@@ -289,7 +276,7 @@ library(stringr)
 
 load("heart_go_use.RData")
 load("merged_expr.RData")
-load("sample_annot_full_1586.RData")
+load("sample_annot_full_1613.RData")
 
 heart<-sample_annot_full[str_detect(sample_annot_full$Tissue,"Heart"),]
 
@@ -302,7 +289,7 @@ merged_expr_norm <- as.data.frame(merged_expr_norm)
 
 my_colors <- c(colorRampPalette(c("#8089a9", "white"))(50),
                colorRampPalette(c("white", "#bb4633"))(50))
-my_breaks <- c(seq(-2, 0, length.out = 51), seq(0.01, 2, length.out = 50))
+my_breaks <- c(seq(-1.5, 0, length.out = 51), seq(0.01, 1.5, length.out = 50))
 
 library(pheatmap)
 p<-pheatmap(merged_expr_norm,
@@ -319,9 +306,6 @@ p
 
 row_order <- p$tree_row$order
 row_names_sorted <- rownames(merged_expr_norm)[row_order]
-
-#  go result --------------------------------------------------------------
-
 
 go_result_bar$log10p<- -log10(go_result_bar$p.adjust)
 library(ggplot2)
@@ -343,17 +327,9 @@ ggplot(go_result_bar, aes(x = Description, y = log10p)) +
   )
 
 
-# proportion novel&annotated ----------------------------------------------
-
-
 library(data.table)
-temp_df<-fread("WGCNA_Heart_separate_geneInfo.tsv")
 
-temp_df$type<-ifelse(str_detect(temp_df$gene_id,"GTOP"),"novel","annotated")
-temp_df<-temp_df[temp_df$module_MEnumber %in% go_result_bar$Module,]
-table(temp_df$type)
-p_novel<-data.frame(table(temp_df$module_MEnumber,temp_df$type))
-
+load("Fig2g.p_novel.RData")
 p_novel <- p_novel %>%
   group_by(Var1) %>%
   mutate(Proportion = Freq / sum(Freq)) %>%
@@ -369,7 +345,7 @@ ggplot(p_novel, aes(x = Var1, y = Proportion, fill = Var2)) +
     y = "Proportion",
     fill = "Type"
   ) +
-  theme_minimal() +
+  theme_classic() +
   theme(
     axis.text.x = element_text(angle = 90, hjust = 1),
     axis.title.x = element_blank()
@@ -379,6 +355,7 @@ ggplot(p_novel, aes(x = Var1, y = Proportion, fill = Var2)) +
 
 # Fig2.h ASE/ASTS gene number  ---------------------------------------------------------
 library(ggpubr)
+library(dplyr)
 df_plot <- fread("Fig 2h.txt")
 ggplot(df_plot, aes(x=number, y=reorder(class, number)))+
   geom_bar(stat = "identity", fill="#5c86af")+
