@@ -1,0 +1,9 @@
+type	variable	value
+Significant | EUR	tested	29862
+Significant | EAS	tested	4422
+Lead | EUR	tested	31200
+Lead | EAS	tested	4927
+Significant | EUR	signif	4042
+Significant | EAS	signif	1316
+Lead | EUR	signif	2704
+Lead | EAS	signif	811

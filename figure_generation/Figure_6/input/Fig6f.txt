@@ -1,0 +1,16 @@
+type1	type2	value
+"At least 
+ one ancestry 
+ MAF <0.01"	eQTL	48
+"At least 
+ one ancestry 
+ MAF <0.01"	sQTL	46
+"At least 
+ one ancestry 
+ MAF <0.01"	eQTL + sQTL	74
+"All ancestries 
+ MAF <0.01"	eQTL	29
+"All ancestries 
+ MAF <0.01"	sQTL	25
+"All ancestries 
+ MAF <0.01"	eQTL + sQTL	38
