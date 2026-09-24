@@ -1,7 +1,7 @@
 #==============================================#
 # Figure-1#
 #==============================================#
-setwd("/media/london_A/mengxin/GTOP_code/fig-1/input")
+setwd("/path/to/GTOP_code/fig-1/input")
 
 library(data.table)
 library(ggplot2)
