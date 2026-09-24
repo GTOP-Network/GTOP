@@ -4,7 +4,7 @@
 #==================================#
 library(data.table)
 library(ggplot2)
-setwd("/media/london_A/mengxin/GTOP_code/fig-2/input/")
+setwd("/path/to/GTOP_code/fig-2/input/")
 # Fig.2a LRS_RNA_MDS + hc------------------------------------------------------
 
 THEME_SIZE <- 12
