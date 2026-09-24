@@ -8,7 +8,7 @@ library(magrittr)
 library(ggplot2)
 library(ggpubr)
 
-setwd("/media/london_A/mengxin/GTOP_code/fig-5")
+setwd("/path/to/GTOP_code/fig-5")
 
 # Fig.5a ------------------------------------------------------------------
 # load data
