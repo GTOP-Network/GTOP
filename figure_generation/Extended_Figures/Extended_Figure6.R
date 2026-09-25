@@ -1,6 +1,6 @@
 #==================================#
 # Population-specific QTLs #
-# Extended Figure-6 #
+# Extended Figure-7 #
 #==================================#
 
 setwd("/media/london_A/mengxin/GTOP_code/extend/extend_6")
