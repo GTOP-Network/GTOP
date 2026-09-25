@@ -1,6 +1,6 @@
 #==============================================#
 # Cross-ancestry fine-mapping #
-# Extend-Data-Figure-7#
+# Extend-Data-Figure-6#
 #==============================================#
 
 library(data.table)
@@ -8,7 +8,7 @@ library(dplyr)
 library(magrittr)
 library(ggplot2)
 library(ggpubr)
-setwd("/media/london_A/mengxin/GTOP_code/extend/extended_7")
+setwd("/path/to/GTOP_code/extend/extend_6")
 
 # Extended.Data.Fig.7a ----------------------------------------------------
 
