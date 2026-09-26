@@ -1,0 +1,133 @@
+tissue	method	category	count	proportion	gtype
+Adipose	TensorQTL	Tensor-QTL Unique	229	6.3717306622148	SNP
+Adrenal_Gland	TensorQTL	Tensor-QTL Unique	237	6.46128680479826	SNP
+Gallbladder	TensorQTL	Tensor-QTL Unique	249	7.78855176728183	SNP
+Liver	TensorQTL	Tensor-QTL Unique	201	6.29896584142902	SNP
+Muscle	TensorQTL	Tensor-QTL Unique	79	6.48604269293925	SNP
+Pancreas_Body	TensorQTL	Tensor-QTL Unique	260	7.92199878123096	SNP
+Pancreas_Head	TensorQTL	Tensor-QTL Unique	202	6.13236187006679	SNP
+Pancreas_Tail	TensorQTL	Tensor-QTL Unique	235	6.77819440438419	SNP
+Skin	TensorQTL	Tensor-QTL Unique	63	5.06430868167203	SNP
+Spleen	TensorQTL	Tensor-QTL Unique	98	6.93559801840057	SNP
+Whole_Blood	TensorQTL	Tensor-QTL Unique	189	6.95364238410596	SNP
+Adipose	TensorQTL	Overlap	3365	93.6282693377852	SNP
+Adrenal_Gland	TensorQTL	Overlap	3431	93.5387131952018	SNP
+Gallbladder	TensorQTL	Overlap	2948	92.2114482327182	SNP
+Liver	TensorQTL	Overlap	2990	93.701034158571	SNP
+Muscle	TensorQTL	Overlap	1139	93.5139573070608	SNP
+Pancreas_Body	TensorQTL	Overlap	3022	92.0780012187691	SNP
+Pancreas_Head	TensorQTL	Overlap	3092	93.8676381299332	SNP
+Pancreas_Tail	TensorQTL	Overlap	3232	93.2218055956158	SNP
+Skin	TensorQTL	Overlap	1181	94.935691318328	SNP
+Spleen	TensorQTL	Overlap	1315	93.0644019815994	SNP
+Whole_Blood	TensorQTL	Overlap	2529	93.046357615894	SNP
+Adipose	majiQTL	majiQTL Unique	1361	-28.7981379602201	SNP
+Adrenal_Gland	majiQTL	majiQTL Unique	1306	-27.5701921047076	SNP
+Gallbladder	majiQTL	majiQTL Unique	1422	-32.5400457665904	SNP
+Liver	majiQTL	majiQTL Unique	1396	-31.828545371637	SNP
+Muscle	majiQTL	majiQTL Unique	1140	-50.0219394471259	SNP
+Pancreas_Body	majiQTL	majiQTL Unique	1260	-29.4255021018216	SNP
+Pancreas_Head	majiQTL	majiQTL Unique	1421	-31.4868158652781	SNP
+Pancreas_Tail	majiQTL	majiQTL Unique	1374	-29.8306556665219	SNP
+Skin	majiQTL	majiQTL Unique	1171	-49.7874149659864	SNP
+Spleen	majiQTL	majiQTL Unique	1499	-53.2693674484719	SNP
+Whole_Blood	majiQTL	majiQTL Unique	964	-27.5980532493559	SNP
+Adipose	majiQTL	Overlap	3365	-71.2018620397799	SNP
+Adrenal_Gland	majiQTL	Overlap	3431	-72.4298078952924	SNP
+Gallbladder	majiQTL	Overlap	2948	-67.4599542334096	SNP
+Liver	majiQTL	Overlap	2990	-68.171454628363	SNP
+Muscle	majiQTL	Overlap	1139	-49.9780605528741	SNP
+Pancreas_Body	majiQTL	Overlap	3022	-70.5744978981784	SNP
+Pancreas_Head	majiQTL	Overlap	3092	-68.5131841347219	SNP
+Pancreas_Tail	majiQTL	Overlap	3232	-70.1693443334781	SNP
+Skin	majiQTL	Overlap	1181	-50.2125850340136	SNP
+Spleen	majiQTL	Overlap	1315	-46.7306325515281	SNP
+Whole_Blood	majiQTL	Overlap	2529	-72.4019467506442	SNP
+Adipose	TensorQTL	Tensor-QTL Unique	98	8.29103214890017	SV
+Adrenal_Gland	TensorQTL	Tensor-QTL Unique	116	9.11233307148468	SV
+Gallbladder	TensorQTL	Tensor-QTL Unique	116	11.6935483870968	SV
+Liver	TensorQTL	Tensor-QTL Unique	101	9.24062214089662	SV
+Muscle	TensorQTL	Tensor-QTL Unique	50	13.0548302872063	SV
+Pancreas_Body	TensorQTL	Tensor-QTL Unique	101	9.16515426497278	SV
+Pancreas_Head	TensorQTL	Tensor-QTL Unique	113	9.99115826702034	SV
+Pancreas_Tail	TensorQTL	Tensor-QTL Unique	109	9.2924126172208	SV
+Skin	TensorQTL	Tensor-QTL Unique	29	8.70870870870871	SV
+Spleen	TensorQTL	Tensor-QTL Unique	31	9.17159763313609	SV
+Whole_Blood	TensorQTL	Tensor-QTL Unique	92	10.4783599088838	SV
+Adipose	TensorQTL	Overlap	1084	91.7089678510998	SV
+Adrenal_Gland	TensorQTL	Overlap	1157	90.8876669285153	SV
+Gallbladder	TensorQTL	Overlap	876	88.3064516129032	SV
+Liver	TensorQTL	Overlap	992	90.7593778591034	SV
+Muscle	TensorQTL	Overlap	333	86.9451697127937	SV
+Pancreas_Body	TensorQTL	Overlap	1001	90.8348457350272	SV
+Pancreas_Head	TensorQTL	Overlap	1018	90.0088417329797	SV
+Pancreas_Tail	TensorQTL	Overlap	1064	90.7075873827792	SV
+Skin	TensorQTL	Overlap	304	91.2912912912913	SV
+Spleen	TensorQTL	Overlap	307	90.8284023668639	SV
+Whole_Blood	TensorQTL	Overlap	786	89.5216400911162	SV
+Adipose	majiQTL	majiQTL Unique	441	-28.9180327868852	SV
+Adrenal_Gland	majiQTL	majiQTL Unique	424	-26.8184693232132	SV
+Gallbladder	majiQTL	majiQTL Unique	415	-32.1456235476375	SV
+Liver	majiQTL	majiQTL Unique	346	-25.8594917787743	SV
+Muscle	majiQTL	majiQTL Unique	257	-43.5593220338983	SV
+Pancreas_Body	majiQTL	majiQTL Unique	378	-27.4111675126904	SV
+Pancreas_Head	majiQTL	majiQTL Unique	379	-27.1295633500358	SV
+Pancreas_Tail	majiQTL	majiQTL Unique	490	-31.5315315315315	SV
+Skin	majiQTL	majiQTL Unique	231	-43.1775700934579	SV
+Spleen	majiQTL	majiQTL Unique	324	-51.3470681458003	SV
+Whole_Blood	majiQTL	majiQTL Unique	319	-28.868778280543	SV
+Adipose	majiQTL	Overlap	1084	-71.0819672131148	SV
+Adrenal_Gland	majiQTL	Overlap	1157	-73.1815306767869	SV
+Gallbladder	majiQTL	Overlap	876	-67.8543764523625	SV
+Liver	majiQTL	Overlap	992	-74.1405082212257	SV
+Muscle	majiQTL	Overlap	333	-56.4406779661017	SV
+Pancreas_Body	majiQTL	Overlap	1001	-72.5888324873097	SV
+Pancreas_Head	majiQTL	Overlap	1018	-72.8704366499642	SV
+Pancreas_Tail	majiQTL	Overlap	1064	-68.4684684684685	SV
+Skin	majiQTL	Overlap	304	-56.8224299065421	SV
+Spleen	majiQTL	Overlap	307	-48.6529318541997	SV
+Whole_Blood	majiQTL	Overlap	786	-71.131221719457	SV
+Adipose	TensorQTL	Tensor-QTL Unique	238	7.67989674088416	TR
+Adrenal_Gland	TensorQTL	Tensor-QTL Unique	253	7.81829419035847	TR
+Gallbladder	TensorQTL	Tensor-QTL Unique	184	6.99619771863118	TR
+Liver	TensorQTL	Tensor-QTL Unique	213	7.55587087619723	TR
+Muscle	TensorQTL	Tensor-QTL Unique	62	6.16302186878728	TR
+Pancreas_Body	TensorQTL	Tensor-QTL Unique	255	9.05861456483126	TR
+Pancreas_Head	TensorQTL	Tensor-QTL Unique	224	7.86240786240786	TR
+Pancreas_Tail	TensorQTL	Tensor-QTL Unique	238	7.94127460794128	TR
+Skin	TensorQTL	Tensor-QTL Unique	68	7.24174653887114	TR
+Spleen	TensorQTL	Tensor-QTL Unique	54	5.0656660412758	TR
+Whole_Blood	TensorQTL	Tensor-QTL Unique	197	8.71295886775763	TR
+Adipose	TensorQTL	Overlap	2861	92.3201032591159	TR
+Adrenal_Gland	TensorQTL	Overlap	2983	92.1817058096415	TR
+Gallbladder	TensorQTL	Overlap	2446	93.0038022813688	TR
+Liver	TensorQTL	Overlap	2606	92.4441291238028	TR
+Muscle	TensorQTL	Overlap	944	93.8369781312127	TR
+Pancreas_Body	TensorQTL	Overlap	2560	90.9413854351688	TR
+Pancreas_Head	TensorQTL	Overlap	2625	92.1375921375921	TR
+Pancreas_Tail	TensorQTL	Overlap	2759	92.0587253920587	TR
+Skin	TensorQTL	Overlap	871	92.7582534611289	TR
+Spleen	TensorQTL	Overlap	1012	94.9343339587242	TR
+Whole_Blood	TensorQTL	Overlap	2064	91.2870411322424	TR
+Adipose	majiQTL	majiQTL Unique	905	-24.0308019118428	TR
+Adrenal_Gland	majiQTL	majiQTL Unique	790	-20.9382454280414	TR
+Gallbladder	majiQTL	majiQTL Unique	805	-24.7616118117502	TR
+Liver	majiQTL	majiQTL Unique	811	-23.7342698273339	TR
+Muscle	majiQTL	majiQTL Unique	704	-42.7184466019417	TR
+Pancreas_Body	majiQTL	majiQTL Unique	844	-24.7943595769683	TR
+Pancreas_Head	majiQTL	majiQTL Unique	858	-24.6339362618432	TR
+Pancreas_Tail	majiQTL	majiQTL Unique	828	-23.083356565375	TR
+Skin	majiQTL	majiQTL Unique	777	-47.1480582524272	TR
+Spleen	majiQTL	majiQTL Unique	1009	-49.9257793171697	TR
+Whole_Blood	majiQTL	majiQTL Unique	627	-23.2998885172798	TR
+Adipose	majiQTL	Overlap	2861	-75.9691980881572	TR
+Adrenal_Gland	majiQTL	Overlap	2983	-79.0617545719587	TR
+Gallbladder	majiQTL	Overlap	2446	-75.2383881882498	TR
+Liver	majiQTL	Overlap	2606	-76.2657301726661	TR
+Muscle	majiQTL	Overlap	944	-57.2815533980583	TR
+Pancreas_Body	majiQTL	Overlap	2560	-75.2056404230317	TR
+Pancreas_Head	majiQTL	Overlap	2625	-75.3660637381568	TR
+Pancreas_Tail	majiQTL	Overlap	2759	-76.916643434625	TR
+Skin	majiQTL	Overlap	871	-52.8519417475728	TR
+Spleen	majiQTL	Overlap	1012	-50.0742206828303	TR
+Whole_Blood	majiQTL	Overlap	2064	-76.7001114827202	TR
