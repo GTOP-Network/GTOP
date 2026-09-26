@@ -1,0 +1,8 @@
+combination	count	sniffles	pbsv	cutesv
+sniffles,pbsv,cutesv	69630	1	1	1
+sniffles,pbsv	7955	1	1	0
+sniffles,cutesv	13712	1	0	1
+pbsv,cutesv	11625	0	1	1
+sniffles	11212	1	0	0
+pbsv	27214	0	1	0
+cutesv	16947	0	0	1

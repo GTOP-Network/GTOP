@@ -1,0 +1,9 @@
+Count	Significance	Layer	qtl	group
+94744	no	Event-level	ase	Event-level:ase
+28115	yes	Event-level	ase	Event-level:ase
+9649	no	Gene-level	ase	Gene-level:ase
+9019	yes	Gene-level	ase	Gene-level:ase
+34533	no	Event-level	asts	Event-level:asts
+3565	yes	Event-level	asts	Event-level:asts
+7762	no	Gene-level	asts	Gene-level:asts
+1810	yes	Gene-level	asts	Gene-level:asts

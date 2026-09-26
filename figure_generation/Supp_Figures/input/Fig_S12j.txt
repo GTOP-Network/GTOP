@@ -1,0 +1,19 @@
+tier	category	count
+Catalogue expansion	Novel not in catalog	125695
+Catalogue expansion	Novel in catalog	99460
+Catalogue expansion	Fusion	8698
+Catalogue expansion	Genic	4963
+Catalogue expansion	Antisense	4266
+Catalogue expansion	Intergenic	2002
+High confidence	Novel not in catalog	38449
+High confidence	Novel in catalog	34872
+High confidence	Fusion	3176
+High confidence	Antisense	1100
+High confidence	Genic	573
+High confidence	Intergenic	481
+With unique peptide	Novel not in catalog	977
+With unique peptide	Novel in catalog	766
+With unique peptide	Fusion	125
+With unique peptide	Genic	24
+With unique peptide	Intergenic	2
+With unique peptide	Antisense	1

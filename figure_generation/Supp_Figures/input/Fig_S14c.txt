@@ -1,0 +1,94 @@
+tissue	peptide_group	count
+Abdominal_Aorta	1	35
+Abdominal_Aorta	2 - 5	89
+Abdominal_Aorta	> 5	68
+Adipose	1	69
+Adipose	2 - 5	125
+Adipose	> 5	121
+Adrenal_Gland	1	109
+Adrenal_Gland	2 - 5	227
+Adrenal_Gland	> 5	174
+Aortic_Arch	1	53
+Aortic_Arch	2 - 5	102
+Aortic_Arch	> 5	92
+Colon	1	51
+Colon	2 - 5	114
+Colon	> 5	104
+Common_Iliac_Artery	1	34
+Common_Iliac_Artery	2 - 5	71
+Common_Iliac_Artery	> 5	69
+Esophagus	1	73
+Esophagus	2 - 5	118
+Esophagus	> 5	107
+Gallbladder	1	67
+Gallbladder	2 - 5	121
+Gallbladder	> 5	125
+Heart_Left_Atrium	1	71
+Heart_Left_Atrium	2 - 5	142
+Heart_Left_Atrium	> 5	117
+Heart_Left_Ventricle	1	39
+Heart_Left_Ventricle	2 - 5	92
+Heart_Left_Ventricle	> 5	87
+Heart_Mitral_Valve	1	53
+Heart_Mitral_Valve	2 - 5	104
+Heart_Mitral_Valve	> 5	92
+Heart_Right_Atrium	1	42
+Heart_Right_Atrium	2 - 5	110
+Heart_Right_Atrium	> 5	113
+Heart_Right_Ventricle	1	61
+Heart_Right_Ventricle	2 - 5	75
+Heart_Right_Ventricle	> 5	88
+Heart_Tricuspid_Valve	1	59
+Heart_Tricuspid_Valve	2 - 5	92
+Heart_Tricuspid_Valve	> 5	66
+Liver	1	80
+Liver	2 - 5	141
+Liver	> 5	92
+Lung_Apex	1	42
+Lung_Apex	2 - 5	90
+Lung_Apex	> 5	97
+Lung_Base	1	86
+Lung_Base	2 - 5	173
+Lung_Base	> 5	105
+Lymph_node	1	36
+Lymph_node	2 - 5	101
+Lymph_node	> 5	84
+Muscle	1	37
+Muscle	2 - 5	52
+Muscle	> 5	60
+Ovary	1	39
+Ovary	2 - 5	86
+Ovary	> 5	89
+Pancreas_Body	1	49
+Pancreas_Body	2 - 5	89
+Pancreas_Body	> 5	52
+Pancreas_Head	1	26
+Pancreas_Head	2 - 5	53
+Pancreas_Head	> 5	16
+Pancreas_Tail	1	32
+Pancreas_Tail	2 - 5	67
+Pancreas_Tail	> 5	27
+Prostate	1	75
+Prostate	2 - 5	158
+Prostate	> 5	103
+Skin	1	64
+Skin	2 - 5	106
+Skin	> 5	103
+Small_Intestine	1	50
+Small_Intestine	2 - 5	135
+Small_Intestine	> 5	110
+Spleen	1	72
+Spleen	2 - 5	114
+Spleen	> 5	83
+Stomach	1	93
+Stomach	2 - 5	175
+Stomach	> 5	141
+Thoracic_Aorta	1	62
+Thoracic_Aorta	2 - 5	113
+Thoracic_Aorta	> 5	87
+Trachea	1	28
+Trachea	2 - 5	65
+Trachea	> 5	48
+Uterus	1	42
+Uterus	2 - 5	65
+Uterus	> 5	56
