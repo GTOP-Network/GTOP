@@ -1,0 +1,21 @@
+tissue,type1,type2,type3,value,all_count,ratio
+Adipose,consistent,nominal,All eGenes,1505,1757,0.856573705179283
+Adipose,consistent,mash,All eGenes,11154,12133,0.919310970081596
+Adrenal_Gland,consistent,nominal,All eGenes,1870,2703,0.691823899371069
+Adrenal_Gland,consistent,mash,All eGenes,10506,11877,0.884566809800455
+Liver,consistent,nominal,All eGenes,1625,2580,0.62984496124031
+Liver,consistent,mash,All eGenes,8775,10627,0.825726921991155
+Muscle,consistent,nominal,All eGenes,527,580,0.908620689655172
+Muscle,consistent,mash,All eGenes,9892,11217,0.881875724346973
+Pancreas_Body,consistent,nominal,All eGenes,2107,2781,0.757641136281913
+Pancreas_Body,consistent,mash,All eGenes,10306,11570,0.890751944684529
+Pancreas_Head,consistent,nominal,All eGenes,2194,2876,0.762865090403338
+Pancreas_Head,consistent,mash,All eGenes,10313,11582,0.890433431186324
+Pancreas_Tail,consistent,nominal,All eGenes,2266,3042,0.744904667981591
+Pancreas_Tail,consistent,mash,All eGenes,10354,11613,0.891587014552657
+Skin,consistent,nominal,All eGenes,516,568,0.908450704225352
+Skin,consistent,mash,All eGenes,10171,11020,0.922958257713249
+Spleen,consistent,nominal,All eGenes,871,1085,0.802764976958525
+Spleen,consistent,mash,All eGenes,10803,12008,0.899650233177881
+Whole_Blood,consistent,nominal,All eGenes,2596,3086,0.841218405703176
+Whole_Blood,consistent,mash,All eGenes,9897,11222,0.881928355016931
