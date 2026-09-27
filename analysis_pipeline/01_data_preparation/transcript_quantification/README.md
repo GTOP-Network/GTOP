@@ -88,3 +88,11 @@ python rsem_run.py combine
 ```
 
 ---
+
+### 3.4 Removal of inconsistently expressed transcripts quantified by Salmon and RSEM
+
+```bash
+Rscript salmon_rsem_average_quantification.R
+```
+
+---
