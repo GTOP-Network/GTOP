@@ -11,7 +11,7 @@ library(ggsci)
 library(tidyverse)
 library(ggpubr)
 library(magrittr)
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig2567/input")
+setwd("/path/to/GTOP_code/supp/supp_fig8/input")
 
 color <- c(
   "intron"="#5574A6","intergenic"="#cbcbcb",
