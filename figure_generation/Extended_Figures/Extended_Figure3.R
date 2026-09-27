@@ -9,7 +9,7 @@ library(data.table)
 library(ggplot2)
 library(ggpubr)
 
-setwd("/media/london_A/mengxin/GTOP_code/extend/extend_3")
+setwd("/path/to/GTOP_code/extend/extend_3")
 # Extended.Fig.3ab ASE & ASTS ----------------------------------------------
 df_plot <- fread("./input/Exfig 3a.txt")
 reg <- lm(formula = sig ~ total,data=df_plot)
