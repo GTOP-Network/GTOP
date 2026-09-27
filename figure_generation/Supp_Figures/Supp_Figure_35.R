@@ -107,7 +107,7 @@ plot_portability <- function(
     )
 }
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig35.Portability_correction")
+setwd("/path/to/GTOP_code/supp/supp_fig35")
 
 portable_info_list <- readRDS("input/Fig35_data.rds")
 
