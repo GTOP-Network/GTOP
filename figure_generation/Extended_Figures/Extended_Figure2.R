@@ -4,7 +4,7 @@
 #==================================#
 library(data.table)
 library(ggplot2)
-setwd("/media/london_A/mengxin/GTOP_code/extend/extend_2/input")
+setwd("/path/to/GTOP_code/extend/extend_2/input")
 
 # Extended.Fig.2a  ------------------------------------------------------
 gtop_ref_colors <- c(
