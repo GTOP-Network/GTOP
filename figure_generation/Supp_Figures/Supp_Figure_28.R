@@ -7,7 +7,7 @@ library(patchwork)
 library(ggplot2)
 library(ggpubr)
 library(ggbreak)
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig28.Figure.S20-tuQTL_functional_enrichment")
+setwd("/path/to/GTOP_code/supp/supp_fig28")
 
 # Supp.Fig.28a left torus result of known/novel tuQTL ---------------------
 order <- rev(c("enhancer","promoter","open chromatin region","CTCF binding site","TF binding site","3 prime UTR","5 prime UTR","frameshift","intron","missense","NC transcript","splice acceptor","splice donor","splice region","stop gained", "synonymous"))
