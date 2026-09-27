@@ -15,7 +15,7 @@ library(scales)
 library(ggrastr)
 library(ggupset)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig27. R1.7-LRS-specific.QTL/input/")
+setwd("/path/to/GTOP_code/supp/supp_fig27/input/")
 
 # Supp.Fig.27a: SV eQTL --------------------------------------------------------
 
