@@ -16,7 +16,7 @@ library(ggrastr)
 library(ggupset)
 library(UpSetR)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig40.R4.Heritability-long-reads-coloc/")
+setwd("/path/to/GTOP_code/supp/supp_fig40/")
 
 # Supp.Fig.40a: heritability --------------------------------------------------------
 df <- fread("./input/Supp_Fig40a.txt")
