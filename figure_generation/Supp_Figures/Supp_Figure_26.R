@@ -15,7 +15,7 @@ library(scales)
 library(ggrastr)
 library(ggupset)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig26. R3.2.MAJIQTL-replication")
+setwd("/path/to/GTOP_code/supp/supp_fig26")
 
 # Supp.Fig.26a: sGene overlapping --------------------------------------------------------
 df <- fread("./input/Supp_Fig26a.txt")
