@@ -10,7 +10,7 @@ library(magrittr)
 library(dplyr)
 library(ggpubr)
 library(patchwork)
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig21.Figure.S15")
+setwd("/path/to/GTOP_code/supp/supp_fig21")
 
 
 # Supp.Fig.21a  Number of unique cis-directed events and the numbe --------
