@@ -7,7 +7,7 @@ library(ggpubr)
 library(tidyverse)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig15. Figure S11/input")
+setwd("/path/to/GTOP_code/supp/supp_fig15/input")
 
 
 # Supp.Fig.15a PacBio versus Illumina sample Spearman correlations---------------------
