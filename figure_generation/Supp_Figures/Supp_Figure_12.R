@@ -7,7 +7,7 @@ library(ggpubr)
 library(tidyverse)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig12. Figure S9/input")
+setwd("/path/to/GTOP_code/supp/supp_fig12/input")
 
 
 # Supp.Fig.12a alternative-splicing count QC distribution------------------
