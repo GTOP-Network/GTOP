@@ -2,7 +2,7 @@
 # Extended Fig.1 #
 #==============================================#
 
-setwd("/media/london_A/mengxin/GTOP_code/extend/extend_145/input")
+setwd("/path/to/GTOP_code/extend/extend_145/input")
 library(data.table)
 library(ggplot2)
 library(stringi)
