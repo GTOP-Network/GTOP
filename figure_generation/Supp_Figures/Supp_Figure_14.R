@@ -6,7 +6,7 @@ library(ggplot2)
 library(ggpubr)
 library(tidyverse)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig14. Figure S10/input")
+setwd("/path/to/GTOP_code/supp/supp_fig14/input")
 
 # Supp.Fig.14a -peptide length distribution--------------------------------
 
