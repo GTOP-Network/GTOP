@@ -2,7 +2,7 @@
 # Extended Fig.1 #
 #==============================================#
 
-setwd("/path/to/GTOP_code/extend/extend_145/input")
+setwd("/path/to/GTOP_code/extend/extend_1/input")
 library(data.table)
 library(ggplot2)
 library(stringi)
