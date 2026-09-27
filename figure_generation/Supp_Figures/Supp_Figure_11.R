@@ -7,7 +7,7 @@ library(ggpubr)
 library(tidyverse)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig11.R1.5-LRS-RNA-transcript-assemble/input")
+setwd("/path/to/GTOP_code/supp/supp_fig11/input")
 
 
 # Supp.Fig.11b structural category composition by merge method----------------
