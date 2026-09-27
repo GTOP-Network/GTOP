@@ -15,7 +15,7 @@ library(scales)
 library(ggrastr)
 library(ggupset)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig2567/input")
+setwd("/path/to/GTOP_code/supp/supp_fig7/input")
 source("geom_boxplot2.R")
 
 # Supp.Fig.7a-c:  Small variant /SV /TR number in diff LRS coverage ------------------------------------------------------------------
