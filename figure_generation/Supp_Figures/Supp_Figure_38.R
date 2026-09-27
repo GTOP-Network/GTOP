@@ -9,7 +9,7 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig38.Joint_Finemap/input")
+setwd("/path/to/GTOP_code/supp/supp_fig38/input")
 
 # Supp.Fig.38a ------------------------------------------------------------
 
