@@ -6,7 +6,7 @@ library(data.table)
 library(ggplot2)
 
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig41.Coloc_information/input")
+setwd("/path/to/GTOP_code/supp/supp_fig41/input")
 
 # Supp.Fig.41a:  ---------------------------------------------------
 locus_lvl <- readRDS("supp_fig41a_data.rds")
