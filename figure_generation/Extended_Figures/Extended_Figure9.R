@@ -3,7 +3,7 @@
 # Extended-Figure-9#
 #==============================================#
 
-setwd("/media/london_A/mengxin/GTOP_code/extend/extend_9/")
+setwd("/path/to/GTOP_code/extend/extend_9/")
 
 library(tidygraph)
 library(ggraph)
