@@ -3,7 +3,7 @@
 # # Supp-Figure-17 # #
 #===================================#
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig17.figure_12/input")
+setwd("/path/to/GTOP_code/supp/supp_fig17/input")
 
 
 # supp.Figure.17a  -----number of transcripts in module----------
