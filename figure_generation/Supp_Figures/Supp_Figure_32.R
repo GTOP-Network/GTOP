@@ -7,7 +7,7 @@ library(ggpubr)
 library(tidyverse)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig32.Figure.S24-SV-eQTL-example/input")
+setwd("/path/to/GTOP_code/supp/supp_fig32/input")
 
 
 # supp_fig32.b ------------------------------------------------------------
