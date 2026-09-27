@@ -1,73 +1,75 @@
-# Transcript merging, annotation, filtering, and reference construction
+# Transcript merging and annotation
 
-To generate a unified and high-confidence transcript reference, transcript models identified by the three discovery pipelines were integrated based on intron-chain identity. Transcripts supported by multiple methods were prioritized, followed by annotation, quantification, and stringent filtering to produce the final long-read transcript reference used in downstream analyses.
-
----
+Caller outputs are filtered by read support, merged within and across methods, and annotated with SQANTI3. Structural and expression evidence is used to construct the final transcript references.
 
 ```bash
 cd scripts
 ```
 
-## 1. Transcript integration and candidate transcript generation
+## 1. Prepare transcript models
 
 ```bash
-qsub merge_run.sh
+python 01_filter_tx_by_support_FLNC.py
+python 02_raw_transcript_qc.py
+python 03_split_gtf_by_chr_pipeline.py
+python 04_trans_gtf2bed.py
 ```
 
-Transcript models identified by the three methods were merged based on intron-chain identity. Transcripts sharing identical ordered splice junctions were grouped into a single intron-chain–defined model. For intron chains with heterogeneous 5′ or 3′ boundaries, the transcript spanning the most distal coordinates was selected as the representative model. Each intron chain was assigned a priority score corresponding to the number of independent methods supporting it. Transcripts supported by at least two methods were retained, and mono-exonic transcripts were excluded to generate a unified candidate transcript set.
+Raw transcript QC summarizes per-sample transcript counts before and after filtering.
 
----
-
-## 2. Transcript-level read quantification using FLAIR
-
-To improve computational efficiency, transcript quantification was performed in parallel at the sample level, followed by aggregation across samples.
-
-### Sample-level quantification
+## 2. Merge within callers
 
 ```bash
-python flair_quant_run.py flair_quant
+python 05_tama_run_multi_submit.py
+python 05_tama_run_multi_submit.py submit-merge
+# After tissue-level jobs finish:
+python 06_tama_run_tissue.py
+# After cross-tissue jobs finish:
+python 07_merge_bed2gtf.py
 ```
 
-### Merging quantification results
+## 3. Integrate and annotate transcripts
+
+Run these commands in order, waiting for submitted jobs to complete between steps:
 
 ```bash
-python flair_quant_run.py combine
+python 08_merge_pipeline.py
+python 09_sqanti3_run.py run_sqanti3
+python 09_sqanti3_run.py merge
+python 09_sqanti3_run.py filter_step1
+python 10_gtf_process.py
 ```
 
----
+## 4. Evaluate transcript support
 
-## 3. Transcript annotation with SQANTI3
-
-SQANTI3 was used to annotate candidate transcripts with respect to known gene models and splice junction features. To accelerate processing, annotation was performed in parallel at the chromosome level and subsequently merged.
-
-### Chromosome-level annotation
+Quantify candidate transcripts and combine the completed sample results:
 
 ```bash
-python sqanti3_run.py run_sqanti3
+python 11_flair_quant_run.py flair_quant
+# After quantification jobs finish:
+python 11_flair_quant_run.py combine
 ```
 
-### Merging SQANTI3 annotations
+Prepare and submit first-exon and short-read junction checks, then merge each set of completed results:
 
 ```bash
-python sqanti3_run.py merge
+bash 12_alt_first_exon_run.sh prepare
+bash 12_alt_first_exon_run.sh submit
+# After scan jobs finish:
+bash 12_alt_first_exon_run.sh merge
+
+bash 13_junction_srs_run.sh prepare
+bash 13_junction_srs_run.sh submit
+# After junction jobs finish:
+bash 13_junction_srs_run.sh merge
 ```
 
----
-
-## 4. Filtering of candidate transcripts
+## 5. Construct final references
 
 ```bash
-python sqanti3_run.py custom_filter
+python 09_sqanti3_run.py custom_filter
+# After filtering finishes:
+python 14_enhanced_gtf_run.py enhanced_gtf
 ```
 
-Candidate transcripts were filtered based on SQANTI3 annotation categories and transcript-level read support. Only transcripts meeting predefined structural and expression criteria were retained as high-confidence models.
-
----
-
-## 5. Construction of enhanced transcript references
-
-```bash
-python enhanced_gtf_run.py enhanced_gtf
-```
-
-Two transcript reference annotations were generated. First, we constructed a long-read–derived transcript reference (GTOP), in which full splice match (FSM) and incomplete splice match (ISM) transcripts were replaced by their corresponding reference transcript models from GENCODE v47. Second, we generated an enhanced reference by integrating GTOP novel transcripts with the complete GENCODE v47 annotation. These references were used for downstream expression quantification and integrative analyses.
+Reference construction writes the GTOP and enhanced GENCODE transcript references, associated annotation tables, and predicted protein sequences to `release/` for subsequent analysis.
