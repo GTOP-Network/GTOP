@@ -9,7 +9,7 @@ library(magrittr)
 library(PCAForQTL)
 library(cowplot)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig22.Figure.S16.phenotype-pca-eQTL")
+setwd("/path/to/GTOP_code/supp/supp_fig22")
 
 # Supp.Fig.22 expression PCA ----------------------------------------------
 
