@@ -21,7 +21,6 @@ tissue_order <- plot_df_long %>%
 
 plot_df_long$Tissue <- factor(plot_df_long$Tissue, levels = tissue_order)
 
-# 如果count是原始数值，需要转换成千为单位
 plot_df_long <- plot_df_long %>%
   mutate(count_k = count / 1000)
 
