@@ -8,7 +8,7 @@ library(magrittr)
 library(PCAForQTL)
 library(cowplot)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig24.Figure.S18.phenotype-pca-tuQTL")
+setwd("/path/to/GTOP_code/supp/supp_fig24")
 # Supp.Fig.24 transcript usage PCA ----------------------------------------
 
 reslist <- readRDS("./input/Figure.S24.rds")
