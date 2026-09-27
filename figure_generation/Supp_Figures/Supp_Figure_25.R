@@ -12,7 +12,7 @@ library(circlize)
 library(reshape2)
 library(ggplot2)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig25.Figure.S19-PCs-explain")
+setwd("/path/to/GTOP_code/supp/supp_fig25.Figure")
 
 # Supp.Fig.25a juQTL ------------------------------------------------------
 tissue_factor_summary<-readRDS("input/Fig_S25a.input.RDS")
