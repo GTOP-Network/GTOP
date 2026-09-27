@@ -9,7 +9,7 @@ library(data.table)
 library(tidyverse)
 library(cowplot)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig30.Figure.S22-ASE-eQTL-correlation")
+setwd("/path/to/GTOP_code/supp/supp_fig30")
 
 
 # Supp.Fig.30 ASE-eQTL-correlation ----------------------------------------
