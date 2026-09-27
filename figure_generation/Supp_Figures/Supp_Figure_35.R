@@ -39,7 +39,7 @@ make_annotation_df <- function(class_vec, accuracy) {
     label = c(
       "Exp. Port.",
       "Exp. Non-Port.",
-      sprintf("Accuracy: %.2f", accuracy)
+      paste0(sprintf("Proportion: %.1f", accuracy), "%")
     ),
     non_port = c(disconly, neither, NA),
     port = c(both, predonly, NA)
@@ -107,7 +107,7 @@ plot_portability <- function(
     )
 }
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig35.Portability_correction//")
+setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig35.Portability_correction")
 
 portable_info_list <- readRDS("input/Fig35_data.rds")
 
@@ -146,7 +146,7 @@ overview_plot <- ggplot(
     position = position_dodge(width = 0.4),
     alpha = 0.5
   ) +
-  labs(x = "", y = "Proportion of portable eQTLs") +
+  labs(x = "", y = "Proportion of portable eQTLs (%)") +
   ggpubr::stat_compare_means(
     comparisons = list(c("raw", "sample_size+MAF")),
     method = "t.test",

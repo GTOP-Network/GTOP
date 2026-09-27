@@ -132,6 +132,11 @@ p1 <- ggplot(df_m,aes(x=PIP,y=OR)) + geom_boxplot(width = 0.35, alpha = 1, outli
 
 # Supp.Fig.38c ------------------------------------------------------------
 
+library(data.table)
+library(dplyr)
+library(magrittr)
+rm(list=ls())
+
 extract_tissue <- function(x){
   return(strsplit(x,split = ":",fixed = T)[[1]][1])
 }
@@ -144,7 +149,7 @@ df_pip0 <- readRDS("downsample_SVTR_enrich_causal_CS.compare_to_SNV.0.RDS")
 df_pip2 <- readRDS("downsample_SVTR_enrich_causal_CS.compare_to_SNV.0.2.RDS")
 df_pip4 <- readRDS("downsample_SVTR_enrich_causal_CS.compare_to_SNV.0.4.RDS")
 df_pip6 <- readRDS("downsample_SVTR_enrich_causal_CS.compare_to_SNV.0.6.RDS")
-df_pip8 <- readRDS("downsample_SVTR_enrich_causal_CS.compare_to_SNV.RDS")
+df_pip8 <- readRDS("downsample_SVTR_enrich_causal_CS.compare_to_SNV.0.8.RDS")
 
 df_pip0$TissueName <- sapply(as.character(df_pip0$Tissue),extract_tissue)
 df_pip0$RUN <- sapply(as.character(df_pip0$Tissue),extract_run)
