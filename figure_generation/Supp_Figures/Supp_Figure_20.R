@@ -8,7 +8,7 @@ library(ComplexUpset)
 library(tidyverse)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig20.ASE-longcallR/input")
+setwd("/path/to/GTOP_code/supp/supp_fig20/input")
 
 
 # Supp.Fig.20a --the overlap of genes with significant ASE or ASTS events----------------------------
