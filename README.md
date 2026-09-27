@@ -11,7 +11,7 @@ GTOP is a long-read multi-omics atlas comprising transcriptomic and genetic vari
 
 ### Processed data
 
-Processed gene expression matrices and molecular QTL mapping results (as well as a host of other downstream data) are currently available on GTOP Data Portal(https://bioinfo.szbl.ac.cn/GTOP/download).
+Processed gene expression matrices and molecular QTL mapping results (as well as a host of other downstream data) are currently available on [GTOP Data Portal](https://bioinfo.szbl.ac.cn/GTOP/download).
 
 If you are having trouble accessing these data, please feel free to contact us to explore other options.
 
