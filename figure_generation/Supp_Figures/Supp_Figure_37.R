@@ -16,7 +16,7 @@ library(magrittr)
 library(reshape2)
 
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig37.Fine-mapping-filter-poor-coverage/")
+setwd("/path/to/GTOP_code/supp/supp_fig37/")
 
 
 # Supp.Fig.37a: Number of cs within SV/TR group by Tissue ------------------------------------------------------------
