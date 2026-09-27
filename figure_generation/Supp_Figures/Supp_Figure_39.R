@@ -9,7 +9,7 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig39.Figure.S27-SV-finemap-example-SIGIRR/input")
+setwd("/path/to/GTOP_code/supp/supp_fig39/input")
 
 
 # Supp.Fig.39a --SV-TR enrichment----------------------------------------------------
