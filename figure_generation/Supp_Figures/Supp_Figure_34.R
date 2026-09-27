@@ -7,7 +7,7 @@ library(tidyverse)
 library(data.table)
 library(patchwork)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig34.Portability_three_metrics/")
+setwd("/path/to/GTOP_code/supp/supp_fig34/")
 
 fig_data <- readRDS("input/Fig34_data.rds")
 
