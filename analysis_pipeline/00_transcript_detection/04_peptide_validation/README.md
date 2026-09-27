@@ -1,30 +1,28 @@
-# Proteomic validation of long-read RNA-seq transcripts
+# Proteomic validation
 
-We used data-independent acquisition (DIA) proteomics data matched to long-read RNA sequencing (RNA-seq) samples to evaluate the translation potential of detected transcripts.  
-For each tissue, we constructed protein sequence databases derived from predicted coding sequences (CDS) of highly expressed transcripts (median transcripts per million, TPM > 5) predicted to be protein-coding. Mass spectrometry data from each tissue were then searched against the corresponding protein database using DIA-NN (v1.8.1).
+Tissue-specific protein databases combine GENCODE translations with predicted coding sequences from the transcript annotation workflow. DIA-NN searches matched mass-spectrometry data against these databases.
 
----
+## 1. Prepare protein databases
+
+Complete transcript quantification and configure the tissue metadata and mass-spectrometry input paths.
 
 ```bash
 cd scripts
-```
-
-## 1. Construction of protein sequence databases from transcript coding sequences (CDS) for each tissue
-
-We first selected transcripts with median TPM > 5 in each tissue and retained those predicted to be protein-coding. Protein-coding potential was predicted using TransDecoder2 (generated during the Structural and Quality Annotation of Novel Transcript Isoforms, SQANTI3, annotation step). Based on these transcripts, we constructed tissue-specific reference protein sequence databases.
-
-In addition to the TPM > 5 threshold, we also constructed alternative protein databases using transcripts with TPM > 0.1 to include lower-abundance transcripts. While this increases sensitivity for detecting low-expression translation events, it also expands the search space.
-
-```bash
 python prepare_faa.py
 ```
 
-## 2. Database search using DIA-NN
-
-Mass spectrometry data from each tissue were searched separately against the corresponding protein database using DIA-NN (v1.8.1).
+## 2. Run DIA-NN
 
 ```bash
-qsub run.diann.sh 
+bash run_diann.sh
 ```
 
----
+## 3. Export protein abundance
+
+After all DIA-NN jobs finish:
+
+```bash
+python protein_abundance.py
+```
+
+Tissue protein databases are stored in `release/cds/tissue_based/`; abundance matrices are written to `release/molec_pheno/transcript_raw_protein/`. Peptide-level evidence is available in the DIA-NN reports.
