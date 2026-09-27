@@ -10,7 +10,7 @@ library(ggplot2)
 library(ggpubr)
 library(ggrastr)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig19.Figure S14/input")
+setwd("/path/to/GTOP_code/supp/supp_fig19/input")
 
 
 #Supp.Fig.19a the number of significant ase/asts -------------------------------
