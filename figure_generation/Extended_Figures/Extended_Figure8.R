@@ -6,7 +6,7 @@
 library(ggplot2)
 library(ggpubr)
 
-setwd("/media/london_A/mengxin/GTOP_code/extend/extend_8")
+setwd("/path/to/GTOP_code/extend/extend_8")
 
 
 # Extended.Fig.8 ----------------------------------------------------------
