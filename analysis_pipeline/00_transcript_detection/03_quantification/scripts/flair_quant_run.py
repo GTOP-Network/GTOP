@@ -5,54 +5,82 @@
 @Email   : xuechao@szbl.ac.cn
 @Desc    :  
 """
+
 import os
+from pathlib import Path
+
+CONFIG_PROJECT_DIR = os.environ.get('GTOP_PROJECT_DIR', str(Path.cwd() / 'gtop_run'))
+CONFIG_FLNC_DIR = os.environ.get('FLNC_DIR', str(Path(CONFIG_PROJECT_DIR) / 'input/flnc'))
+CONFIG_EXCLUDED_SIDS = ['GTOP-CA241-5032-LN-YGE8', 'GTOP-BI281-0087-LN-L7VG', 'GTOP-CB271-4155-LN-A5YE']
+
+import shutil
 import sys
 
 import numpy as np
 import pandas as pd
 
-from util import get_LRS_correct_sample_id
+PROJ_DIR = os.environ.get("PROJECT_ROOT")
 
-RUN_LOG_DIR=f'/lustre/home/cxue/project/GMTiP-RNA/20260131/run_log'
+RUN_LOG_DIR=f'{CONFIG_PROJECT_DIR}/run_log'
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 py_name=os.path.basename(__file__)[:-3]
 
-LOAD_BASE_ENV_CMD='module load anaconda && source ~/.bashrc'
-LOAD_PYSAM_ENV_CMD='module load anaconda && source ~/.bashrc && conda activate pysam'
-LOAD_POLARS_ENVS_CMD='module load anaconda && source ~/.bashrc && mamba activate polars_env'
+LOAD_BASE_ENV_CMD = os.environ.get('LOAD_BASE_ENV_CMD', 'true')
+LOAD_PYSAM_ENV_CMD = os.environ.get('LOAD_PYSAM_ENV_CMD', 'true')
+LOAD_POLARS_ENVS_CMD = os.environ.get('LOAD_POLARS_ENVS_CMD', 'true')
 
+MAIN_RESULT_DIR=f'{CONFIG_PROJECT_DIR}/output/LRS/quantification'
+REF_GTF_PREFIX={
+    'GTOP':f'{CONFIG_PROJECT_DIR}/release/gtf/GTOP'
+}
+COMBINE_REF_NAME='GTOP'
+
+EXCLUDED_SIDS = CONFIG_EXCLUDED_SIDS
+fq_dir = CONFIG_FLNC_DIR
+
+
+# ref_fas={'GTOP_enhanced':gtop_enhanced_fa}
+# ref_fas={'gencode':gencode_fa}
 
 def _load_flair_quant_conf_df():
-    main_dir='/lustre/home/cxue/project/GMTiP-RNA/20260131/output/LRS/quantification'
+    main_dir=MAIN_RESULT_DIR
     quant_dir=f'{main_dir}/flair_quant'
-    gtop_fa=f'/lustre/home/cxue/project/GMTiP-RNA/20260131/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP.fa'
-    ref_fas={'GTOP':gtop_fa}
-
-    fq_dir=f'/lustre/home/lhgong/longrw/myprojs/gtop/20251108-LR-RNAseq/flair/output/flair'
-    excluded_samples=['AGTEX-CA241-5032-LN-YGE8']
+    ref_fas={k:f'{v}.fa' for k,v in REF_GTF_PREFIX.items()}
     conf_dir=f'{quant_dir}/conf'
     output_dir=f'{quant_dir}/output'
+    if os.path.isdir(conf_dir):
+        shutil.rmtree(conf_dir)
     os.makedirs(conf_dir, exist_ok=True)
     n=0
     for f in os.listdir(fq_dir):
-        if f.startswith('AGTEX') and os.path.isdir(os.path.join(fq_dir, f)) and f not in excluded_samples:
-            fa=f'{fq_dir}/{f}/{f}.flnc.fastq'
+        if f.startswith('GTOP') and os.path.isdir(os.path.join(fq_dir, f)) and f not in EXCLUDED_SIDS:
+            fa=f'{fq_dir}/{f}/{f}.flnc.fastq.gz'
             if not os.path.exists(fa):
                 raise Exception(f'{fa} does not exist')
-            sample_id=get_LRS_correct_sample_id(f)
+            sample_id=f
             data=[[sample_id,'cond1','batch1',fa]]
             df=pd.DataFrame(data)
             df.to_csv(f'{conf_dir}/{sample_id}.flair_quant_fa.conf.txt', index=False, sep='\t', header=False)
             n+=1
     print(f'find {n} samples fq')
     # all task
-    data = []
+    xdata = []
     for ref_name,ref_fa in ref_fas.items():
         for f in os.listdir(conf_dir):
             sid=f.split('.')[0]
-            data.append([f'{conf_dir}/{f}',ref_fa,f'{output_dir}/{ref_name}/{sid}'])
-    df=pd.DataFrame(data,columns=['fastq_path','fa_path','out_dir'])
+            xdata.append([f'{conf_dir}/{f}',ref_fa,f'{output_dir}/{ref_name}/{sid}'])
+    df=pd.DataFrame(xdata,columns=['fastq_path','fa_path','out_dir'])
+    return df
+
+def _load_combine_conf_df():
+    main_dir = MAIN_RESULT_DIR
+    ref_name = COMBINE_REF_NAME
+    gtf_prefix = REF_GTF_PREFIX[ref_name]
+    df = pd.DataFrame(
+        [[main_dir, ref_name, gtf_prefix]],
+        columns=['main_dir', 'ref_name', 'gtf_prefix']
+    )
     return df
 
 def submit_job(
@@ -73,8 +101,13 @@ def submit_job(
     :param STEP: keyword matching `iso-seq_pipline`
     :return:
     '''
+    PARTITION = os.environ.get("SLURM_PARTITION", PARTITION)
     # assign task to nodes, build a sample list file as para for pipeline scripts per node.
     if df is not None:
+        if df.empty:
+            raise ValueError('No samples found for this step')
+        if NODES > df.shape[0]:
+            NODES = df.shape[0]
         sub_dfs = np.array_split(df, NODES)
     else:
         sub_dfs=[None,]
@@ -91,7 +124,7 @@ def submit_job(
         # build hpc job submit list
         shell_lines = [
             f'#!/bin/bash',
-            f'#SBATCH -J {STEP}.node{i}',
+            f'#SBATCH -J flair_quant.{STEP}.node{i}',
             f'#SBATCH -o {hpc_log_path}.out',
             f'#SBATCH -e {hpc_log_path}.err',
             f'#SBATCH -p {PARTITION} -N 1 -n {CPU_PER_NODE}',
@@ -110,8 +143,22 @@ def submit_job(
         cmds.append(cmd)
     for i, cmd in enumerate(cmds, 1):
         print(cmd)
-        os.system(cmd)
+        __import__('subprocess').run(cmd, shell=True, executable='/bin/bash', check=True)
 
+
+def check():
+    ref_key=COMBINE_REF_NAME
+    res_dir=f'{MAIN_RESULT_DIR}/flair_quant/output/{ref_key}'
+    fail_ids=[]
+    succ_n=0
+    for f in os.listdir(res_dir):
+        quant_f=f'{res_dir}/{f}/flair_quant.counts.tsv'
+        if os.path.exists(quant_f) and os.path.getsize(quant_f) > 1024:
+            succ_n+=1
+        else:
+            fail_ids.append(f)
+    print(f'succ_n={succ_n}; fail_n={len(fail_ids)}')
+    print(f'failed id: {fail_ids}')
 
 if __name__ == '__main__':
     COMPUTER='HPC'
@@ -120,18 +167,22 @@ if __name__ == '__main__':
     ## for step 1: sample-based multiple task.
     if STEP == 'flair_quant':
         df=_load_flair_quant_conf_df()
-        PARTITION='cu-1,cpuPartition,fat-1,cu-short'
-        NODES = 176
-        CPU_PER_NODE = 10
+        PARTITION = os.environ.get("SLURM_PARTITION", 'cu-1,cpuPartition,fat-1,cu-short')
+        NODES = 400
+        CPU_PER_NODE = 12
         NT_PER_TASK = 12
         N_TASK_PER_NODE = 1
         submit_job(df,STEP,COMPUTER,PARTITION,NODES,CPU_PER_NODE,NT_PER_TASK,N_TASK_PER_NODE)
 
     ## for step 2: combine
     if STEP == 'combine':
-        PARTITION='cu-1,cpuPartition,fat-1'
+        df = _load_combine_conf_df()
+        PARTITION = os.environ.get("SLURM_PARTITION", 'cu-1,cpuPartition,fat-1')
         NODES = 1
         CPU_PER_NODE = 10
         NT_PER_TASK = 1
         N_TASK_PER_NODE = 1
-        submit_job(None,STEP,COMPUTER,PARTITION,NODES,CPU_PER_NODE,NT_PER_TASK,N_TASK_PER_NODE)
+        submit_job(df,STEP,COMPUTER,PARTITION,NODES,CPU_PER_NODE,NT_PER_TASK,N_TASK_PER_NODE)
+
+    if STEP == 'check':
+        check()
