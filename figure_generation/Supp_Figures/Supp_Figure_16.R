@@ -7,7 +7,7 @@ library(ggpubr)
 library(tidyverse)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig16. R2.6.LRS_saturation/input")
+setwd("/path/to/GTOP_code/supp/supp_fig16/input")
 
 # Fig S16a: paired annotated/novel transcript saturation increment at cutoff 10 --------
 
