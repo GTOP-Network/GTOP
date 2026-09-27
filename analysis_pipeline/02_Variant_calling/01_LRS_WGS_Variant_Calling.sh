@@ -72,7 +72,7 @@ function SV_calling(){
 
     # Tool 3: cuteSV (INS/DEL/DUP/TRA/BND discovery)
     # 3.1 Genotype the SV		
-    /lustre/home/rfding/anaconda3/envs/work/bin/cuteSV --genotype -l 50 -s 5 \
+    cuteSV --genotype -l 50 -s 5 \
             --max_cluster_bias_INS 1000 --diff_ratio_merging_INS 0.9 \
             --max_cluster_bias_DEL 1000 --diff_ratio_merging_DEL 0.5  \
             --min_size 50 --threads 32 \
@@ -81,7 +81,7 @@ function SV_calling(){
             -S ${sampleID} ${output_dir}/cuteSV/${sampleID}.vcf ${output_dir}/cuteSV/${sampleID}/temp
     ## 3.2 reGenotype and merge multi-sample VCF
     ls ${output_dir}/cuteSV/*.vcf > ${output_dir}/cuteSV/cuteSV.vcf_list
-    /media/london_C/alps2/sunjs/Software/SURVIVOR/Debug/SURVIVOR merge ${output_dir}/cuteSV/cuteSV.vcf_list 500 1 1 -1 -1 -1 ${output_dir}/cuteSV/GTOP_LRS_SV.cuteSV.raw.vcf
+    SURVIVOR merge ${output_dir}/cuteSV/cuteSV.vcf_list 500 1 1 -1 -1 -1 ${output_dir}/cuteSV/GTOP_LRS_SV.cuteSV.raw.vcf
 	cuteFC ${align_bam} reference.fasta -S ${sampleID}  ${output_dir}/cuteSV/${sampleID}/temp \
         -Ivcf ${output_dir}/cuteSV/GTOP_LRS_SV.cuteSV.raw.vcf \
         -l 50 -s 5 \
@@ -90,10 +90,6 @@ function SV_calling(){
         --threads 32 
     ls *.reGenotype.sorted.vcf.gz > cuteSV_161INDs.merge_vcf_list.txt
     bcftools merge -m none --force-samples -l cuteSV_161INDs.merge_vcf_list.txt -Oz -o GTOP_LRS_SV.pbsv.merged.reGenotyped.vcf.gz
-
-	# Tool 4: SVision ( Complex structure variants discovery)
-    /lustre/home/rfding/anaconda3/envs/py3.6/bin/SVision -o ${output_dir}/${sampleID} -b ${align_bam} -m svision-cnn-model.ckpt -g reference.fasta -n ${sampleID} -t 32 -s 5 --graph --qname
-
 
 
 }
@@ -104,9 +100,9 @@ function SNV_calling(){
     # 1. Genotype the SNV
     #docker pull google/deepvariant
     #make sure there is a index file for your hg38.fasta file, under your $INPUT_DIR directory. 
-    INPUT_DIR=/media/iceland_B/share/Datasets/Asia_gtex/LRS_WGS_alignment
-    OUTPUT_DIR=/media/london_B/lixing/2024-08-29-TR-AsianGTEX/2024-12-11-SNV-INDEL-LongReads/deepvariant
-    INTERMEDIATE_DIRECTORY=/media/london_B/lixing/2024-08-29-TR-AsianGTEX/2024-12-11-SNV-INDEL-LongReads/deepvariant/intermediate_results_dir/${sampleID}
+	INPUT_DIR=/input/LRS_WGS_alignment
+	OUTPUT_DIR=/output/deepvariant
+	INTERMEDIATE_DIRECTORY=/output/deepvariant/intermediate_results_dir/${sampleID}
     BIN_VERSION="1.8.0"
     docker run -v "${INPUT_DIR}:${INPUT_DIR}" \
                 -v "${OUTPUT_DIR}:${OUTPUT_DIR}" \
@@ -121,23 +117,53 @@ function SNV_calling(){
                 --intermediate_results_dir "${INTERMEDIATE_DIRECTORY}"
     
     # 2. Merge multi-sample VCF
-    /media/london_B/lixing/software/glnexus_cli --config DeepVariantWGS ${OUTPUT_DIR}/*.g.vcf.gz > ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bcf
+    glnexus_cli --config DeepVariantWGS ${OUTPUT_DIR}/*.g.vcf.gz > ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bcf
     bcftools view ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bcf | bgzip -@ 24 -c > ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.vcf.gz
     tabix -p vcf ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.vcf.gz
-    bcftools norm -m -both -d none -freference.fasta ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.vcf.gz | bcftools annotate --set-id '%CHROM\_%POS\_%REF\_%ALT' -Oz -o ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.vcf.gz
-    # 3. Filtering
-    # 3.1 QUAL>=20 && F_MISSING<=0.15 && abs(strlen(REF)-strlen(ALT))<=50
-    bcftools +fill-tags ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.vcf.gz  -Oz -o ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.annotation.vcf.gz -- -t all 
-    tabix -p vcf ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.annotation.vcf.gz
-    bcftools view -i 'QUAL>=20 && F_MISSING<=0.15 && abs(strlen(REF)-strlen(ALT))<=50' ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.annotation.vcf.gz -Oz -o ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.Q20.missing15.len50.vcf.gz
-    tabix -p vcf ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.Q20.missing15.len50.vcf.gz
     
-    # 3.2 hwe 1e-6
-    vcftools --gzvcf ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.Q20.missing15.len50.vcf.gz --hwe 1e-6 --recode --recode-INFO-all --stdout | bgzip -c > ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.Q20.missing15.len50.hwe.vcf.gz
-    tabix -p vcf  ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.Q20.missing15.len50.hwe.vcf.gz
+    # 3. LRS WGS Variant Filtering Pipeline (SNV / small INDEL)
+    ###############################################################################
+    # Requirements:
+    #   bcftools >= 1.15
+    #   vcftools
+    #   bgzip / tabix
+    ###############################################################################
 
-    # 3.3 RSID annotation
-    bcftools annotate -a GCF_000001405.40.vcf.gz -c ID  ${OUTPUT_DIR}/GTOP_LRS_SNV.raw.bialleic.Q20.missing15.len50.hwe.vcf.gz -Oz -o   ${OUTPUT_DIR}/GTOP_LRS_SNV.filtered.vcf.gz --threads 32 && tabix -p vcf ${OUTPUT_DIR}/GTOP_LRS_SNV.filtered.vcf.gz
+    RSID_VCF="GCF_000001405.40.vcf.gz"   # dbSNP VCF for rsID annotation
+    THREADS=32
+    PREFIX="GTOP_SNV_INDEL_LRS.PhaseI_160INDS"
+    # Step 1: Normalize multi-allelic sites to biallelic     
+    bcftools norm -m -both -d none -f freference.fasta --threads ${THREADS} ${PREFIX}.0.samples.vcf.gz -Oz -o ${PREFIX}.1.biallelic.vcf.gz
+    bcftools index -t ${PREFIX}.1.biallelic.vcf.gz
+
+    # Step 2: Filter variants with length < 50 bp   
+    bcftools view -i 'strlen(REF)<50 && strlen(ALT)<50' ${PREFIX}.1.biallelic.vcf.gz -Oz -o ${PREFIX}.2.lenlt50.vcf.gz
+    bcftools index -t ${PREFIX}.2.lenlt50.vcf.gz
+
+    # Step 3: Variant-level quality filter  
+    bcftools view -i 'QUAL>=20' ${PREFIX}.2.lenlt50.vcf.gz -Oz -o ${PREFIX}.3.qual20.vcf.gz
+    bcftools index -t ${PREFIX}.3.qual20.vcf.gz
+
+    # Step 4: Site-level missingness filter (≤15%)  
+    vcftools --gzvcf ${PREFIX}.3.qual20.vcf.gz --max-missing 0.85 --recode --recode-INFO-all --stdout | bgzip -c > ${PREFIX}.4.miss15.vcf.gz
+    bcftools index -t ${PREFIX}.4.miss15.vcf.gz
+
+    # Step 5: rsID annotation (dbSNP)     
+    bcftools annotate --set-id '%CHROM\_%POS\_%REF\_%ALT' ${PREFIX}.4.miss15.vcf.gz -Oz -o ${PREFIX}.5.resetID.vcf.gz
+    bcftools index -t ${PREFIX}.5.resetID.vcf.gz
+    bcftools annotate -a ${RSID_VCF} -c ID ${PREFIX}.5.resetID.vcf.gz -Oz -o ${PREFIX}.6.rsid.vcf.gz
+    bcftools index -t ${PREFIX}.6.rsid.vcf.gz
+
+    # Step 6: At least 2 alleles 
+    bcftools +fill-tags ${PREFIX}.6.rsid.vcf.gz -- -t all | bcftools view -c 1:minor - -Oz -o ${PREFIX}.7.AC_1.vcf.gz --threads 32
+    bcftools index -t ${PREFIX}.7.AC_1.vcf.gz
+
+    # Step 7: Hardy–Weinberg equilibrium filtering 
+    vcftools --gzvcf ${PREFIX}.7.AC_1.vcf.gz --hwe 1e-6 --recode --recode-INFO-all --stdout | bgzip -c > ${PREFIX}.8.hwe.vcf.gz
+    bcftools index -t ${PREFIX}.8.hwe.vcf.gz
+
+
+
 
 }
 

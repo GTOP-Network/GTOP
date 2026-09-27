@@ -61,7 +61,7 @@ function TR_calling(){
     HipSTR --bams ${sampleID}.sorted.markdup.realign.BQSR.bam \
             --fasta reference.fasta \
             --regions repeat_catalog_v1.hg38.1_to_1000bp_motifs.HipSTR.bed \
-            --min-reads 20 --max-reads 2000000 --def-stutter-model --output-filters \
+            --min-reads 20 --max-reads 2000000  --output-filters \
             --str-vcf ${sampleID}.HipSTR.vcf.gz
 
     # 1.3 ExpansionHunter
