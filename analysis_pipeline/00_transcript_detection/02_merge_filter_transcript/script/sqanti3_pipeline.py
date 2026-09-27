@@ -12,32 +12,39 @@
 @Time    : 2025/10/30 11:07
 @Desc    : Run Iso-Seq pipeline in HPC or Single node.
 """
+
+import os
+from pathlib import Path
+
+CONFIG_PROJECT_DIR = os.environ.get('GTOP_PROJECT_DIR', str(Path.cwd() / 'gtop_run'))
+CONFIG_REF_DIR = os.environ.get('GTOP_REF_DIR', str(Path(CONFIG_PROJECT_DIR) / 'reference'))
+CONFIG_HG38_FASTA = os.environ.get('HG38_FASTA', str(Path(CONFIG_REF_DIR) / 'hg38.fa'))
+CONFIG_HG38_GTF = os.environ.get('HG38_GTF', str(Path(CONFIG_REF_DIR) / 'gencode.v47.annotation.gtf'))
+CONFIG_SQANTI3_DIR = os.environ.get('SQANTI3_DIR', str(Path(CONFIG_PROJECT_DIR) / 'software/SQANTI3'))
+
 import re
 import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-import os
 import subprocess
 import sys
 from statistics import median
 
 import numpy as np
 import pandas as pd
-import polars as pl
 
 # config for computer evn
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-
-REF_DIR='/lustre/home/cxue/raw_data/GMTiP-LR-RNA-Seq/ref'
+REF_DIR = CONFIG_REF_DIR
 PRIMER_PATH=f'{REF_DIR}/IsoSeq_v2_primers_12.fasta'
 REF_GENOME_INDEX=f'{REF_DIR}/genome_ISOSEQ.mmi'
 CAGE_PEAK = f"{REF_DIR}/human.refTSS_v3.1.hg38.bed"
 POLYA = f"{REF_DIR}/mouse_and_human.polyA_motif.txt"
-REF_GENOME_FASTA = f"{REF_DIR}/genome.fa"
-REF_GTF = f"{REF_DIR}/gencode.v47.annotation.gtf"
+REF_GENOME_FASTA = CONFIG_HG38_FASTA
+REF_GTF = CONFIG_HG38_GTF
 REF_SORTED_GTF = f"{REF_DIR}/gencode.v47.annotation.sorted.gtf.gz"
 REF_GTF_FASTA = f"{REF_DIR}/gencode.v47.annotation.fa"
 
@@ -49,22 +56,19 @@ LOG_NAME = ARGS[3]
 N_TASK = int(ARGS[4])
 NT_PER_TASK = int(ARGS[5])
 
-LOAD_ISOSEQ_ENVS_CMD='module load anaconda && source ~/.bashrc && conda activate isoseq'
-LOAD_PBINDEX_ENVS_CMD='module load anaconda && source ~/.bashrc && conda activate pbtk'
-LOAD_SAMTOOLS_ENVS_CMD='module load samtools'
+LOAD_ISOSEQ_ENVS_CMD = os.environ.get('LOAD_ISOSEQ_ENVS_CMD', 'true')
+LOAD_PBINDEX_ENVS_CMD = os.environ.get('LOAD_PBINDEX_ENVS_CMD', 'true')
+LOAD_SAMTOOLS_ENVS_CMD = os.environ.get('LOAD_SAMTOOLS_ENVS_CMD', 'true')
 
-LOAD_SQANTI3_ENVS_CMD='module load anaconda && source ~/.bashrc && conda activate sqanti3'
-SQANTI3_DIR = f"/lustre/home/cxue/software/sqanti3/release_sqanti3"
+LOAD_SQANTI3_ENVS_CMD = os.environ.get('LOAD_SQANTI3_ENVS_CMD', 'true')
+SQANTI3_DIR = CONFIG_SQANTI3_DIR
 
 # LOAD_SQANTI3_ENVS_CMD='source ~/.bashrc && mamba activate SQANTI3.env'
-# SQANTI3_DIR = '/lustre/home/cxue/software/sqanti3_5.2.1'
 
-LOAD_isoLASER_ENVS_CMD='module load anaconda && source ~/.bashrc && conda activate isoLASER'
-LOAD_PICARD_ENVS_CMD='module load anaconda && source ~/.bashrc && mamba activate picard_env'
-LOAD_SALMON_ENVS_CMD='module load anaconda && source ~/.bashrc && mamba activate salmon_env'
-LOAD_POLARS_ENVS_CMD='module load anaconda && source ~/.bashrc && mamba activate polars_env'
-
-helper_py=f'{LOAD_POLARS_ENVS_CMD} && python {CURRENT_DIR}/alter_tool_helper.py'
+LOAD_isoLASER_ENVS_CMD = os.environ.get('LOAD_isoLASER_ENVS_CMD', 'true')
+LOAD_PICARD_ENVS_CMD = os.environ.get('LOAD_PICARD_ENVS_CMD', 'true')
+LOAD_SALMON_ENVS_CMD = os.environ.get('LOAD_SALMON_ENVS_CMD', 'true')
+LOAD_POLARS_ENVS_CMD = os.environ.get('LOAD_POLARS_ENVS_CMD', 'true')
 
 
 def make_dir(*dirname):
@@ -78,64 +82,32 @@ def log(msg, log_file=None):
         with open(log_file, 'a') as f:
             f.write(line + '\n')
 
-def run_commands_threadpool(cmd_list, main_log, max_workers=4,main_log_prefix='batch'):
-    '''
 
-    :param cmd_list:
-        [
-            [{'cmd':'ls -l', 'log_path': 'ls_log/1.log'},
-            {'cmd':'df -h', 'log_path': 'df_log/1.log'}],
-        ]
-    :param main_log:
-    :param max_workers:
-    :param main_log_prefix:
-    :return:
-    '''
-    make_dir(os.path.dirname(main_log))
-    log(f"[INFO] Batch start. Total tasks: {len(cmd_list)}, Max workers: {max_workers}", main_log)
-    def worker(task_cmds):
-        for cmd_it in task_cmds:
-            cmd=cmd_it['cmd']
-            # cmd=' '.join(cmd.split())
-            task_log=cmd_it['log_path']
-            logs_dir=os.path.dirname(task_log)
-            make_dir(logs_dir)
-            main_log_path=f'{logs_dir}/{main_log_prefix}.log'
-            # if isinstance(cmd, str):
-            #     cmd_str = cmd
-            #     cmd_exec = cmd.split()
-            # else:
-            #     cmd_exec = cmd
-            #     cmd_str = " ".join(cmd)
-            log(f"[INFO] Start task: {' '.join(cmd.split())}", main_log_path)
-            try:
-                with open(task_log, "w", encoding="utf-8") as lf:
-                    process = subprocess.Popen(
-                        cmd,
-                        shell=True,
-                        stdout=lf,
-                        stderr=subprocess.STDOUT,
-                        cwd=logs_dir
-                    )
-                    retcode = process.wait()
-                if retcode == 0:
-                    log(f"[INFO] Finished task: {cmd}", main_log_path)
-                else:
-                    log(f"[ERROR] Task failed ({retcode}): {cmd}", main_log_path)
-            except Exception as e:
-                log(f"[EXCEPTION] Task crashed: {cmd}\n{e}", main_log_path)
-
-    futures = []
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        for cmds in cmd_list:
-            futures.append(executor.submit(worker, cmds))
+def run_commands_threadpool(cmd_list, main_log, max_workers=4, main_log_prefix='batch'):
+    if main_log:
+        Path(main_log).parent.mkdir(parents=True, exist_ok=True)
+    def worker(commands):
+        for item in commands:
+            log_path = Path(item['log_path']).resolve()
+            log_path.parent.mkdir(parents=True, exist_ok=True)
+            with log_path.open('w') as handle:
+                subprocess.run(item['cmd'], shell=True, executable='/bin/bash',
+                               check=True, stdout=handle, stderr=subprocess.STDOUT,
+                               cwd=log_path.parent)
+    failures = []
+    with ThreadPoolExecutor(max_workers=max(1, int(max_workers))) as pool:
+        futures = [pool.submit(worker, commands) for commands in cmd_list]
         for future in as_completed(futures):
             try:
                 future.result()
-            except Exception as e:
-                log(f"[ERROR] Exception in worker thread: {e}", main_log)
-    log(f"[INFO] Batch finished. Logs in {main_log}.")
-
+            except Exception as error:
+                failures.append(str(error))
+    if main_log:
+        with open(main_log, 'a') as handle:
+            handle.write(f'{main_log_prefix}: tasks={len(cmd_list)}, failures={len(failures)}\n')
+            handle.writelines(error + '\n' for error in failures)
+    if failures:
+        raise RuntimeError(f'{len(failures)} task(s) failed; see {main_log}')
 
 
 def sqanti3_annot_filter(task_conf_csv:str, n_task:int, log_name:str, nt_per_task:int):
@@ -156,15 +128,19 @@ def sqanti3_annot_filter(task_conf_csv:str, n_task:int, log_name:str, nt_per_tas
         # sqanti3 qc and filter.
         log(f'start sqanti3')
         out_dir = f'{root_out_dir}/sqanti3'
+        out_prefix = 'sqanti3'
+        # rerun
+        # if os.path.isfile(f'{out_dir}/{out_prefix}_corrected.gtf'):
+        #     log(f'{chr_id} exist, skip')
+        #     continue
         if os.path.isdir(out_dir):
             shutil.rmtree(out_dir)
         filter_out_dir = f'{out_dir}/filter'
         make_dir(out_dir,filter_out_dir)
         log_path = f'{out_dir}/run_sqanti3.log'
-        out_prefix = 'sqanti3'
 
-        chunk_size=8
-        if chr_id in ['chrM','other']:
+        chunk_size=1
+        if chr_id in ['chrM','chr_other','other']:
             chunk_size=1
         cmd = f'''
                 {LOAD_SQANTI3_ENVS_CMD} && 
@@ -268,39 +244,159 @@ def merge_sqanti3_annotation():
     log(f'save merged protein sequence.')
 
 
-def custom_sqanti3_filter():
+def sqanti3_filter_step1():
+    sqanti3_prefix=f'{ROOT_OUTPUT_DIR}/sqanti3_merged/filtered'
+    filter_prefix=f'{ROOT_OUTPUT_DIR}/sqanti3_filter_1/filtered'
+    tools_support_path=f'{ROOT_OUTPUT_DIR}/raw_isoform/raw_merged.meta.tsv'
+
+    def get_transcript_id(attr):
+        tid_match = re.search(r'transcript_id\s+"([^"]+)"', attr)
+        if tid_match:
+            return tid_match.group(1)
+        return None
+
+    def get_exon_bounds(gtf_path):
+        exon_bounds = {}
+        with open(gtf_path, 'r') as in_f:
+            for line in in_f:
+                if line.startswith('#') or not line.strip():
+                    continue
+                parts = line.rstrip('\n').split('\t')
+                if len(parts) < 9 or parts[2] != 'exon':
+                    continue
+                tid = get_transcript_id(parts[8])
+                if not tid:
+                    continue
+                start, end = int(parts[3]), int(parts[4])
+                if tid not in exon_bounds:
+                    exon_bounds[tid] = [start, end]
+                else:
+                    exon_bounds[tid][0] = min(exon_bounds[tid][0], start)
+                    exon_bounds[tid][1] = max(exon_bounds[tid][1], end)
+        return exon_bounds
+
+    def write_filtered_gtf(gtf_path, out_gtf, transcripts, exon_bounds):
+        with open(gtf_path, 'r') as in_f, open(out_gtf, 'w') as out_f:
+            for line in in_f:
+                if line.startswith('#') or not line.strip():
+                    continue
+                parts = line.rstrip('\n').split('\t')
+                if len(parts) < 9:
+                    continue
+                tid = get_transcript_id(parts[8])
+                if tid not in transcripts:
+                    continue
+                if parts[2] == 'transcript' and tid in exon_bounds:
+                    parts[3] = str(exon_bounds[tid][0])
+                    parts[4] = str(exon_bounds[tid][1])
+                    line = '\t'.join(parts) + '\n'
+                out_f.write(line)
+
+    # 1. add supported tools
+    df=pd.read_csv(f'{sqanti3_prefix}.RulesFilter_result_classification.txt',sep='\t')
+    tool_df = pd.read_csv(tools_support_path, sep='\t')
+    tool_count_df = tool_df.set_index('transcript_id').apply(pd.to_numeric, errors='coerce').fillna(0)
+    tx_n_tools = tool_count_df.sum(axis=1).to_dict()
+    df['n_support_tools']=pd.to_numeric(df['isoform'].map(lambda x: tx_n_tools.get(x)), errors='coerce').fillna(0).astype(int)
+    n_tools_gt0_transcripts=set(df.loc[(df['n_support_tools']>0) & (df['filter_result']=='Isoform'),'isoform'].unique().tolist())
+    # update gtf and annotation file
+    make_dir(os.path.dirname(filter_prefix))
+    out_gtf=f'{filter_prefix}.gtf'
+    out_n_tools_gt0_gtf=f'{filter_prefix}.n_tools_gt0.gtf'
+    out_cds_gtf = f'{filter_prefix}.cds.gff3'
+    out_annot = f'{filter_prefix}.RulesFilter_result_classification.txt'
+    #  with >= 3 tools
+    df.loc[(df['n_support_tools']<3),'filter_result']='Artifact'
+    # update annotation file
+    df.to_csv(out_annot,sep='\t',index=False)
+    log(f'save updated annotation file')
+    transcripts=set(df.loc[df['filter_result']=='Isoform','isoform'].unique().tolist())
+    log(f'isoform: {len(transcripts)}')
+    # update gtf
+    gtf_path=f'{sqanti3_prefix}.gtf'
+    exon_bounds = get_exon_bounds(gtf_path)
+    write_filtered_gtf(gtf_path, out_gtf, transcripts, exon_bounds)
+    log(f'save updated gtf')
+    write_filtered_gtf(gtf_path, out_n_tools_gt0_gtf, n_tools_gt0_transcripts, exon_bounds)
+    log(f'save n_tools > 0 gtf')
+    # update cds
+    cds_gtf_path=f'{sqanti3_prefix}.full.cds.gff3'
+    with open(cds_gtf_path, 'r') as in_f, open(out_cds_gtf, 'w') as out_f:
+        for line in in_f:
+            if line.startswith('#') or not line.strip():
+                continue
+            parts = line.strip().split('\t')
+            if len(parts) < 9:
+                continue
+            tid_match = re.search(r'transcript_id\s+"([^"]+)"', parts[8])
+            if tid_match and tid_match.group(1) in transcripts:
+                out_f.write(line)
+    log(f'save updated cds gff')
+
+
+def custom_sqanti3_filter(exclude_sample_ids=[]):
     min_read_a_sample = 5
     min_support_samples = 2
-    sqanti3_prefix=f'{ROOT_OUTPUT_DIR}/sqanti3_merged/filtered'
-    suffix='.custom'
-    flnc_count_path=f'{ROOT_OUTPUT_DIR}/flair_quant/combined/raw_gtf.transcript.count.flair.tsv'
+    filter_dir=f'{ROOT_OUTPUT_DIR}/sqanti3_filter_1'
+    raw_sqanti3_prefix=f'{filter_dir}/filtered'
+    out_filter_dir = f'{ROOT_OUTPUT_DIR}/sqanti3_filter_final'
+    if len(exclude_sample_ids)>0:
+        out_filter_dir=f'{ROOT_OUTPUT_DIR}/sqanti3_filter_final_gt_1k'
+    os.makedirs(out_filter_dir, exist_ok=True)
+    sqanti3_prefix=f'{out_filter_dir}/filtered'
+
+    flnc_count_path=f'{filter_dir}/flair_quant/combined/transcript.count.flair.tsv'
+    first_exon_path=f'{filter_dir}/AF_filter/final_novel_first_exon.transcript_qc.tsv'
+    srs_junction_path=f'{filter_dir}/SRS_junction_filter/srs_jobs/merged/srs.transcript_qc.tsv'
 
     # 1. add supported all reads
-    sq_df=pd.read_csv(f'{sqanti3_prefix}.RulesFilter_result_classification.txt',sep='\t',index_col=0)
-    df = pd.read_csv(flnc_count_path, index_col=0, sep='\t')
-    df = df.reindex(df.index.union(sq_df.index), fill_value=0)
-    sum_read=df.sum(axis=1)
-    print(df)
-    print(sum_read)
-    print(sq_df)
-    support_samples = (df >= min_read_a_sample).sum(axis=1)
-    sq_df['support_read']=sum_read[sq_df.index]
+    sq_df=pd.read_csv(f'{raw_sqanti3_prefix}.RulesFilter_result_classification.txt',sep='\t',index_col=0)
+    expr_df = pd.read_csv(flnc_count_path, index_col=0, sep='\t')
+    # Add SQANTI3 Isoform transcripts missing from the expression matrix and assign 0 counts.
+    raw_quant_tx_ids = sq_df.index[sq_df['filter_result'] == 'Isoform']
+    expr_df = expr_df.reindex(expr_df.index.union(raw_quant_tx_ids), fill_value=0)
+    # Add the remaining SQANTI3 transcripts missing from the expression matrix and assign NA.
+    expr_df = expr_df.reindex(expr_df.index.union(sq_df.index), fill_value=np.nan)
+    # if excluding low length samples
+    if len(exclude_sample_ids) > 0:
+        expr_df=expr_df.loc[:,~expr_df.columns.isin(exclude_sample_ids)]
+        log(f'exclude {len(exclude_sample_ids)} samples; remain {expr_df.shape[1]} samples')
+        pass
+    sum_read = expr_df.sum(axis=1, min_count=1)
+    support_samples = (expr_df >= min_read_a_sample).sum(axis=1).astype(float)
+    support_samples[expr_df.notna().sum(axis=1) == 0] = np.nan
+    sq_df['support_read'] = sum_read.reindex(sq_df.index)
     # 2. add supported samples (with read >= min_read_a_sample)
-    sq_df['support_samples']=support_samples[sq_df.index]
+    sq_df['support_samples'] = support_samples.reindex(sq_df.index)
+    # 3. add first-exon QC
+    fe_df = None
+    fe_df=pd.read_csv(first_exon_path,sep='\t')
+    fail_af_txs=set(fe_df.loc[fe_df['qc_status']!='PASS','transcript_id'].tolist())
+    sq_df['AF_filter']=sq_df.index.isin(fail_af_txs)
+    # 4. add short-read RNA-seq junction QC
+    srj_df=pd.read_csv(srs_junction_path,sep='\t')
+    fail_sj_txs = set(srj_df.loc[srj_df['qc_pass'] != 'PASS', 'transcript_id'].tolist())
+    sq_df['SRS_junction_filter']=sq_df.index.isin(fail_sj_txs) | ~sq_df.index.isin(srj_df['transcript_id'])
+
     # save
     advanced_filter_path=f'{sqanti3_prefix}.advanced_filter.txt'
     sq_df.to_csv(advanced_filter_path,sep='\t')
 
     # update gtf and annotation file
-    out_gtf=f'{sqanti3_prefix}{suffix}.gtf'
-    out_cds_gtf = f'{sqanti3_prefix}{suffix}.cds.gff3'
-    out_annot = f'{sqanti3_prefix}{suffix}.RulesFilter_result_classification.txt'
-    df=pd.read_csv(f'{sqanti3_prefix}.advanced_filter.txt',sep='\t')
+    out_gtf=f'{sqanti3_prefix}.gtf'
+    out_cds_gtf = f'{sqanti3_prefix}.cds.gff3'
+    out_annot = f'{sqanti3_prefix}.RulesFilter_result_classification.txt'
+    df=pd.read_csv(advanced_filter_path,sep='\t')
     # all isoform with >= 10 supported reads
     df.loc[(df['support_read']<10),'filter_result']='Artifact'
     # non-FSM
-    df.loc[((df['structural_category']!='full-splice_match') & (df["polyA_motif_found"] == False)),'filter_result']='Artifact'
-    df.loc[((df['structural_category']!='full-splice_match') & (df['support_samples']<min_support_samples)),'filter_result']='Artifact'
+    # df.loc[((df['associated_transcript']=='novel') & (df["polyA_motif_found"] == False)),'filter_result']='Artifact'
+    df.loc[((df['associated_transcript']=='novel') & (df['support_samples']<min_support_samples)),'filter_result']='Artifact'
+    # novel: first exon filter
+    df.loc[((df['associated_transcript']=='novel') & (df['AF_filter'])),'filter_result']='Artifact'
+    # SRS junction QC
+    df.loc[((df['associated_transcript']=='novel') & (df['SRS_junction_filter'])),'filter_result']='Artifact'
+
     isoform=df.loc[df['filter_result']=='Isoform',:].shape[0]
     log(f'isoform: {isoform}')
     # update annotation file
@@ -309,7 +405,7 @@ def custom_sqanti3_filter():
     transcripts=set(df.loc[df['filter_result']=='Isoform','isoform'].unique().tolist())
     log(f'isoform: {len(transcripts)}')
     # update gtf
-    gtf_path=f'{sqanti3_prefix}.gtf'
+    gtf_path=f'{raw_sqanti3_prefix}.gtf'
     with open(gtf_path, 'r') as in_f, open(out_gtf, 'w') as out_f:
         for line in in_f:
             if line.startswith('#') or not line.strip():
@@ -322,7 +418,7 @@ def custom_sqanti3_filter():
                 out_f.write(line)
     log(f'save updated gtf')
     # update cds
-    cds_gtf_path=f'{sqanti3_prefix}.full.cds.gff3'
+    cds_gtf_path=f'{raw_sqanti3_prefix}.cds.gff3'
     with open(cds_gtf_path, 'r') as in_f, open(out_cds_gtf, 'w') as out_f:
         for line in in_f:
             if line.startswith('#') or not line.strip():
@@ -341,5 +437,10 @@ if __name__ == '__main__':
         sqanti3_annot_filter(task_conf_csv=CONF_CSV, n_task=N_TASK, log_name=LOG_NAME, nt_per_task=NT_PER_TASK)
     if STEP == 'merge':
         merge_sqanti3_annotation()
+    if STEP == 'filter_step1':
+        sqanti3_filter_step1()
     if STEP == 'custom_filter':
         custom_sqanti3_filter()
+    if STEP == 'custom_filter_gt_1k':
+        Low_than_1k_sample_IDs = ['GTOP-BF221-0378-LN-2ZKY', 'GTOP-BG171-0378-LN-TDV5', 'GTOP-CF242-0378-LN-F6UE', 'GTOP-BL021-0378-LN-RZ42', 'GTOP-AJ221-1053-LN-DP1V', 'GTOP-AJ221-4019-LN-D5AL', 'GTOP-CF241-1236-LN-NJ1W', 'GTOP-BA131-2099-LN-H19X', 'GTOP-CF242-2099-LN-6Y37', 'GTOP-CA081-1392-LN-20Q9', 'GTOP-CB161-1392-LN-I067', 'GTOP-CB271-1584-LN-N1C6', 'GTOP-CG041-5156-LN-75CF']
+        custom_sqanti3_filter(Low_than_1k_sample_IDs)
