@@ -6,7 +6,7 @@ library(ggplot2)
 library(ggpubr)
 
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig4/input")
+setwd("/path/to/GTOP_code/supp/supp_fig4/input")
 
 
 # Supp.Figure.4a all-read versus aligned-read counts per sample --------------
