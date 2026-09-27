@@ -7,7 +7,7 @@ library(tidyverse)
 library(ggpubr)
 library(data.table)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig31.Figure.S23-GTOP-GTEX-eQTL-correlation-SNV")
+setwd("/path/to/GTOP_code/supp/supp_fig31")
 # Supp.Fig.31a (GTOP lead to GTEx)correlation of eQTL effects between GTOP and GTEx -----------
 
 
