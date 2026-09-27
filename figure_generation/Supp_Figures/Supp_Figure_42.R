@@ -8,7 +8,7 @@ library(ggplot2)
 library(tidyverse)
 library(ggpubr)
 
-setwd("/media/london_A/mengxin/GTOP_code/supp/supp_fig42.Figure S28-BRAP")
+setwd("/path/to/GTOP_code/supp/supp_fig42")
 
 # --------- Helper functions
 theme_pub <- function(base_size = 12) {
