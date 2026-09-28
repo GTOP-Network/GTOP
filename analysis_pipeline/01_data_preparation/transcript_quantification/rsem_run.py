@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/11/23 21:43
-@Email   : xuechao@szbl.ac.cn
-@Desc    :  
-"""
+
 import os
 import shutil
 import sys
@@ -19,28 +14,28 @@ LOAD_BASE_ENV_CMD='module load anaconda && source ~/.bashrc'
 LOAD_PYSAM_ENV_CMD='module load anaconda && source ~/.bashrc && conda activate pysam'
 
 
-RUN_LOG_DIR=f'{PROJ_DIR}/project/GTOP-RNA/20260815/run_log'
+RUN_LOG_DIR=f'{PROJ_DIR}/path/to/run_log'
 
-OUTPUT_DIR='/flashfs1/scratch.global/xlma/xuechao_tmp'
+OUTPUT_DIR='/path/to/out'
 
-passed_srRNA_sample_path=f'{PROJ_DIR}/raw_data/GMTiP/meta/RNA/SRS_passed_sample_id.csv'
+passed_srRNA_sample_path=f'{PROJ_DIR}/path/to/SRS_passed_sample_id.csv'
 # REF_TAG='DSA_to_hg38'
 # REF_TAG='hg38'
 REF_TAG='enhanced'
 
 ## real data
 fastq_dirs=[
-    '/flashfs1/scratch.global/cxue/raw_data/GTOP/RNA/SRS/fastq',
-    '/flashfs1/scratch.global/cxue/raw_data/GTOP/RNA/SRS/fastq_merged',
-    '/lustre/home/xdzou/2024-10-21-GTBMap/2025-02-11-RNA-mapping/input/fastq',
+    '/path/to/raw_data/GTOP/RNA/SRS/fastq',
+    '/path/to/raw_data/GTOP/RNA/SRS/fastq_merged',
+    '/path/to/input/fastq',
 ]
 
 # downsampling data
 # fastq_dirs=[
-#     '/flashfs1/scratch.global/lhgong/mengxin/output_80m'
+#     '/path/to/output_80m'
 # ]
-# RUN_LOG_DIR=f'{PROJ_DIR}/project/GTOP-RNA/20260815/run_log/SRS_downsampling'
-# OUTPUT_DIR='/flashfs1/scratch.global/cxue/tmp/SRS_downsampling_quant'
+# RUN_LOG_DIR=f'{PROJ_DIR}/path/to/run_log/SRS_downsampling'
+# OUTPUT_DIR='/path/to/SRS_downsampling_quant'
 
 check_dir = f'{RUN_LOG_DIR}/HPC/check'
 FAILED_SAMPLES_LIST_PATH = f'{check_dir}/failed_sample_ids.txt'
@@ -50,7 +45,7 @@ DUP_TRANSCRIPT_ID_REPORT_PATH = f'{check_dir}/rsem_duplicate_transcript_ids.tsv'
 TRANSCRIPT_ID_SUMMARY_REPORT_PATH = f'{check_dir}/rsem_transcript_id_check_summary.tsv'
 
 
-NASFS1_FASTQ_COPY_DIR='/flashfs1/scratch.global/cxue/raw_data/GTOP/RNA/SRS/fastq'
+NASFS1_FASTQ_COPY_DIR='/path/to/raw_data/GTOP/RNA/SRS/fastq'
 COPY_CHUNK_SIZE=64*1024*1024
 COPY_WORKERS=4
 COPY_PROGRESS_INTERVAL=5
@@ -240,7 +235,7 @@ def remain_sr_task():
     sid_df=_load_all_unique_fastq_gt_1g()
     fq_ids=set(sid_df['sample_id'].tolist())
     quant_methods=['salmon','rsem','stringtie']
-    sr_dir=f'{PROJ_DIR}/project/GMTiP-RNA/20251031/short_read/HPC/output'
+    sr_dir=f'{PROJ_DIR}/path/to/short_read/HPC/output'
     for quant_method in ['rsem']:
         df=pd.read_csv(f'{sr_dir}/{quant_method}/quant/gencode.gene.count.{quant_method}.tsv',sep='\t',
                        index_col=0,nrows=0)
