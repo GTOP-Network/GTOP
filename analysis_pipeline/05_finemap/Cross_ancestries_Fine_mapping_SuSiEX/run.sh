@@ -18,6 +18,7 @@ function generate_gene_list(){
 	annotation=$WKDIR/input/GTOP.gene_info.txt
 
 	Rscript $WKDIR/src/generate_egene_list.R -a $annotation -t $Tissue
+	Rscript $WKDIR/src/shared_egenes.R -t $Tissue
 }
 
 function run_susieX(){
