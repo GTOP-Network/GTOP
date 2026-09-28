@@ -63,7 +63,7 @@ Downstream genetic analyses
 | Module | Main purpose |
 |---|---|
 | `00_transcript_detection/` | Long-read transcript discovery, integration, filtering, quantification, and proteomic validation |
-| `01_data_preparation/` | Short-read gene expression, splicing, and long-read transcript-level phenotype preparation |
+| `01_data_preparation/` | Short-read gene expression, splicing, and transcript-level phenotype preparation |
 | `02_Variant_calling/` | LRS/SRS variant calling, population structure analysis, and VEP annotation |
 | `03_ASE_ASTS/` | ASE, ASTS, allele-specific splicing, and allele-specific junction analysis |
 | `04_QTL_mapping/` | eQTL, sQTL, TR-eQTL, TR-sQTL, and MAJIQTL-based QTL analyses |
@@ -82,7 +82,7 @@ Downstream genetic analyses
 
 ### 01. Data preparation
 
-`01_data_preparation/` generates molecular phenotypes for downstream QTL analyses, including short-read gene expression, LeafCutter-based splicing phenotypes, and long-read transcript-level quantification using Salmon/RSEM-related workflows.
+`01_data_preparation/` generates molecular phenotypes for downstream QTL analyses, including short-read gene expression, LeafCutter-based splicing phenotypes, and transcript-level quantification using Salmon/RSEM-related workflows.
 
 ### 02. Variant calling
 
