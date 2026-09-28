@@ -8,9 +8,9 @@ library(dplyr)
 library(magrittr)
 library(ggplot2)
 library(ggpubr)
-setwd("/path/to/GTOP_code/extend/extend_6")
+setwd("/media/london_A/mengxin/GTOP_code/extend/extend_6")
 
-# Extended.Data.Fig.7a ----------------------------------------------------
+# Extended.Data.Fig.6a ----------------------------------------------------
 
 xy_gtex <- readRDS("./input/gtex.fm.RDS")
 xy_gtop <- readRDS("./input/gtop.fm.RDS")
@@ -26,10 +26,12 @@ df_gtex$Var2 <- factor(df_gtex$Var2,levels = c("specific","shared"))
 df_gtop$Var2 <- factor(df_gtop$Var2,levels = c("specific","shared"))
 p1 <- ggplot(df_gtex,aes(x=Var1,y=Freq,fill=Var2)) +
   geom_bar(stat="identity",position = position_stack()) + theme_pubr() +
-  ylim(0,100000);p1
+  ylim(0,100000)+
+  scale_fill_manual(values = c("#48777f", "#818bab"));p1
 p2 <- ggplot(df_gtop,aes(x=Var1,y=Freq,fill=Var2)) +
   geom_bar(stat="identity",position = position_stack()) + theme_pubr() +
-  ylim(0,100000);p2
+  ylim(0,100000)+
+  scale_fill_manual(values = c("#793d2e", "#818bab"));p2
 
 cowplot::plot_grid(p2,p1,ncol=1,align="v")
 
@@ -43,7 +45,7 @@ median(df_gtop.w$prp_s)#0.737912
 median(df_gtex.w$prp_s)#0.6522528
 
 
-# Extended.Data.Fig.7b ----------------------------------------------------
+# Extended.Data.Fig.6b ----------------------------------------------------
 
 
 rm_version_num <- function(x){
@@ -126,7 +128,7 @@ p2 <- sankeyNetwork(Links = df_sank, Nodes = nodes,
                     Value = "count", NodeID = "name", 
                     sinksRight=FALSE,fontSize = 10);p2
 
-# Extended.Data.Fig.7c: CS size in single population fine-mapping  --------
+# Extended.Data.Fig.6c: CS size in single population fine-mapping  --------
 
 dat.gtex <- readRDS("./input/dat.gtex.RDS")
 dat.gtop <- readRDS("./input/dat.gtop.RDS")
@@ -178,7 +180,7 @@ p2 <- ggplot(df_plot1,aes(x=Tissue,y=log2(cs_size),fill=group)) +
   geom_boxplot(width=.5) + theme_pubr() + 
   scale_fill_manual(breaks =c("GTOP","GTEx","GTEx+GTOP"), values = c("#B65844","#E2C396","#7784A3") );p2
 
-# Extended Data Fig.7d correlation of PIP between single population fine-mapping and cross-ancestry fine-mapping
+# Extended Data Fig.6d correlation of PIP between single population fine-mapping and cross-ancestry fine-mapping
 x <- df.cran %>% mutate(maxPIP_cran=max_pip,CS_size_cran=cs_size) %>% dplyr::select(tissue_gene,maxPIP_cran,CS_size_cran)
 y <- df.gtex %>% mutate(maxPIP_gtex=max_pip,CS_size_gtex=cs_size) %>% dplyr::select(tissue_gene,maxPIP_gtex,CS_size_gtex) 
 z <- df.gtop %>% mutate(maxPIP_gtop=max_pip,CS_size_gtop=cs_size) %>% dplyr::select(tissue_gene,maxPIP_gtop,CS_size_gtop) 
@@ -199,42 +201,63 @@ print(p3.3)
 #dev.off()
 
 
-# Extended.Data.Fig.7e: MPRA permutation  --------
-color <- readRDS("./input/tis_color.rds")
-cs_sum <- fread("./input/perm.cs_mpraratio.txt")
+# Extended.Data.Fig.6e: MPRA supported  --------
 
-cs_observed <- cs_sum |> 
-  dplyr::filter(permutation_id=="observed")
+mpradf <- fread("./input/mpra.support.txt")
+mpradf[, dataset := factor(
+  dataset,
+  levels = c("GTEx", "GTOP", "GTEx+GTOP")
+)]
 
-pcs <- ggplot(cs_sum |> dplyr::filter(permutation_id!="observed"))+
-  geom_density(aes(x=cs_ratio, fill=tissue, alpha=.75, color=tissue))+
-  geom_vline(data=cs_observed, aes(xintercept=cs_ratio, color=tissue))+
-  scale_fill_manual(values=color)+
-  scale_color_manual(values=color)+
-  facet_grid(tissue ~ .)+
-  theme_pubr();pcs
-
-var_sum <- fread("./input/perm.var_mpraratio.txt")
-
-var_observed <- var_sum |> 
-  dplyr::filter(permutation_id=="observed")
-
-pvar <- ggplot(var_sum |> dplyr::filter(permutation_id!="observed"))+
-  geom_density(aes(x=var_ratio, fill=tissue, alpha=.75, color=tissue))+
-  geom_vline(data=var_observed, aes(xintercept=var_ratio, color=tissue))+
-  scale_fill_manual(values=color)+
-  scale_color_manual(values=color)+
-  facet_grid(tissue ~ .)+
-  theme_pubr();pvar
-
-# Extended.Data.Fig.7f: MPRA permutation enrichment --------
-
-enplotdf <- fread("./input/obs.vs.random.fisher.txt")
-
-ggplot(enplotdf, aes(x = class, y = odds_ratio)) +
-  geom_boxplot(width = 0.5,outlier.shape = NA,fill = "white") +
-  geom_jitter(aes(color = class),width = 0.15,alpha = 0.5,size = 1) +
-  scale_color_manual(values=c("cs_mpra_hit"="#3B5B92", "var_mpra_hit"="#B85C38"))+
+#bottom panel
+ggplot(
+  mpradf,
+  aes(x = dataset, y = OR, fill = dataset)) +
+  geom_boxplot( width = 0.6, outlier.shape = NA) +
+  geom_jitter( width = 0.12, size = 2, alpha = 0.8) +
+  scale_fill_manual(
+    values = c(
+      "GTOP" = "#B65844",
+      "GTEx" = "#E2C396",
+      "GTEx+GTOP" = "#7784A3")) +
+  labs(
+    x = NULL,
+    y = "Odds ratio for MPRA support") +
   theme_pubr() +
-  labs(  x = NULL,  y = "Odds ratio") +
-  theme(legend.position = "none",axis.text.x = element_text(angle = 45, hjust = 1))
+  theme(legend.position = "none") +
+  stat_compare_means( comparisons = list(   c("GTOP", "GTEx+GTOP"),   c("GTEx", "GTEx+GTOP") ),method = "wilcox.test",paired = TRUE,label = "p.format",step.increase = 0.12,tip.length = 0.02,size = 4)
+
+#top panel
+
+prodf <- mpradf %>%
+  dplyr::group_by(dataset) %>%
+  dplyr::summarise(
+    mean_Lead_total = mean(Lead_rate, na.rm = TRUE),
+    SD_Lead_total = sd(Lead_rate, na.rm = TRUE)
+  )
+
+
+
+ggplot(
+  prodf,
+  aes(x = dataset, y = mean_Lead_total, fill = dataset)) +
+  geom_col(width = 0.65) +
+  geom_errorbar(
+    aes(
+      ymin = mean_Lead_total - SD_Lead_total,
+      ymax = mean_Lead_total + SD_Lead_total),
+    width = 0.15,linewidth = 0.7) +
+  scale_fill_manual(
+    values = c(
+      "GTOP" = "#B65844",
+      "GTEx" = "#E2C396",
+      "GTEx+GTOP" = "#7784A3"))+
+  labs(
+    x = NULL,
+    y = "Proportion of lead variants supported by MPRA") +
+  theme_pubr() +
+  theme(legend.position = "none")
+
+
+
+
