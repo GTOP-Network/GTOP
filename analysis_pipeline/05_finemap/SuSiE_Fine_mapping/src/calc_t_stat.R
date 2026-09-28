@@ -13,12 +13,12 @@ library(magrittr)
 
 input_file <- ""
 output_file <- ""
-indir <- "/lustre/home/xdzou/2024-10-21-GTBMap/2025-06-15-joint-split-gt-QTL/output/QTL_mapping/all_joint/cis_QTL/text_format/"
+indir <- "/path/to/2024-10-21-GTBMap/2025-06-15-joint-split-gt-QTL/output/QTL_mapping/all_joint/cis_QTL/text_format/"
 input_file <- paste0(indir,opt$tissue,".cis_eQTL.all_pairs.txt.gz")
 output_file <- paste0(indir,opt$tissue,".cis_eQTL.all_pairs.add_tstat.txt")
 
 # load sample count in each tissue, and atGene in each tissue
-currDir <- "/lustre/home/xdzou/2024-10-21-GTBMap/2025-06-15-joint-split-gt-QTL/output/QTL_mapping/all_joint/2025-06-18-Finemap_susie/"
+currDir <- "/path/to/2024-10-21-GTBMap/2025-06-15-joint-split-gt-QTL/output/QTL_mapping/all_joint/2025-06-18-Finemap_susie/"
 sample_n <- read.table(paste0(currDir,"input/SampleSize_by_tissue.txt"),header=F,sep="\t",stringsAsFactors=F)
 names(sample_n) <- c("Tissue","Size")
 
