@@ -39,7 +39,7 @@ gwas_qtype <- gwas_qtype_df[GWAS_name == GWASNAME, Type]
 
 # 2. Read GWAS summary statistics for the specified chromosome
 gwas_input_path <- sprintf(
-    "/lustre/home/ynwang/GWAS_resource_flash/All_EAS/susie_coloc_split/%s/%s_coloc.%s.txt.gz",
+    "/path/to/All_EAS/susie_coloc_split/%s/%s_coloc.%s.txt.gz",
     GWASNAME,
     GWASNAME,
     CHRNAME
@@ -82,7 +82,7 @@ rownames(gwas_loci_data) <- gwas_loci_data$rsid_clean
 # bfile_path <- sprintf("/media/bora_A/zhangt/src/data/1000G/five_ancestry_groups/EAS/splitbychr/1000G.EAS.maf01.%s", CHRNAME)
 # plink_bin  <- "/media/bora_A/zhangt/src/bin/plink"
 bfile_path <- sprintf(
-    "/lustre/home/tzhang/src/1000G_EAS_hg38/splitbychr/1000G.EAS.maf01.%s",
+    "/path/to/splitbychr/1000G.EAS.maf01.%s",
     CHRNAME
 )
 plink_bin <- "/lustre/home/tzhang/src/bin/plink"
