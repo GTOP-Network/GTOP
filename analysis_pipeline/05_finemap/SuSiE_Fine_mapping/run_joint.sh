@@ -80,7 +80,7 @@ function run_prepare_phenotype_by_eGene(){
 	for tissue in `cat $currDir/selected_tissues_11.txt|cut -f1`
 	do
 		echo $tissue
-		outDir=/flashfs1/scratch.global/xdzou/Fine_map_susie/output/Joint/${tissue}
+		outDir=/path/to/Fine_map_susie/output/Joint/${tissue}
 		geneList=$currDir/input/tissue_gene_joint/${tissue}_gene_list.txt
 		if [ ! -d "$outDir" ]
 		then
@@ -109,7 +109,7 @@ date
 }
 
 function add_genotype_to_each_gene(){
-	wkdir=/flashfs1/scratch.global/xdzou/Fine_map_susie
+	wkdir=/path/to/Fine_map_susie
 	currDir=`pwd`
 	for tissue in `cat $currDir/selected_tissues_11.txt|cut -f1|tail -n+3`
 	do
@@ -139,8 +139,7 @@ done
 
 function run_prepare_genotype_by_eGene(){
 	currDir=`pwd`
-	tissue_list=( Spleen Whole_Blood )
-#	tissue_list=( Adrenal_Gland Gallbladder Liver Muscle Pancreas_Body Pancreas_Head Pancreas_Tail Spleen Whole_Blood )
+	tissue_list=( Adrenal_Gland Gallbladder Liver Muscle Pancreas_Body Pancreas_Head Pancreas_Tail Spleen Whole_Blood Skin )
 	for tissue in ${tissue_list[@]}
 	do
 		echo $tissue
@@ -192,7 +191,7 @@ Rscript $DIR/src/prepare_genotype_by_gene.tr.R -g $GeneList -t $TISSUE
 # susie
 function run_susie_analysis(){
 	currDir=`pwd`
-	wkdir=/flashfs1/scratch.global/xdzou/Fine_map_susie
+	wkdir=/path/to/Fine_map_susie
 	for tissue in `cat $currDir/selected_tissues_11.txt|cut -f1`
 	do
 		echo $tissue
@@ -242,7 +241,7 @@ function get_tissue_gene_list(){
 
 function split_files(){
 	curr_dir=`pwd`
-	dir=/lustre/home/xdzou/2024-10-21-GTBMap/2025-06-15-joint-split-gt-QTL/output/QTL_mapping/all_joint/cis_QTL/text_format
+	dir=/path/to/2024-10-21-GTBMap/2025-06-15-joint-split-gt-QTL/output/QTL_mapping/all_joint/cis_QTL/text_format
 
 	if [ ! -d "$curr_dir/input/split_gene" ]
 	then
@@ -284,7 +283,7 @@ date
 
 # split qtl by gene
 function run_split_qtl_by_gene(){
-	dir=/lustre/home/xdzou/2022-08-05-altTSS_QTL-Project
+	dir=/path/to/2022-08-05-altTSS_QTL-Project
 	current_dir=`pwd`
 	for line in `cat ${dir}/input/gtex_tissues_and_sampleSize.txt`
 	do
@@ -335,7 +334,7 @@ date
 
 function generate_vcf_by_gene(){
 	currDir=`pwd`
-	wkdir=/flashfs1/scratch.global/xdzou/Fine_map_susie
+	wkdir=/path/to/Fine_map_susie
 	outdir=$wkdir/input/variants_by_joint_egene
 
 	for f in `ls $wkdir/input/task/task_*`
