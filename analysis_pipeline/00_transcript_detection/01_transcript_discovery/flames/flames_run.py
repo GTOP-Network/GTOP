@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/08/21 10:00
-@Email   : xuechao@szbl.ac.cn
-@Desc    : Submit per-sample FLAMES transcript discovery jobs.
-"""
 
 import os
 from pathlib import Path
