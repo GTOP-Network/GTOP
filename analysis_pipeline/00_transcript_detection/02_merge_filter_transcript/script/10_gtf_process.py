@@ -58,28 +58,7 @@ def gtf_to_bed12(
     gene_attr="gene_id",
     name_format="transcript_id",
 ):
-    """
-    从 GTF 生成 BED12。
 
-    参数
-    ----
-    gtf_file : str
-        输入 GTF 文件路径
-
-    bed_file : str
-        输出 BED 文件路径
-
-    transcript_attr : str
-        用哪个 attribute 作为 transcript ID，默认 transcript_id
-
-    gene_attr : str
-        用哪个 attribute 作为 gene ID，默认 gene_id
-
-    name_format : str
-        BED 第 4 列命名方式：
-        - "transcript_id"：只用 transcript_id
-        - "gene_id|transcript_id"：gene_id|transcript_id
-    """
 
     transcripts = defaultdict(list)
     tx_info = {}
@@ -133,7 +112,7 @@ def gtf_to_bed12(
             strand = info["strand"]
             gene_id = info["gene_id"]
 
-            # BED12 blocks 必须按基因组坐标升序
+            # BED12 blocks 
             exons = sorted(exons, key=lambda x: x[0])
 
             chrom_start = min(x[0] for x in exons)
