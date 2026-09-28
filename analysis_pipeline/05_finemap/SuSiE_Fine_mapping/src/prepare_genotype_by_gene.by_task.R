@@ -10,7 +10,7 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/flashfs1/scratch.global/xdzou/2026-07-16-Finemapping")
+setwd("/path/to/dir")
 genotype_bed <- "./input/GTOP_LRS_SRS.small_variants.autosome_X.maf_05.gt_dosage.txt"
 
 genelist <- paste0("./input/task/",opt$task)
