@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/10/6 01:42
-@Desc    : Description
-"""
+
 import logging
 import os
 import re
