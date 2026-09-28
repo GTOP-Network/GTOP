@@ -94,7 +94,7 @@ function generate_vcf_by_gene(){
 	outdir=$wkdir/input/SNV_by_egenes
 	mkdir -p $outdir
 
-	for f in `ls $wkdir/input/task/remained_sv_egenes.75.txt`
+	for f in `ls $wkdir/input/task/task_*`
 	do
 		task=`basename $f`
 		echo $task
