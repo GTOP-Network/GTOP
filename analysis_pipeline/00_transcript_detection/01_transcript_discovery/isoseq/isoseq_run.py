@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/10/30 11:07
-@Desc    : Run Iso-Seq pipeline in HPC or Single node.
-"""
 
 import os
 from pathlib import Path
