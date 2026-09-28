@@ -29,8 +29,8 @@ do
 }
 done
 # MashR format file (z-score)
-python /media/bora_A/zhangt/2025-05-07-EAS_specific_xQTL-Project/2025-09-30-mash/bin/MashR/mashr_prepare_input.py ${dir_output}/strong_pairs_files.txt strong_pairs -o ${dir_output} --only_zscore
-python /media/bora_A/zhangt/2025-05-07-EAS_specific_xQTL-Project/2025-09-30-mash/bin/MashR/mashr_prepare_input.py ${dir_output}/strong_pairs_files.txt strong_beta_se -o ${dir_output} --output_zscore
+python /path/to/bin/MashR/mashr_prepare_input.py ${dir_output}/strong_pairs_files.txt strong_pairs -o ${dir_output} --only_zscore
+python /path/to/bin/MashR/mashr_prepare_input.py ${dir_output}/strong_pairs_files.txt strong_beta_se -o ${dir_output} --output_zscore
 zcat ${dir_output}/strong_pairs.MashR_input.txt.gz | sed -e 's/_zval//g' | gzip > ${dir_output}/strong_pairs.temp.txt.gz
 rm -f ${dir_output}/strong_pairs.MashR_input.txt.gz
 mv ${dir_output}/strong_pairs.temp.txt.gz ${dir_output}/strong_pairs.MashR_input.txt.gz
