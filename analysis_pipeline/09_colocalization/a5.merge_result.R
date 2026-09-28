@@ -34,10 +34,3 @@ for(i in unique(coloc_res$xqtl_type)){
   sub_data <- sub_data %>% arrange(gwas_name)
   fwrite(sub_data, file = paste0(OUTPUTDIR, "/", i, "_coloc_raw.txt"), sep = "\t")
 }
-
-# length(unique(paste0(coloc_res$gwas_name, "_", coloc_res$gwas_sentinel))) # 4240
-# length(unique(paste0(coloc_res$phecode_abbr, "_", coloc_res$loci))) # 3782
-
-# a <- fread("/lustre/home/tzhang/2026-05-07-gtop_xqtl-Project/2025-09-28-coloc/input/run_data/coloc_for_gtop.txt")
-# length(unique(paste0(a$V6, "_", a$V9))) # 4240
-# length(unique(paste0(coloc_res$phecode_abbr, "_", coloc_res$loci))) # 3782
