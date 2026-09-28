@@ -51,7 +51,7 @@ python $phenotypeScript \
     $sampleLookupFile \
     --leafcutter_dir $leafcutterScriptDir \
     --geneinfo $geneinfoFile \
-    -o $outpath
-fi
+    -o $outDir
+
 
 
