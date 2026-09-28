@@ -5,7 +5,7 @@
 # ==============================================================================
 
 #%% ------------------------ 0. prepare files (packages, input files, output files)
-PROJECT_DIR <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-09-gtop_gnomad_af_revision"
+PROJECT_DIR <- "path/to/dir"
 setwd(PROJECT_DIR)
 
 suppressPackageStartupMessages({
@@ -15,9 +15,9 @@ suppressPackageStartupMessages({
 })
 
 # ------------ input
-IN_GTOP_FREQ_FILE <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/data/genotype/gtop/gtop_snv.afreq"
-IN_GNOMAD_FREQ_FILE <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/data/genotype/gnomad/gtop_intersect_gnomad_info.txt"
-IN_CHRPOS_RSID_FILE <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/data/genotype/gtop/gtop_chrpos_rsid.txt"
+IN_GTOP_FREQ_FILE <- "/path/to/data/genotype/gtop/gtop_snv.afreq"
+IN_GNOMAD_FREQ_FILE <- "/path/to/data/genotype/gnomad/gtop_intersect_gnomad_info.txt"
+IN_CHRPOS_RSID_FILE <- "/path/to/data/genotype/gtop/gtop_chrpos_rsid.txt"
 
 # ------------ output
 OUT_DATA_FILE <- "output/data/integrated_freq.txt"
