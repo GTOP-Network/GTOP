@@ -24,11 +24,11 @@ logging.basicConfig(
 STAR_BIN_DIR='/path/to/software/STAR-2.7.3a/bin'
 RSEM_BIN_DIR='/path/to/software/RSEM-1.3.3'
 
-# ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/project/GMTiP-RNA/20251031/long_read/HPC/output/enhanced_gtf/GTOP_novel-GENCODE_v47',
+# ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/path/to/long_read/HPC/output/enhanced_gtf/GTOP_novel-GENCODE_v47',
 #             'gencode': f'{PROJ_ROOT_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation'}
 
-# ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/project/GMTiP-RNA/20260131/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47',}
-ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/project/GTOP-RNA/20260815/release/gtf/GTOP_novel-GENCODE_v47',}
+# ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/path/to/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47',}
+ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/path/to/release/gtf/GTOP_novel-GENCODE_v47',}
 # ref_gtf_prefix = {'gencode': f'{PROJ_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation',}
 
 REF_GENOME_FA=f'{PROJ_DIR}/raw_data/GMTiP/ref/LRS/genome.fa'
