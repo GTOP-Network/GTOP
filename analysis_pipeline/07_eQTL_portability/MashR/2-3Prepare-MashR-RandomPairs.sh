@@ -24,4 +24,4 @@ do
 }
 done
 
-python /media/bora_A/zhangt/2025-05-07-EAS_specific_xQTL-Project/2025-09-30-mash/bin/MashR/mashr_prepare_input.py ${dir_output}/nominal_pairs_list_file.txt nominal_pairs -o ${dir_output} --only_zscore --dropna
+python /path/to/bin/MashR/mashr_prepare_input.py ${dir_output}/nominal_pairs_list_file.txt nominal_pairs -o ${dir_output} --only_zscore --dropna
