@@ -1,4 +1,4 @@
-[![GTOP](https://img.shields.io/badge/GTOP-v1.0.0-brightgreen)](https://github.com/GTOP-Network/GTOP)
+[![GTOP](https://img.shields.io/badge/GTOP-v1.0.1-brightgreen)](https://github.com/GTOP-Network/GTOP)
 [![python Release](https://img.shields.io/badge/python-3.8-brightgreen)](https://www.python.org/downloads/)
 [![R Release](https://img.shields.io/badge/R-4.3.2-blue)](https://cran.r-project.org/)
 ![system type](https://img.shields.io/badge/GNU-Linux-brightgreen)
