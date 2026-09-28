@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-@Author  : Codex
-@Time    : 2026/5/18
 @Desc    : Split a GTF/GFF3 annotation file by chromosome and strand.
            When input is GFF3, output chromosome/strand-split files in GTF
            format with gene_id and transcript_id attributes. Optionally filter
