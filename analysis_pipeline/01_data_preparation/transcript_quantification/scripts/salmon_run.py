@@ -6,9 +6,9 @@ import sys
 import numpy as np
 import pandas as pd
 
-RUN_LOG_DIR=f'/lustre/home/cxue/project/GMTiP-RNA/20260131/run_log'
-# OUTPUT_DIR='/media/dubai/home/xuechao/2025-10-29-GMTiP-RNA/data/output/long_read'
-OUTPUT_DIR='/lustre/home/cxue/project/GMTiP-RNA/20260131/output/SRS/03_quantification'
+RUN_LOG_DIR=f'/path/to/run_log'
+# OUTPUT_DIR='/path/to/data/output/long_read'
+OUTPUT_DIR='/path/to/output/SRS/03_quantification'
 
 LOAD_BASE_ENV_CMD='module load anaconda && source ~/.bashrc'
 LOAD_PYSAM_ENV_CMD='module load anaconda && source ~/.bashrc && conda activate pysam'
@@ -16,16 +16,16 @@ LOAD_POLARS_ENV_CMD='source ~/.bashrc && mamba activate polars_env'
 
 # batch 1
 fastq_dirs=[
-    '/flashfs1/scratch.global/rywangz/gtop_rna_fastq',
-    '/lustre/home/xdzou/data/GMTiP_RNAseq',
-    '/lustre/home/xdzou/2024-10-21-GTBMap/2025-02-11-RNA-mapping/input/fastq',
-    '/flashfs1/scratch.global/xdzou/GMTiP_srRNA_fastq/GTOP_RNAseq_fq'
+    '/path/to/gtop_rna_fastq',
+    '/path/to/data/GMTiP_RNAseq',
+    '/path/to/input/fastq',
+    '/path/to/GMTiP_srRNA_fastq/GTOP_RNAseq_fq'
 ]
-passed_srRNA_sample_path='/lustre/home/cxue/raw_data/GMTiP/meta/RNA/SRS_passed_sample_id.csv'
+passed_srRNA_sample_path='/path/to/raw_data/GMTiP/meta/RNA/SRS_passed_sample_id.csv'
 #batch 2
 # fastq_dirs=[
-# '/lustre/home/xdzou/2024-10-21-GTBMap/2025-02-11-RNA-mapping/input/fastq',
-# '/flashfs1/scratch.global/xdzou/GTOP_RNAseq_fq',
+# '/path/to/input/fastq',
+# '/path/to/GTOP_RNAseq_fq',
 # ]
 
 
