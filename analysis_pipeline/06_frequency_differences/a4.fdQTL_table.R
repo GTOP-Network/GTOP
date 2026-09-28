@@ -5,7 +5,7 @@
 # ==============================================================================
 
 #%% ------------------------ 0. prepare files (packages, input files, output files)
-PROJECT_DIR <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-11-fine_mapping_revision"
+PROJECT_DIR <- "/path/to/dir"
 setwd(PROJECT_DIR)
 
 suppressPackageStartupMessages({
@@ -16,7 +16,7 @@ suppressPackageStartupMessages({
 })
 
 variant_freq <- fread(
-    "../2026-05-09-gtop_gnomad_af_revision/output/data/integrated_freq.txt"
+    "../path/to/output/data/integrated_freq.txt"
 )
 
 
