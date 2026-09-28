@@ -3,12 +3,11 @@
 # Supp-Figure-42#
 #==============================================#
 
-
 library(ggplot2)
 library(tidyverse)
 library(ggpubr)
 
-setwd("/path/to/GTOP_code/supp/supp_fig42")
+setwd("/path/to/GTOP_code/supp/supp_fig42/")
 
 # --------- Helper functions
 theme_pub <- function(base_size = 12) {
@@ -161,20 +160,107 @@ wrap_plots(list(GWAS_plot, SNV_eQTL_plot, gene_plot), ncol = 1, heights = c(3,3,
 
 
 # Supp.Fig.42b ------------------------------------------------------------
-tmp_df <- fread("./input/supp_fig42b_data.txt")
+plot_df <- fread("./input/supp_fig42b_data.txt")
 
-ggplot(tmp_df[tmp_df$p<0.01,], aes(af_other*100, af_GTOP*100)) +
-  ggpointdensity::geom_pointdensity( alpha=1, aes(size=-log10(p)), adjust=1, shape=21 )+
-  scale_color_viridis_b()+
-  ggdensity::geom_hdr_lines( linetype="dashed", linewidth=0.5)+
-  labs(x="Alternative allele frequency (Other populations)", 
-       y="Alternative allele frequency (EAS)")+
-  facet_grid(.~type) +
-  theme_classic()+
+SNP_name <- "rs4646776"
+lead_df <- plot_df %>%
+  dplyr::filter(variant_id == SNP_name)
+
+plot_df$ld_bin <- factor(plot_df$ld_bin, levels = c(
+  "No LD information",
+  "< 0.2",
+  "0.2–0.4",
+  "0.4–0.6",
+  "0.6–0.8",
+  "≥ 0.8",
+  "Lead variant"
+))
+
+ggplot(
+  plot_df,
+  aes(
+    x = af_other * 100,
+    y = af_eas * 100
+  )
+) +
+  ## 1. Plot non-lead variants first
+  geom_point(
+    data = subset(plot_df, variant_id != SNP_name),
+    aes(
+      size = -log10(p),
+      fill = ld_bin
+    ),
+    shape = 21,
+    colour = "grey30",
+    stroke = 0.2,
+    alpha = 1
+  ) +
+  ## 2. Plot lead variant
+  geom_point(
+    data = lead_df,
+    aes(
+      x = af_other * 100,
+      y = af_eas * 100,
+      size = -log10(p),
+      fill = ld_bin
+    ),
+    shape = 21,
+    colour = "black",
+    stroke = 0.2,
+    inherit.aes = FALSE
+  ) +
+  ## Label lead variant
+  ggrepel::geom_text_repel(
+    data = lead_df,
+    aes(
+      x = af_other * 100,
+      y = af_eas * 100,
+      label = variant_id
+    ),
+    inherit.aes = FALSE,
+    size = 3.5,
+    box.padding = 0.4,
+    point.padding = 0.3,
+    min.segment.length = 0
+  ) +
+  scale_fill_manual(
+    name = expression(LD ~ (r^2)),
+    values = c(
+      "Lead variant" = "purple",
+      "≥ 0.8" = "red",
+      "0.6–0.8" = "orange",
+      "0.4–0.6" = "#3f7d1d",
+      "0.2–0.4" = "#3e70b4",
+      "< 0.2" = "#e5e5e5"
+    ),
+    breaks = c(
+      "Lead variant",
+      "≥ 0.8",
+      "0.6–0.8",
+      "0.4–0.6",
+      "0.2–0.4",
+      "< 0.2"
+    ),
+    na.value = "#e5e5e5",
+    drop = FALSE
+  ) +
+  scale_size_continuous(
+    name = expression(-log[10](italic(P)))
+  ) +
+  labs(
+    x = "Aallele frequency (Other populations)",
+    y = "Allele frequency (EAS)"
+  ) +
+  facet_grid(. ~ type) +
+  theme_classic() +
   theme(
-    axis.line = element_line(color="black"),
-    axis.ticks = element_line(color="black"),
-    axis.text = element_text(color="black"),
-    legend.position = "right",
-  ) + ylim(c(0,100)) +
-  ggh4x::coord_axes_inside(labels_inside = F)
+    axis.line = element_line(color = "black"),
+    axis.ticks = element_line(color = "black"),
+    axis.text = element_text(color = "black"),
+    legend.position = "right"
+  ) +
+  coord_cartesian(
+    xlim = c(0, 100),
+    ylim = c(0, 100)
+  ) +
+  ggh4x::coord_axes_inside(labels_inside = FALSE)

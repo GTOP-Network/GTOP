@@ -7,6 +7,7 @@ library(tidyverse)
 library(data.table)
 library(patchwork)
 library(ggrastr)
+setwd("/path/to/GTOP_code/supp/supp_fig35")
 
 calc_accuracy <- function(pred_sig, replication_sig) {
   round(mean(pred_sig == replication_sig), 4)
@@ -107,28 +108,24 @@ plot_portability <- function(
     )
 }
 
-setwd("/path/to/GTOP_code/supp/supp_fig35")
-
 portable_info_list <- readRDS("input/Fig35_data.rds")
 
 portable_info_df <- rbindlist(lapply(portable_info_list, function(x) {
   x[[1]]
 }))
-portable_info_df1 <- portable_info_df[
-  portable_info_df$type %in% c("raw", "MAF", "sample_size+MAF"),
+count_df <- portable_info_df[
+  portable_info_df$type %in% c("raw", "sample_size+MAF"),
 ]
-portable_info_df1 %>%
+count_df %>%
   group_by(type) %>%
   summarise(mean_ratio = mean(value, na.rm = T))
 
-portable_info_df1$type <- factor(
-  portable_info_df1$type,
-  levels = c("raw", "MAF", "sample_size+MAF")
+count_df$type <- factor(
+  count_df$type,
+  levels = c("raw", "sample_size+MAF")
 )
 
 color_vec <- readRDS("../../fig-4/input/tissue_color.RDS")
-
-count_df <- portable_info_df1[portable_info_df1$type != "MAF", ]
 
 overview_plot <- ggplot(
   count_df,
@@ -146,7 +143,7 @@ overview_plot <- ggplot(
     position = position_dodge(width = 0.4),
     alpha = 0.5
   ) +
-  labs(x = "", y = "Proportion of portable eQTLs (%)") +
+  labs(x = "", y = "Proportion of correctly classified eVariants (%)") +
   ggpubr::stat_compare_means(
     comparisons = list(c("raw", "sample_size+MAF")),
     method = "t.test",
@@ -182,24 +179,6 @@ p2_list <- lapply(names(portable_info_list), function(x) {
   plot_portability(
     df = tmp_data,
     xvar = "minus_log10p_gtex",
-    yvar = "minus_log10p_pred2",
-    class_var = "maf_type",
-    tissue = x,
-    xlab = sprintf(
-      "-log(p) GTEx (n=%s)",
-      tmp_summary$value[tmp_summary$type == "gtex_n"]
-    ),
-    ylab = "-log(p) GTOP (adjusted for MAF)",
-    accuracy = tmp_summary$value[tmp_summary$type == "MAF"]
-  )
-})
-
-p3_list <- lapply(names(portable_info_list), function(x) {
-  tmp_data <- portable_info_list[[x]][[2]]
-  tmp_summary <- portable_info_list[[x]][[1]]
-  plot_portability(
-    df = tmp_data,
-    xvar = "minus_log10p_gtex",
     yvar = "minus_log10p_pred3",
     class_var = "n_maf_type",
     tissue = x,
@@ -211,12 +190,12 @@ p3_list <- lapply(names(portable_info_list), function(x) {
     accuracy = tmp_summary$value[tmp_summary$type == "sample_size+MAF"]
   )
 })
-names(p1_list) <- names(p2_list) <- names(p3_list) <- names(portable_info_list)
+names(p1_list) <- names(p2_list) <- names(portable_info_list)
 
-p_combined <- overview_plot +
-  p1_list$Adrenal_Gland +
-  p2_list$Adrenal_Gland +
-  p3_list$Adrenal_Gland +
-  plot_layout(nrow = 1, widths = c(0.5, 1, 1, 1))
+p_combined <-
+  (overview_plot |
+     p1_list[["Adrenal_Gland"]] |
+     p2_list[["Adrenal_Gland"]]) +
+  plot_layout(widths = c(0.5, 1, 1))
 
 print(p_combined)
