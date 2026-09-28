@@ -11,8 +11,8 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/lustre/home/xdzou/2024-10-21-GTBMap/2025-07-03-Finemap_susie")
-pheno_bed <- paste0("/lustre/home/xdzou/2024-10-21-GTBMap/2025-02-13-expression-quant/output/phenotype_new/",opt$tissue,".phenotype.bed")
+setwd("/path/to/dir")
+pheno_bed <- paste0("/path/to/output/phenotype_new/",opt$tissue,".phenotype.bed")
 
 df_pheno <- fread(pheno_bed,header=T,sep="\t")
 df_pheno <- df_pheno[,c(-1,-2,-3)]
