@@ -61,11 +61,6 @@ file_strong = ARGS[1]
 file_random = ARGS[2]
 dropna = as.logical(as.numeric(ARGS[3]))
 dir_output = ARGS[4]
-
-# file_strong = "2023-11-04-xQTL_characteristics/2024-03-20-mashr/output/CReQTL_subtype/Strong/strong_pairs.MashR_input.txt.gz"
-# file_random = "2023-11-04-xQTL_characteristics/2024-03-20-mashr/output/CReQTL_subtype/Random/MashR.random_subset_1000000.RDS"
-# dropna = as.logical(as.numeric("0"))
-# dir_output = "2023-11-04-xQTL_characteristics/2024-03-20-mashr/output/CReQTL_subtype/top_pairs/"
 #----------------------------------------------------------------------------
 #----------------------------------------------------------------------------
 
