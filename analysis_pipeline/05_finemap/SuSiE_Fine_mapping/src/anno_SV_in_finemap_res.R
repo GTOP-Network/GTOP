@@ -1,4 +1,4 @@
-setwd("/lustre/home/xdzou/2024-10-21-GTBMap/2025-07-03-Finemap_susie")
+setwd("/path/to/2024-10-21-GTBMap/2025-07-03-Finemap_susie")
 rm(list=ls())
 
 library(data.table)
