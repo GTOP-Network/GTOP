@@ -85,7 +85,7 @@ bfile_path <- sprintf(
     "/path/to/splitbychr/1000G.EAS.maf01.%s",
     CHRNAME
 )
-plink_bin <- "/lustre/home/tzhang/src/bin/plink"
+plink_bin <- "/path/to/src/bin/plink"
 
 if (!file.exists(plink_bin)) {
     stop("Error: PLINK binary not found at specified path.")
