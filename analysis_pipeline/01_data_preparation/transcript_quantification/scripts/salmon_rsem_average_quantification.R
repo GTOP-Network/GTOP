@@ -10,7 +10,7 @@ library(tidyr)
 
 
 setwd("/path/to/dir/")
-tissue_info <- fread("/path/to/input/GTBMap_tissue_code_v2.csv")
+tissue_info <- fread("/path/to/input/GTOP_tissue_info.csv")
 
 # load data and filter low expression by Tissue -------------------------------------------------
 
@@ -22,21 +22,21 @@ read_mat <- function(file){
   return(mat)
 }
 
-### ========== 2. input file ==========
+### ========== 1. input file ==========
 salmon_tpm_file <- "./input/enhanced.transcript.tpm.salmon.tsv"
 rsem_tpm_file <- "./input/enhanced.transcript.tpm.rsem.tsv"
 
 salmon_count_file <- "./input/enhanced.transcript.count.salmon.tsv"
 rsem_count_file <- "./input/enhanced.transcript.count.rsem.tsv"
 
-### ========== 3. load data ==========
+### ========== 2. load data ==========
 salmon_tpm <- read_mat(salmon_tpm_file)
 rsem_tpm <- read_mat(rsem_tpm_file)
 
 salmon_count <- read_mat(salmon_count_file)
 rsem_count <- read_mat(rsem_count_file)
 
-### ========== 4. transcript & sample intersect ==========
+### ========== 3. transcript & sample intersect ==========
 common_tx <- Reduce(intersect, list(rownames(salmon_tpm), rownames(rsem_tpm)))
 
 salmon_tpm <- salmon_tpm[common_tx, ]
@@ -54,7 +54,7 @@ rsem_tpm <- rsem_tpm[, common_samples]
 salmon_count <- salmon_count[, common_samples]
 rsem_count <- rsem_count[, common_samples]
 
-### ========== mean TPM with Salmon and RSEM ==========
+### ========== 4. mean TPM with Salmon and RSEM ==========
 salmon_rsem_tpm <- (salmon_tpm + rsem_tpm) / 2
 salmon_rsem_tpm_df <- data.frame(
   transcript_id = rownames(salmon_rsem_tpm),
@@ -64,7 +64,7 @@ dir.create("./output",showWarnings = F)
 fwrite(salmon_rsem_tpm_df,
        "./input/enhanced.transcript.tpm.salmon_rsem_average.tsv",sep = "\t")
 
-### ========== 5. define tissue（sample ID split） ==========
+### ========== 5. define tissue(sample ID split) ==========
 tissue <- sapply(strsplit(colnames(salmon_tpm), "-"), `[`, 3)
 
 ### ========== 6. filter function  ==========
@@ -212,23 +212,46 @@ for(t in unique(tissue)){
 pairwise_all_sd <- do.call(rbind, res_list_pairwise)
 
 
-# combine total data plot -------------------------------------------------
+# combine three metrics -------------------------------------------------
 
-merged <- dplyr::left_join(final_mard %>% mutate(Tissue=as.character(Tissue)),
-                           final_cor_df %>% mutate(Tissue=as.character(Tissue)), 
-                           by = c("Transcript", "Tissue", "MeanExpr"))
-merged <- merge(merged, pairwise_all_sd %>% mutate(Tissue=as.character(Tissue)), 
-                by = c("Transcript", "Tissue", "MeanExpr"))
+merged <- final_mard %>% 
+  left_join(final_cor_df, by = c("Transcript", "Tissue", "MeanExpr")) %>%
+  left_join(pairwise_all_sd, by = c("Transcript", "Tissue", "MeanExpr"))
 
-setnames(merged, old = c("diff_Salmon_RSEM","Salmon_RSEM"), new = c("SD_Salmon_RSEM","Cor_Salmon_RSEM"))
+setnames(merged, old = c("diff_Salmon_RSEM", "Salmon_RSEM"), new = c("SD_Salmon_RSEM", "Cor_Salmon_RSEM"))
 
-keep <- with(merged,
-             ifelse(is.na(Cor_Salmon_RSEM),MeanExpr < 5 |(MeanExpr >= 5 & (MARD_Salmon_RSEM < 0.33 | SD_Salmon_RSEM < 0.33)),
-                    Cor_Salmon_RSEM > 0.3 &(MeanExpr < 5 |(MeanExpr >= 5 &(MARD_Salmon_RSEM < 0.33 |SD_Salmon_RSEM < 0.33)))))
+merged <- merged %>% mutate(
+  Tier1 = "Yes",
+  Tier2 = ifelse(Cor_Salmon_RSEM > 0.5 | is.na(Cor_Salmon_RSEM), "Yes", "No"),
+  Tier3 = ifelse(Tier2 == "Yes" & (MeanExpr < 5 | MARD_Salmon_RSEM < 0.33 | SD_Salmon_RSEM < 0.33), "Yes", "No"))%>% 
+  mutate(Tissue = as.integer(Tissue)) %>%
+  left_join(tissue_info %>% select(Tissue, Tissue_Code) %>% setnames("TissueName", "Tissue"), by = "Tissue")
 
-fwrite(keep,"consistently_expressed_transcripts.txt",sep = "\t")
+# Filtering transcripts with highly inconsistent -----------------------------------------
 
+ave_tpm <- as.data.table(salmon_rsem_tpm_df)
+setnames(ave_tpm, 1,"Transcript")
 
+sample_info <- data.table( Sample = colnames(ave_tpm)[-1])
+sample_info[, Tissue := sapply( strsplit(Sample, "-"),function(x) x[3])]
+sample_info$Tissue <- as.integer(sample_info$Tissue)
+
+outdir <- "./output/Salmon_RESM_Tier3_average_TPM"
+dir.create(outdir,showWarnings = FALSE)
+
+for(t in unique(sample_info$Tissue)){
+  
+  cat("Processing tissue:",t,"\n")
+  samples <- sample_info[Tissue==t, Sample]
+  keep_tx <- merged2[ Tissue==t &Tier3=="Yes", unique(Transcript)]
+  
+  tpm <- ave_tpm[Transcript %in% keep_tx, c("Transcript",samples),with=FALSE ]
+  tissue_name <- unique(merged2[Tissue == t, TissueName] )
+  
+  outfile <- file.path( outdir, paste0(tissue_name, ".filter.average_Salmon_RSEM_TPM.bed" ) )
+  fwrite(tpm, outfile, sep="\t" )
+  
+}
 
 
 
