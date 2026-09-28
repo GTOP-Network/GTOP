@@ -6,6 +6,7 @@ main(){
 	extract_asso_by_gene_gtex
 	run_format_gtop_asso
 	run_susieX
+	summarize_susieX
 }
 
 # global variables
@@ -226,5 +227,16 @@ date
 		sbatch $WKDIR/submit_${tissue}_${task}.gtex.slurm
 	done
 }
+function summarize_susieX(){
+	WKDIR=`pwd`
+	tissue_list=( Adipose Adrenal_Gland Liver Muscle Pancreas_Body Spleen Skin Whole_Blood )
+	for Tissue in ${tissue_list[@]}
+	do
+		echo $Tissue
+		bash $WKDIR/src/summarize_susiex_res.sh $WKDIR/output/$Tissue/SuSiEx/results $Tissue
+	done
+
+}
+
 
 main
