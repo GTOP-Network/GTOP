@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-CURRENT_DIR <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-12-compare_with_gtex_revision"
+CURRENT_DIR <- "/path/to/dir"
 setwd(CURRENT_DIR)
 
 suppressPackageStartupMessages({
@@ -9,14 +9,14 @@ suppressPackageStartupMessages({
 })
 
 GTOP_lead_info <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/snv_eqtl/07_summary/lead_qtl.txt.gz"
+    "/path/to/gtop/snv_eqtl/07_summary/lead_qtl.txt.gz"
 )
 GTOP_sig_info <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/snv_eqtl/07_summary/sig_qtl.txt.gz"
+    "/path/to/gtop/snv_eqtl/07_summary/sig_qtl.txt.gz"
 )
 
 GTEx_lead_info <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtexv8_eqtl/07_summary/lead_qtl.txt.gz"
+    "/path/to/gtexv8_eqtl/07_summary/lead_qtl.txt.gz"
 )
 
 tissue_link <- fread("input/gtop_gtex_tissues.txt")
@@ -30,7 +30,7 @@ gtex_tissue <- tissue_link$GTEx_tissue[row_index]
 ## QTL information of GTOP significant variants in GTEx
 gtop_gtex_info <- fread(
     sprintf(
-        "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtexv8_eqtl/08_gtop_overlap/%s.txt.gz",
+        "/path/to/gtexv8_eqtl/08_gtop_overlap/%s.txt.gz",
         gtop_tissue
     )
 )
@@ -40,7 +40,7 @@ gtop_gtex_info <- gtop_gtex_info[!is.na(gtop_gtex_info$gtex_se), ]
 
 GTEx_threshold <- fread(
     sprintf(
-        "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtexv8_eqtl/03_permutations/%s.txt.gz",
+        "/path/to/gtexv8_eqtl/03_permutations/%s.txt.gz",
         gtex_tissue
     )
 )
@@ -90,13 +90,13 @@ merged_df1$type1 <- dplyr::case_when(
 
 ## mash results
 mash_info <- readRDS(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-23-he_QTL_revision/output/data/mash/noct_eqtl/top_pairs_lead/m.s_zval.RDS"
+    "/path/to/output/data/mash/noct_eqtl/top_pairs_lead/m.s_zval.RDS"
 )
 mash_info <- mash_info$result$PosteriorMean
 mash_info <- as.data.frame(mash_info)
 
 beta_se_info <- read.table(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-23-he_QTL_revision/output/data/mash/noct_eqtl/Strong/strong_beta_se.MashR_input.txt.gz",
+    "/path/to/output/data/mash/noct_eqtl/Strong/strong_beta_se.MashR_input.txt.gz",
     row.names = 1,
     header = T,
     check.names = FALSE
