@@ -13,7 +13,7 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/lustre/home/xdzou/2024-10-21-GTBMap/2025-07-03-Finemap_susie")
+setwd("/path/to/2024-10-21-GTBMap/2025-07-03-Finemap_susie")
 dir <- paste0("./output/Finemapping_eQTL_",opt$varType,"/",opt$tissue,"/")
 df_genes <- fread(opt$genes,header=F,sep="\t")
 genelist <- unique(df_genes$V2)
