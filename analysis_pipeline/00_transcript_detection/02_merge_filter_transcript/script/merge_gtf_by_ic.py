@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/5/18 11:28
-@Email   : xuechao@szbl.ac.cn
-@Desc    : High-performance intron-chain GTF merge for large sample cohorts, stricter v2.
-"""
+
 
 from __future__ import annotations
 
