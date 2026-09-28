@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/11/23 21:43
-@Email   : xuechao@szbl.ac.cn
-@Desc    :  
-"""
+
 import os
 import sys
 
@@ -12,9 +7,9 @@ import numpy as np
 import pandas as pd
 from util import PROJ_DIR
 
-RUN_LOG_DIR=f'/lustre/home/cxue/project/GMTiP-RNA/20260131/run_log'
-# OUTPUT_DIR='/media/dubai/home/xuechao/2025-10-29-GMTiP-RNA/data/output/long_read'
-OUTPUT_DIR='/lustre/home/cxue/project/GMTiP-RNA/20260131/output/SRS/03_quantification'
+RUN_LOG_DIR=f'/path/to/run_log'
+# OUTPUT_DIR='path/to/output/long_read'
+OUTPUT_DIR='/path/to/output/SRS/03_quantification'
 
 
 LOAD_BASE_ENV_CMD='module load anaconda && source ~/.bashrc'
@@ -22,13 +17,13 @@ LOAD_PYSAM_ENV_CMD='module load anaconda && source ~/.bashrc && conda activate p
 
 # batch1
 fastq_dirs=[
-    '/flashfs1/scratch.global/rywangz/gtop_rna_fastq',
-    '/lustre/home/xdzou/data/GMTiP_RNAseq',
-    '/lustre/home/xdzou/2024-10-21-GTBMap/2025-02-11-RNA-mapping/input/fastq',
-    '/flashfs1/scratch.global/xdzou/GMTiP_srRNA_fastq/GTOP_RNAseq_fq'
+    '/path/to/gtop_rna_fastq',
+    '/path/to/GMTiP_RNAseq',
+    '/path/to/input/fastq',
+    '/path/to/GMTiP_srRNA_fastq/GTOP_RNAseq_fq'
 ]
-passed_srRNA_sample_path='/lustre/home/cxue/raw_data/GMTiP/meta/RNA/SRS_passed_sample_id.csv'
-fail_run_sample_path='/lustre/home/cxue/project/GMTiP-RNA/20260131/output/SRS/03_quantification/HPC/conf/RSEM_fail_samples.csv'
+passed_srRNA_sample_path='/path/to/raw_data/GMTiP/meta/RNA/SRS_passed_sample_id.csv'
+fail_run_sample_path='/path/to/output/SRS/03_quantification/HPC/conf/RSEM_fail_samples.csv'
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 CURRENT_PY = os.path.splitext(os.path.basename(__file__))[0]
