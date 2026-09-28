@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/08/21 10:00
-@Email   : xuechao@szbl.ac.cn
-@Desc    : Run per-sample FLAMES transcript discovery.
-"""
 
 import os
 import re
