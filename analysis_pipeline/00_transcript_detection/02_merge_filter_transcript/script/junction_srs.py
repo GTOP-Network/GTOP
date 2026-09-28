@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/5/21 10:46
-@Email   : xuechao@szbl.ac.cn
-@Desc    : 从SRS样本中提取转录本的junction支持情况。
-"""
 
 #!/usr/bin/env python3
 
