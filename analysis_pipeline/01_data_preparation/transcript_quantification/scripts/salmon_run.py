@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/11/23 21:43
-@Email   : xuechao@szbl.ac.cn
-@Desc    :  
-"""
+
 import os
 import sys
 
