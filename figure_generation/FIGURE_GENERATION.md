@@ -2,13 +2,13 @@
 
 ## 1. Purpose
 
-The `figure_generation/` directory separates visualization from upstream statistical analysis. Each manuscript figure has a dedicated directory containing the main plotting script and the processed inputs needed for figure generation.
-
-This structure allows a reader to trace a figure from the manuscript to its plotting code and then to the processed analysis results.
+The `figure_generation/` directory contains the visualization layer for the GTOP Phase-I manuscript. It is separated from `analysis_pipeline/`, which contains the primary statistical and computational analyses.
 
 ## 2. Figure-to-script map
 
-| Manuscript figure | Script |
+### Main figures
+
+| Figure | Script |
 |---|---|
 | Figure 1 | `Figure_1/Figure1.R` |
 | Figure 2 | `Figure_2/Figure2.R` |
@@ -16,6 +16,11 @@ This structure allows a reader to trace a figure from the manuscript to its plot
 | Figure 4 | `Figure_4/Figure4.R` |
 | Figure 5 | `Figure_5/Figure5.R` |
 | Figure 6 | `Figure_6/Figure6.R` |
+
+### Extended figures
+
+| Figure | Script |
+|---|---|
 | Extended Figure 1 | `Extended_Figures/Extended_Figure1.R` |
 | Extended Figure 2 | `Extended_Figures/Extended_Figure2.R` |
 | Extended Figure 3 | `Extended_Figures/Extended_Figure3.R` |
@@ -25,220 +30,100 @@ This structure allows a reader to trace a figure from the manuscript to its plot
 | Extended Figure 7 | `Extended_Figures/Extended_Figure7.R` |
 | Extended Figure 8 | `Extended_Figures/Extended_Figure8.R` |
 | Extended Figure 9 | `Extended_Figures/Extended_Figure9.R` |
-| Supplementary Figures | `Supp_Figures/Supp_Figure_*.R` |
 
 ## 3. Main figure content
 
 ### Figure 1 — GTOP cohort and genetic variation
 
-The script combines genotype PCA, RNA-expression MDS, tissue clustering, genome-wide variant summaries, per-sample variant counts, SV concordance, and TR detection comparisons.
+`Figure_1/Figure1.R` generates panels covering genotype PCA, RNA-seq multidimensional scaling, tissue clustering, variant number/length distributions, per-genome variant counts, SV comparisons, and LRS/SRS TR comparisons.
 
-### Figure 2 — Long-read transcriptome and allele-specific regulation
+### Figure 2 — Long-read transcriptome
 
-The script summarizes transcript-level sample structure, transcript discovery relative to GENCODE/GTEx references, SQANTI3 classifications, alternative splicing, tissue distribution, peptide support, WGCNA cardiac modules, ASE/ASTS detection, and a representative allele-specific locus.
+`Figure_2/Figure2.R` covers LRS sample structure, transcript discovery and novelty, SQANTI3 structural/coding annotation, alternative splicing, transcript tissue breadth, peptide support, transcript-level co-expression/GO analysis, and ASE/ASTS summaries.
 
-### Figure 3 — Molecular QTL landscape
+### Figure 3 — Molecular QTLs
 
-The script summarizes QTL counts by variant class, genomic distance to TSS, GTOP–GTEx effect-size concordance, eGene overlap among SNV/SV/TR QTLs, SV-length effects, disease-associated TRs, splice-junction regulation, and tissue sharing.
+`Figure_3/Figure3.R` covers eQTL/sQTL summary statistics, TSS distance of fine-mapped QTLs, GTOP–GTEx effect-size comparison, eGene sharing across variant classes, SV effect size versus SV length, pathogenic TR-associated QTLs, representative splice-junction signals, and MASH-based cross-tissue analyses.
 
-### Figure 4 — Population-specific regulatory effects
+### Figure 4 — Population-specific QTLs
 
-The script combines:
+`Figure_4/Figure4.R` covers fine-mapping credible-set size and PIP, frequency-differentiated QTLs, representative frequency-differentiated loci, and GTOP–GTEx eQTL portability.
 
-- comparison of credible-set size across GTOP, GTEx, and cross-ancestry fine-mapping;
-- maximum-PIP summaries;
-- a representative fine-mapped locus;
-- geographic allele-frequency patterns;
-- GWAS/QTL colocalization;
-- GTOP–GTEx allele-frequency comparison;
-- eQTL portability summaries.
+### Figure 5 — SV/TR fine-mapping
 
-### Figure 5 — Structural variation and tandem repeats in fine-mapping
+`Figure_5/Figure5.R` evaluates SV/TR tagging by small variants, poorly tagged signals, and the composition and enrichment of joint fine-mapping credible sets.
 
-The script evaluates:
+### Figure 6 — Disease association
 
-- LD between SV/TR eQTLs and their best-tagging SNVs;
-- poorly tagged SV/TR signals;
-- variant composition of joint credible sets;
-- tissue-level credible-set counts;
-- credible-set classes containing SVs and/or TRs;
-- enrichment of SV/TR variants among fine-mapped signals.
-
-### Figure 6 — Disease genetics
-
-The script integrates:
-
-- S-LDSC enrichment;
-- GWAS loci colocalized with eQTLs and sQTLs;
-- comparison with external resources;
-- representative locus-level colocalization;
-- GWAS enrichment;
-- QTL overlap with risk variants across frequency groups;
-- SV/TR-containing colocalization signals;
-- representative SV-sQTL/sQTL loci.
+`Figure_6/Figure6.R` integrates S-LDSC enrichment, GWAS/QTL colocalization, comparisons with external QTL resources, GTOP-specific signals, GWAS enrichment, rare-variant analyses, disease-associated SV/TR signals, and representative SV-associated loci.
 
 ## 4. Extended figures
 
-The Extended Figure scripts provide supporting analyses for the major conclusions of the manuscript.
+The extended-figure scripts provide supporting analyses for the major conclusions:
 
-They cover the complete sequence from variant detection and transcript discovery through ASE/ASTS, QTL characterization, fine-mapping, ancestry-dependent effects, and disease-associated regulatory variation.
+- **Extended Figure 1:** genetic variation and pathogenic TR-related analyses.
+- **Extended Figure 2:** additional long-read/short-read transcriptome characterization.
+- **Extended Figure 3:** long-read ASE and ASTS analyses.
+- **Extended Figure 4:** molecular QTL characteristics and genomic/functional enrichment.
+- **Extended Figure 5:** QTL tissue sharing and tissue specificity.
+- **Extended Figure 6:** cross-ancestry fine-mapping and MPRA-related analyses.
+- **Extended Figure 7:** frequency-differentiated sQTLs and mash-based eQTL portability.
+- **Extended Figure 8:** SV-sQTL and TR-sQTL signals poorly tagged by small variants.
+- **Extended Figure 9:** SMR and GWAS/QTL colocalization analyses.
 
 ## 5. Supplementary figures
 
-The supplementary scripts are organized around technical validation and additional analyses.
-
-Important groups include:
-
-### Data quality and variant characterization
-
-- WGS quality statistics.
-- Short- and long-read RNA quality.
-- ADMIXTURE ancestry components.
-- Variant detection comparison.
-- VEP annotation.
-
-### Transcriptome characterization
-
-- Consensus transcript discovery.
-- Transcript filtering.
-- Peptide support.
-- Predicted protein structures.
-- Cross-platform expression consistency.
-- Iso-Seq sampling-depth analysis.
-- Co-expression modules.
-
-### Allele-specific analyses
-
-- Genotype phasing.
-- ASE and ASTS.
-- Allele-specific splicing.
-- Cross-tissue consistency.
-
-### QTL analyses
-
-- PCA-based covariate selection.
-- sQTL consistency.
-- SV/TR QTL tagging and representation.
-- Genomic feature enrichment.
-- Cross-tissue and cross-resource eQTL comparisons.
-- eQTL portability.
-
-### Fine-mapping
-
-- SV/TR representation in credible sets.
-- Coverage-filtered joint fine-mapping.
-- Robustness of SV/TR prioritization.
-- Representative SV fine-mapping loci.
-
-### Disease association
-
-- Heritability enrichment.
-- GWAS colocalization.
-- Characterization of colocalized/non-colocalized loci.
-- Frequency-differentiated QTLs.
+The repository currently distributes scripts for S2–S42, with the actual set of scripts listed in `figure_generation/README.md`. Major groups include sequencing/genetic QC (S2–S8), transcript discovery and characterization (S11–S17), allele-specific analyses (S18–S21), QTL phenotype/discovery analyses (S22–S31), fine-mapping/portability (S34–S39), and disease association (S40–S42).
 
 ## 6. Input organization
 
-Inputs are kept close to the plotting scripts:
+Inputs are stored within the relevant figure directories or in shared figure input directories:
 
 ```text
-Figure_1/
-├── Figure1.R
-├── README-FIG.1.md
-└── input/
-
-Figure_2/
-├── Figure2.R
-├── README-FIG.2.md
-└── input/
-
-...
+Figure_X/input/
+Extended_Figures/input/
+Supp_Figures/input/
 ```
 
-This organization is intentional: a figure can be reproduced without searching through the entire repository for its input tables.
+The inputs are processed analysis outputs rather than raw sequencing data and include `.txt`, `.gz`, `.RDS`, `.RData`, and related formats.
 
-## 7. Data flow
+## 7. Reproducibility workflow
 
 ```text
-analysis_pipeline/
-        │
-        │ processed analysis results
-        ▼
-figure-specific input/
-        │
-        ▼
+Upstream statistical analysis
+            ↓
+Processed result tables / objects
+            ↓
+Figure-specific input/
+            ↓
 Figure-specific R script
-        │
-        ▼
-manuscript figure / panel
+            ↓
+Publication figure
 ```
 
-The plotting layer therefore depends on processed outputs rather than raw sequencing data.
+For an individual figure:
 
-## 8. Environment and paths
+1. Open the corresponding figure directory.
+2. Inspect the input files loaded by the R script.
+3. Update local paths if required.
+4. Install the packages imported by the script.
+5. Run the R script.
 
-Several scripts contain study-specific working-directory settings or absolute paths. Before execution, replace these paths with locations appropriate to the local environment.
+Example:
 
-For example:
-
-```r
-setwd("/path/to/GTOP/figure_generation/Figure_4")
+```bash
+cd /path/to/GTOP/figure_generation/Figure_3
+Rscript Figure3.R
 ```
 
-The scripts also rely on R packages that may need to be installed separately.
+## 8. Important distinction
 
-## 9. Recommended reproducibility workflow
+The figure-generation scripts are **visualization workflows**. They do not replace the upstream analyses that generate QTLs, fine-mapping results, enrichment statistics, or colocalization results. Those analyses are documented under `analysis_pipeline/`.
 
-For a single figure:
+## 9. Reuse
 
-```text
-Identify figure
-    ↓
-Open figure directory
-    ↓
-Check README-FIG.X.md
-    ↓
-Inspect input/
-    ↓
-Update paths
-    ↓
-Install required R packages
-    ↓
-Run FigureX.R
-```
+Individual plotting scripts can be adapted to related datasets when the expected input structures are retained. For substantial reuse, inspect the input-loading and transformation sections of the relevant script before substituting datasets.
 
-For the complete manuscript:
+## 10. Citation
 
-```text
-Upstream analysis
-       ↓
-Processed result tables / R objects
-       ↓
-Figure-specific input directories
-       ↓
-Main figures
-       +
-Extended figures
-       +
-Supplementary figures
-```
-
-## 10. Important distinction from the analysis pipeline
-
-The figure-generation scripts are **visualization workflows**, not the primary statistical analysis workflows.
-
-The statistical analyses and generation of molecular QTLs, fine-mapping results, enrichment statistics, and colocalization results are documented under:
-
-```text
-analysis_pipeline/
-```
-
-The figure scripts consume those processed results and convert them into manuscript-ready visualizations.
-
-## 11. Reuse
-
-Individual figure scripts can be adapted for related datasets provided that the input objects retain the expected column names and data structures. For substantial reuse, inspect the relevant input-loading section of the script before substituting datasets.
-
-## 12. Citation
-
-Please cite the GTOP study when reusing these figure-generation workflows or results, and cite the original software packages used for the corresponding analyses.
+Please cite the GTOP study when reusing these figure-generation workflows or derived results, together with the original software packages used for the corresponding analyses.
