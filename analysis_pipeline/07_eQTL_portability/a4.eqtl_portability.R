@@ -5,7 +5,7 @@
 # ==============================================================================
 
 #%% ------------------------ 0. prepare files (packages, input files, output files)
-CURRENT_DIR <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-12-compare_with_gtex_revision"
+CURRENT_DIR <- "/path/to/dir"
 setwd(CURRENT_DIR)
 
 suppressPackageStartupMessages({
@@ -118,49 +118,13 @@ ggsave(
 
 saveRDS(
     summary_df1,
-    "/media/london_A/mengxin/GTOP_code/supp/supp_fig34.Portability_three_metrics/input/Fig34_data.rds"
+    "/path/to/GTOP_code/supp/supp_fig34.Portability_three_metrics/input/Fig34_data.rds"
 )
 
 summary_df1[summary_df1$type1 == "consistent", ] %>%
     group_by(type2, type3) %>%
     summarise(mean_ratio = mean(ratio, na.rm = T))
 
-#   type2                   type3         mean_ratio
-#   <fct>                   <fct>              <dbl>
-# 1 ratio_nominal           Lead eVariant      0.689
-# 2 ratio_mash              Lead eVariant      0.770
-# 3 ratio_uncertainty-aware Lead eVariant      0.398
-# 4 FDR                     Lead eVariant      0.723
-# 5 gene                    All eGenes         0.790
-# 6 gene                    coloc genes        0.586
-
-# p3 <- ggplot(
-#     summary_df1[
-#         summary_df1$type3 == "Lead eVariant",
-#         # summary_df1$type1 == "consistent",
-#     ],
-#     aes(type2, ratio, fill = type1)
-# ) +
-#     lims(y = c(0, 1)) +
-#     geom_boxplot(width = 0.6) +
-#     theme_pub() +
-#     scale_fill_manual(values = c("#9ac395", "#973828", "#7a87a7", "#c98e8c")) +
-#     labs(x = "", y = "Number of eVariants")
-
-# p4 <- ggplot(
-#     summary_df1[
-#         summary_df1$type3 != "Lead eVariant",
-#         # summary_df1$type1 == "consistent",
-#     ],
-#     aes(type3, ratio, fill = type1)
-# ) +
-#     geom_boxplot(width = 0.6) +
-#     lims(y = c(0, 1)) +
-#     theme_pub() +
-#     scale_fill_manual(values = c("#8d1d2a", "#e8cebe")) +
-#     labs(x = "", y = "Number of eGenes")
-
-# p3 + p4 + plot_layout(guides = "collect", widths = c(2, 1))
 
 p3 <- ggplot(
     summary_df1[
@@ -301,7 +265,7 @@ plot_portability <- function(
 ) {
     ann <- make_annotation_df(df[[class_var]], accuracy)
 
-    # 标注位置（按示意图右下角布局）
+ 
     x_left <- xlim[2] * 0.01
     x_col1 <- xlim[2] * 0.30
     x_col2 <- xlim[2] * 0.42
@@ -416,7 +380,7 @@ plot_portability <- function(
 }
 
 LDscore_df <- fread(
-    "/media/bora_A/zhangt/src/data/gnomAD/ld_scores/gnomad.genomes.r2.1.1.nfe.adj.ld_scores.hg38.ldscore"
+    "/path/to/src/data/gnomAD/ld_scores/gnomad.genomes.r2.1.1.nfe.adj.ld_scores.hg38.ldscore"
 )
 LDscore_df$chr_pos_ref_alt <- paste0(
     "chr",
@@ -531,7 +495,7 @@ portable_info_df1$type <- factor(
 )
 
 color_df <- fread(
-    "/media/pacific/share/Datasets/Asian_GTEx/Metainfo/input/GMTiP_tissue_code_and_colors.csv"
+    "/path/to/GMTiP_tissue_code_and_colors.csv"
 )
 color_vec <- paste0("#", color_df$Tissue_Color_Code)
 names(color_vec) <- color_df$Tissue
@@ -570,7 +534,7 @@ ggsave(
     height = 4
 )
 
-fwrite(count_df, "/media/london_A/mengxin/GTOP_code/fig-4/input/Fig4h.txt")
+fwrite(count_df, "/path/to/GTOP_code/fig-4/input/Fig4h.txt")
 
 
 p1_list <- lapply(names(portable_info_list), function(x) {
@@ -645,7 +609,7 @@ ggsave(
 
 saveRDS(
     portable_info_list,
-    file = "/media/london_A/mengxin/GTOP_code/supp/supp_fig35.Portability_correction/input/Fig35_data.rds"
+    file = "/path/to/input/Fig35_data.rds"
 )
 
 portable_data <- rbindlist(lapply(names(portable_info_list), function(x) {
@@ -695,7 +659,7 @@ bp2 <- ggplot(
 bp2
 
 ggsave(
-    "output/figures/eqtl_portability/portability_correction_LDscore.pdf",
+    "path/to/portability_correction_LDscore.pdf",
     width = 5,
     height = 4
 )
