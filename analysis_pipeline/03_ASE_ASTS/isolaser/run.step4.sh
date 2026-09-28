@@ -12,7 +12,7 @@ set -euo pipefail
 
 THREADS=$SLURM_CPUS_PER_TASK
 
-workdir="/flashfs1/scratch.global/lhgong/longrw/myprojs/gtop/20251108-LR-RNAseq/isolaser"
+workdir="/path/to/myprojs/gtop/20251108-LR-RNAseq/isolaser"
 refg="${workdir}/ref/genome.fa"
 outdir="${workdir}/output/isolaser/concat"
 mkdir -p $outdir
@@ -37,7 +37,7 @@ function exec_joint() {
 
 # main func
 function main() {
-    source /lustre/software/anaconda/anaconda3-2019.10-py37/bin/activate /lustre/home/cxue/.conda/envs/isoLASER
+    source /path/to/software/anaconda/anaconda3-2019.10-py37/bin/activate /path/to/dir/.conda/envs/isoLASER
     module load samtools gatk
     combine_vcf
     exec_joint
