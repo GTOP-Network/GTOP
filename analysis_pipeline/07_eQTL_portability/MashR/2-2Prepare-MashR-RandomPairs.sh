@@ -34,7 +34,7 @@ do
 done
 # extract_pairs
 if [[ ! -f ${dir_output}/${name}.nominal_pairs.extracted_pairs.txt.gz ]];then
-python /media/bora_A/zhangt/2025-05-07-EAS_specific_xQTL-Project/2025-09-30-mash/bin/MashR/extract_pairs_tjy.py ${dir_output}/${name}.nominal_files.txt ${dir_output}/nominal_pairs.combined_signifpairs.txt.gz ${name}.nominal_pairs -o ${dir_output}
+python /path/to/bin/MashR/extract_pairs_tjy.py ${dir_output}/${name}.nominal_files.txt ${dir_output}/nominal_pairs.combined_signifpairs.txt.gz ${name}.nominal_pairs -o ${dir_output}
 fi
 # > output file: *_nominal_pairs.extracted_pairs.txt.gz
 rm -f ${dir_output}/${name}.nominal_files.txt
