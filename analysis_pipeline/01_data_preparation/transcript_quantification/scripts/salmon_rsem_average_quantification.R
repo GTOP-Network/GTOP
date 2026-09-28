@@ -10,7 +10,7 @@ library(tidyr)
 
 
 setwd("/path/to/dir/")
-tissue_info <- fread("path/to/input/GTBMap_tissue_code_v2.csv")
+tissue_info <- fread("/path/to/input/GTBMap_tissue_code_v2.csv")
 
 # load data and filter low expression by Tissue -------------------------------------------------
 

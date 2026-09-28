@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import logging
 import os
 import re
@@ -9,6 +10,7 @@ import pandas as pd
 from util import run_commands_threadpool, PROJ_DIR
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+# LOAD_BASE_ENV_CMD='source ~/.bashrc'
 LOAD_POLARS_ENV_CMD='source ~/.bashrc && mamba activate polars_env'
 
 logging.basicConfig(
@@ -22,7 +24,20 @@ logger = logging.getLogger(__name__)
 # ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/path/to/long_read/HPC/output/enhanced_gtf/GTOP_novel-GENCODE_v47',
 #             'gencode': f'{PROJ_ROOT_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation'}
 
-ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/path/to/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47',}
+# ref_gtf_prefix = {ref_g: f'{PROJ_DIR}/path/to/output/assemble/Merge/{ref_g}/{ref_g}.SRS_LRS.stringtie_merge'
+#                   for ref_g in ['DSA_to_hg38','hg38']}
+
+# ref_gtf_prefix = {ref_g: f'{PROJ_DIR}/path/to/output/assemble/Merge/{ref_g}/{ref_g}.expression_filtered.final'
+#              for ref_g in ['DSA_to_hg38']}
+#
+# ref_gtf_prefix = {ref_g: f'{PROJ_DIR}/path/to/output/assemble/Merge/{ref_g}/{ref_g}.expression_filtered.final.ref_gene_id'
+#              for ref_g in ['DSA_to_hg38']}
+
+# ref_gtf_prefix = {'tier2': f'{PROJ_DIR}/path/to/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47-Tier2',}
+
+ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/path/to/release/gtf/GTOP_novel-GENCODE_v47',}
+# ref_gtf_prefix = {'gencode': f'{PROJ_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation',}
+
 salmon_bin=f'{PROJ_DIR}/software/salmon-latest_linux_x86_64/bin/salmon'
 
 ARGS = sys.argv[1:]
@@ -33,7 +48,6 @@ LOG_NAME = ARGS[3]
 N_TASK = int(ARGS[4])
 NT_PER_TASK = int(ARGS[5])
 
-LOAD_BASE_ENV_CMD='module load anaconda && source ~/.bashrc'
 
 def prepare_for_salmon(n_task:int, log_name:str, nt_per_task):
     logging.info(f'prepare for salmon')
@@ -55,7 +69,7 @@ def run_salmon_quant(task_conf_csv:str, n_task:int, log_name:str, nt_per_task:in
     OUTPUT_DIR=f'{ROOT_OUTPUT_DIR}/sample_based'
     df=pd.read_csv(task_conf_csv)
     parallel_cmds=[]
-    for run_label in ['enhanced']:
+    for run_label in ref_gtf_prefix.keys():
         salmon_index = f'{ref_gtf_prefix[run_label]}.salmon_index'
         for i in df.index:
             sample_id = df.loc[i, 'sample_id']
@@ -64,6 +78,8 @@ def run_salmon_quant(task_conf_csv:str, n_task:int, log_name:str, nt_per_task:in
             out_quant=f'{OUTPUT_DIR}/{sample_id}/salmon_{run_label}'
             os.makedirs(os.path.dirname(out_quant), exist_ok=True)
             cmd=f'{salmon_bin} quant -p {nt_per_task} -i {salmon_index} -l ISR -1 {fqs1} -2 {fqs2} --validateMappings --seqBias --gcBias --posBias -o {out_quant}'
+            # cmd = f'{salmon_bin} quant -p {nt_per_task} -i {salmon_index} -l IU -1 {fqs1} -2 {fqs2} --validateMappings --seqBias --gcBias --posBias -o {out_quant}'
+            #
             log_path = f'{out_quant}/run_salmon.log'
             series_cmds = []
             series_cmds.append({'cmd': cmd, 'log_path': log_path})

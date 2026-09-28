@@ -3,6 +3,7 @@
 import logging
 import os
 import re
+import shutil
 import subprocess
 import sys
 from datetime import datetime
@@ -20,13 +21,15 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-STAR_BIN_DIR='/path/to/STAR-2.7.3a/bin'
+STAR_BIN_DIR='/path/to/software/STAR-2.7.3a/bin'
 RSEM_BIN_DIR='/path/to/software/RSEM-1.3.3'
 
-# ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/project/GMTiP-RNA/20251031/long_read/HPC/output/enhanced_gtf/GTOP_novel-GENCODE_v47',
+# ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/path/to/long_read/HPC/output/enhanced_gtf/GTOP_novel-GENCODE_v47',
 #             'gencode': f'{PROJ_ROOT_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation'}
 
-ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/path/to/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47',}
+# ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/path/to/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47',}
+ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/path/to/release/gtf/GTOP_novel-GENCODE_v47',}
+# ref_gtf_prefix = {'gencode': f'{PROJ_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation',}
 
 REF_GENOME_FA=f'{PROJ_DIR}/raw_data/GMTiP/ref/LRS/genome.fa'
 
@@ -71,17 +74,25 @@ def run_rsem_quant(task_conf_csv:str, n_task:int, log_name:str, nt_per_task:int)
     OUTPUT_DIR=f'{ROOT_OUTPUT_DIR}/sample_based'
     df=pd.read_csv(task_conf_csv)
     parallel_cmds=[]
-    for run_label in ['enhanced']:
+    cleaned_sample_dirs = set()
+    for run_label in ref_gtf_prefix.keys():
         RSEM_ref = f'{ref_gtf_prefix[run_label]}.RSEM_ref/ref'
         for i in df.index:
             sample_id = df.loc[i, 'sample_id']
             fqs1=df.loc[i,'fqs1']
             fqs2=df.loc[i,'fqs2']
             tissue_code=sample_id.split('-')[2]
-            out_quant=f'{OUTPUT_DIR}/{sample_id}/RSEM_{run_label}'
-            os.makedirs(os.path.dirname(out_quant), exist_ok=True)
+            sample_out_dir = f'{OUTPUT_DIR}/{sample_id}'
+            if sample_out_dir not in cleaned_sample_dirs:
+                if os.path.isdir(sample_out_dir):
+                    logging.info(f'remove old RSEM sample output: {sample_out_dir}')
+                    shutil.rmtree(sample_out_dir)
+                cleaned_sample_dirs.add(sample_out_dir)
+            out_quant=f'{sample_out_dir}/RSEM_{run_label}'
+            os.makedirs(sample_out_dir, exist_ok=True)
             cmd=f'''
                 {RSEM_BIN_DIR}/rsem-calculate-expression --paired-end -p {nt_per_task}
+                --strandedness reverse
                 --star
                 --star-path {STAR_BIN_DIR}
                 --star-gzipped-read-file
