@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/12/24 11:32
-@Email   : xuechao@szbl.ac.cn
-@Desc    : Detect ORF fa.
-"""
 
 import os
 from pathlib import Path
