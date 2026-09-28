@@ -10,9 +10,9 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/path/to/2024-10-21-GTBMap/2025-05-07-GCTA-eQTL")
+setwd("/path/to/dir")
 
-dir <- "/path/to/2024-10-21-GTBMap/2025-02-13-expression-quant/output/"
+dir <- "/path/to/output/"
 
 input_file <- paste0(dir,"phenotype_new/",opt$tissue,".phenotype.bed")
 #output_file <- paste0("./cis_QTL_SE/",opt$tissue,"cis_QTL_all.add_se.txt")
