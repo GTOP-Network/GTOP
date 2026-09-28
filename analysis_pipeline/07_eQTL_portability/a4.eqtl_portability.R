@@ -191,7 +191,7 @@ ggsave(
     width = 10,
     height = 3
 )
-fwrite(summary_df1, "/media/london_A/mengxin/GTOP_code/fig-4/input/Fig4g.txt")
+fwrite(summary_df1, "/path/to/GTOP_code/fig-4/input/Fig4g.txt")
 
 
 #%% ------------------------ 2. eQTL portability (GTOP)
