@@ -5,7 +5,7 @@
 # ==============================================================================
 
 #%% -------------------- 0. prepare files (packages, input, output path)
-PROJECT_DIR <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-12-compare_with_gtex_revision"
+PROJECT_DIR <- "/path/to/dir"
 setwd(PROJECT_DIR)
 
 suppressPackageStartupMessages({
@@ -14,8 +14,8 @@ suppressPackageStartupMessages({
 })
 
 # --------- input
-GTOP_DIR <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/snv_eqtl/07_summary"
-GTEX_V8_DIR <- "/media/bora_A/zhangt/src/data/GTEx/v8/eQTL/GTEx_Analysis_v8_eQTL"
+GTOP_DIR <- "/path/to/gtop/snv_eqtl/07_summary"
+GTEX_V8_DIR <- "/path/to/src/data/GTEx/v8/eQTL/GTEx_Analysis_v8_eQTL"
 
 # --------- output
 FIG_DIR <- file.path(PROJECT_DIR, "output/figures")
@@ -68,7 +68,7 @@ tissue_link <- data.table(
 )
 
 gtop_samplesize <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/snv_eqtl/07_summary/sample_size.txt",
+    "/path/to/gtop/snv_eqtl/07_summary/sample_size.txt",
 )
 
 tissue_link <- tissue_link[
@@ -82,7 +82,7 @@ fwrite(tissue_link, "input/gtop_gtex_tissues.txt", sep = "\t")
 
 #%% -------------------- 3. GTOP GTEx overlap
 gtex_samplesize <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtexv8_eqtl/07_summary/sample_size.txt"
+    "path/to/gtexv8_eqtl/07_summary/sample_size.txt"
 )
 
 lapply(2:nrow(tissue_link), function(row_index) {
@@ -90,13 +90,13 @@ lapply(2:nrow(tissue_link), function(row_index) {
     gtex_tissue_name <- tissue_link$GTEx_tissue[row_index]
 
     gtop_eqtl <- fread(sprintf(
-        "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/snv_eqtl/06_nominal_slim/split/%s.xgene_allpairs.txt.gz",
+        "/path/to/gtop/snv_eqtl/06_nominal_slim/split/%s.xgene_allpairs.txt.gz",
         gtop_tissue_name
     ))
     gtop_eqtl$stable_ensg <- gsub("\\..+", "", gtop_eqtl$ensg)
 
     gtex_allpairs <- fread(sprintf(
-        "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtexv8_eqtl/05_nominal/%s.txt.gz",
+        "/path/to/gtexv8_eqtl/05_nominal/%s.txt.gz",
         gtex_tissue_name
     ))
     gtex_allpairs$stable_ensg <- gsub("\\..+", "", gtex_allpairs$gene_id)
@@ -129,7 +129,7 @@ lapply(2:nrow(tissue_link), function(row_index) {
     fwrite(
         gtex_gtop_overlap,
         sprintf(
-            "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtexv8_eqtl/08_gtop_overlap/%s.txt.gz",
+            "/path/to/gtexv8_eqtl/08_gtop_overlap/%s.txt.gz",
             gtop_tissue_name
         ),
         sep = "\t"
