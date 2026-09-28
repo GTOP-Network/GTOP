@@ -10,7 +10,7 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/path/to/2024-10-21-GTBMap/2025-12-09-cross-pop")
+setwd("/path/to/dir")
 
 # functions 
 rm_version <- function(x){
