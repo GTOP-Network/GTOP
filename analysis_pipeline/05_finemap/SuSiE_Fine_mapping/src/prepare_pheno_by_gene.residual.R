@@ -11,8 +11,8 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/lustre/home/xdzou/2024-10-21-GTBMap/2025-07-03-Finemap_susie")
-pheno_dir <- "/lustre/home/xdzou/2024-10-21-GTBMap/2025-05-07-GCTA-eQTL/output/Exp_residual/"
+setwd("/path/to/dir")
+pheno_dir <- "/path/to/output/Exp_residual/"
 pheno_bed <- paste0(pheno_dir,opt$tissue,".residual_ztrans.txt")
 #genelist <- paste0("./input/tissue_gene_tr/",opt$tissue,"_gene_list.txt")
 
