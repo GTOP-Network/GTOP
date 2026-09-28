@@ -13,8 +13,8 @@ set -euo pipefail
 
 THREADS=$SLURM_CPUS_PER_TASK
 
-workdir='/flashfs1/scratch.global/lhgong/longrw/myprojs/gtop/20251108-LR-RNAseq/diann'
-image='/lustre/home/lhgong/longrw/toolkits/bioapps/diann/v2.0/diann_docker.img'
+workdir='/path/to/myprojs/gtop/20251108-LR-RNAseq/diann'
+image='/path/to/toolkits/bioapps/diann/v2.0/diann_docker.img'
 diann='/mnt/v1.8.1/diann-1.8.1'
 tissues="${workdir}/input/tissues.txt"
 tissue=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$tissues")
