@@ -1,6 +1,6 @@
 #!/bin/bash
 
-workdir="/flashfs1/scratch.global/lhgong/longrw/myprojs/gtop/20251108-LR-RNAseq/isolaser"
+workdir="/path/to/myprojs/gtop/20251108-LR-RNAseq/isolaser"
 outdir="${workdir}/output/isolaser"
 sampleids="${workdir}/input/sampleids.txt"
 mapfile -t sampleid_arr < $sampleids
