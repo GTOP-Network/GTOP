@@ -2,7 +2,7 @@
 
 This directory contains the computational workflows used to process, analyze, and interpret the **GTOP Phase-I long-read multi-omics resource**.
 
-The pipeline is organized as a sequence of modular workflows covering long-read transcript discovery, transcript annotation and quantification, genome-wide variant calling, allele-specific analyses, molecular QTL mapping, fine-mapping, ancestry-aware QTL analyses, enrichment analyses, GWAS-QTL colocalization, and SMR.
+The pipeline is organized into modular workflows covering long-read transcript discovery and validation, molecular phenotype preparation, genome-wide variant calling, allele-specific analyses, molecular QTL mapping, fine-mapping, frequency-differentiated QTLs, eQTL portability, enrichment analyses, GWAS-QTL colocalization, and SMR.
 
 ## Analysis workflow
 
@@ -12,15 +12,15 @@ Long-read RNA-seq
         ├── Transcript discovery
         │     ├── Bambu
         │     ├── FLAIR
-        │     └── Iso-Seq
+        │     ├── FLAMES
+        │     ├── IsoQuant
+        │     ├── Iso-Seq
+        │     ├── IsoTools
+        │     └── TALON
         │
         ├── Transcript integration and filtering
-        │     ├── transcript merging
-        │     ├── FLAIR quantification
-        │     └── SQANTI3 annotation
-        │
         ├── Transcript quantification
-        └── Peptide validation
+        └── Proteomic validation
         │
         ▼
 Genome-wide sequencing
@@ -32,16 +32,17 @@ Genome-wide sequencing
         ▼
 Allele-specific analyses
         ├── short-read ASE
-        ├── long-read ASE
-        ├── ASTS
-        └── allele-specific splicing
+        ├── long-read ASE / ASTS with lorals
+        ├── allele-specific splicing with isoLASER
+        └── long-read ASE / ASJ with longcallR
         │
         ▼
 Molecular QTL mapping
         ├── eQTL
         ├── sQTL
         ├── TR-eQTL
-        └── TR-sQTL
+        ├── TR-sQTL
+        └── MAJIQTL-based splicing QTL analysis
         │
         ▼
 Fine-mapping
@@ -49,8 +50,9 @@ Fine-mapping
         └── cross-ancestry SuSiEx
         │
         ▼
-Downstream analyses
-        ├── population-specific QTLs
+Downstream genetic analyses
+        ├── frequency-differentiated QTLs
+        ├── eQTL portability and mashR
         ├── QTL enrichment
         ├── GWAS-QTL colocalization
         └── SMR
@@ -60,210 +62,80 @@ Downstream analyses
 
 | Module | Main purpose |
 |---|---|
-| `00_transcript_detection/` | Long-read transcript discovery, integration, filtering, quantification, and peptide validation |
-| `01_data_preparation/` | Preparation of gene, splicing, and transcript-level molecular phenotypes |
-| `02_Variant_calling/` | Variant discovery, population structure analysis, and functional annotation |
-| `03_ASE_ASTS/` | Allele-specific expression, allele-specific transcript structure, and allele-specific splicing |
-| `04_QTL_mapping/` | eQTL, sQTL, TR-eQTL, and TR-sQTL mapping |
-| `05_finemap/` | SuSiE and cross-ancestry fine-mapping |
-| `06_population-specific_eQTL/` | Ancestry-dependent allele frequencies, QTL portability, heterogeneity QTLs, and mashR analyses |
-| `07_QTL_enrichment/` | Genomic annotation and heritability enrichment |
-| `08_colocalization/` | GWAS fine-mapping and GWAS-QTL colocalization |
-| `09_SMR/` | Summary-data-based Mendelian randomization |
-| `Pipeline.md` | Detailed overview of the analysis pipeline |
+| `00_transcript_detection/` | Long-read transcript discovery, integration, filtering, quantification, and proteomic validation |
+| `01_data_preparation/` | Short-read gene expression, splicing, and long-read transcript-level phenotype preparation |
+| `02_Variant_calling/` | LRS/SRS variant calling, population structure analysis, and VEP annotation |
+| `03_ASE_ASTS/` | ASE, ASTS, allele-specific splicing, and allele-specific junction analysis |
+| `04_QTL_mapping/` | eQTL, sQTL, TR-eQTL, TR-sQTL, and MAJIQTL-based QTL analyses |
+| `05_finemap/` | SuSiE and cross-ancestry SuSiEx fine-mapping |
+| `06_frequency_differences/` | Frequency-differentiated QTL and ancestry-aware fine-mapping analyses |
+| `07_eQTL_portability/` | GTOP–GTEx eQTL portability, cross-tissue sharing, and mashR analyses |
+| `08_QTL_enrichment/` | Genomic annotation enrichment with torus and heritability enrichment with S-LDSC |
+| `09_colocalization/` | GWAS and cis-QTL fine-mapping and colocalization |
+| `10_SMR/` | Summary-data-based Mendelian randomization |
 
 ## Module overview
 
 ### 00. Transcript detection
 
-`00_transcript_detection/` reconstructs and evaluates transcript models from long-read RNA-seq.
-
-The workflow integrates:
-
-- **Bambu** for reference-guided transcript discovery.
-- **FLAIR** for reference-guided isoform reconstruction and quantification.
-- **Iso-Seq** for transcript reconstruction.
-- **SQANTI3** for transcript structural annotation and quality assessment.
-- Custom scripts for transcript merging, filtering, gene assignment, and construction of enhanced transcript references.
-- **DIANN**-based workflows for peptide support/validation.
-
-The main submodules are:
-
-```text
-00_transcript_detection/
-├── 01_transcript_discovery/
-├── 02_merge_filter_transcript/
-├── 03_quantification/
-└── 04_peptide_validation/
-```
+`00_transcript_detection/` reconstructs and evaluates transcript models from PacBio long-read RNA-seq using **seven complementary approaches**: Bambu, FLAIR, FLAMES, IsoQuant, Iso-Seq, IsoTools, and TALON. The resulting models are merged, filtered, structurally annotated, quantified, and evaluated using proteomic evidence.
 
 ### 01. Data preparation
 
-`01_data_preparation/` generates molecular phenotypes for downstream QTL analyses.
-
-It includes:
-
-- Short-read RNA-seq gene-expression quantification.
-- Splicing quantification using LeafCutter-based workflows.
-- Long-read transcript quantification using Salmon/RSEM-related workflows.
-- Construction of molecular phenotype matrices.
+`01_data_preparation/` generates molecular phenotypes for downstream QTL analyses, including short-read gene expression, LeafCutter-based splicing phenotypes, and long-read transcript-level quantification using Salmon/RSEM-related workflows.
 
 ### 02. Variant calling
 
-`02_Variant_calling/` processes long- and short-read WGS data and generates variant resources for downstream analyses.
-
-Main workflows:
-
-```text
-01_LRS_WGS_Variant_Calling.sh
-02_SRS_WGS_Variant_Calling.sh
-03_PCA_ADMIXTURE.sh
-04_vep_annotation.sh
-```
-
-These workflows cover genome-wide variant discovery, population structure analysis using PCA/ADMIXTURE, and functional annotation with VEP.
+`02_Variant_calling/` processes both long- and short-read WGS data. The main workflows are `01_LRS_WGS_Variant_Calling.sh`, `02_SRS_WGS_Variant_Calling.sh`, `03_PCA_ADMIXTURE.sh`, and `04_vep_annotation.sh`.
 
 ### 03. ASE and ASTS
 
-`03_ASE_ASTS/` identifies allele-specific regulatory effects.
-
-The workflow includes:
-
-- Short-read ASE.
-- Long-read ASE.
-- Allele-specific transcript structure (ASTS).
-- Allele-specific splicing using `isoLASER`.
-- Haplotype-aware alignment and donor-level aggregation.
-
-The main entry points are:
-
-```text
-run_SRS_ase.sh
-run_LRS_ase_lorals.sh
-```
+`03_ASE_ASTS/` contains short-read ASE, long-read ASE/ASTS using lorals, allele-specific splicing using isoLASER, and long-read ASE/ASJ using longcallR. The longcallR workflow calls and phases RNA SNPs and uses matched DNA variants for high-confidence ASE/ASJ analysis.
 
 ### 04. QTL mapping
 
-`04_QTL_mapping/` performs molecular QTL mapping.
-
-Supported analyses include:
-
-- cis-eQTL
-- cis-sQTL
-- TR-eQTL
-- TR-sQTL
-
-The workflow first prepares phenotypes, covariates, and genotypes, followed by QTL association testing. TensorQTL-based Python workflows are provided for tandem-repeat QTL analyses.
+`04_QTL_mapping/` supports cis-eQTL, cis-sQTL, TR-eQTL, TR-sQTL, and MAJIQTL-based splicing QTL analysis. Main entry points include `run_eQTL_mapping.sh`, `run_sQTL_mapping.sh`, `run_TR_xQTL_mapping.sh`, and `run_MAJIQTL.sh`.
 
 ### 05. Fine-mapping
 
-`05_finemap/` performs variant-level fine-mapping.
+`05_finemap/` contains SuSiE fine-mapping and cross-ancestry SuSiEx workflows, including gene-centered genotype/phenotype preparation, credible-set/PIP summarization, and SV/TR annotation.
 
-Two major workflows are provided:
+### 06. Frequency-differentiated QTLs
 
-1. **SuSiE fine-mapping**
-   - Gene/tissue-level genotype and phenotype preparation.
-   - Variant-class-specific and joint fine-mapping.
-   - Credible-set and PIP summarization.
-   - SV/TR annotation and downstream summaries.
+`06_frequency_differences/` compares allele frequencies across ancestral populations, summarizes fine-mapped QTLs and LD-expanded variants, merges credible sets across tissues, and identifies frequency-differentiated QTLs through the sequential `a1`–`a4` workflow.
 
-2. **Cross-ancestry fine-mapping with SuSiEx**
-   - Preparation of GTOP and external ancestry-specific QTL inputs.
-   - Shared eGene identification.
-   - Cross-ancestry fine-mapping.
-   - Summary and harmonization of fine-mapping results.
+### 07. eQTL portability
 
-### 06. Population-specific eQTL
+`07_eQTL_portability/` evaluates GTOP–GTEx eQTL sharing and portability and uses mashR to model cross-tissue effect patterns. The `MashR/` subdirectory contains strong-pair, random-pair, and fine-mapping-pair workflows.
 
-`06_population-specific_eQTL/` investigates ancestry-dependent regulatory effects.
+### 08. QTL enrichment
 
-The workflow includes:
+`08_QTL_enrichment/` implements torus-based genomic annotation enrichment and S-LDSC-based heritability enrichment.
 
-- Allele-frequency comparisons across ancestry groups.
-- Fine-mapped QTL frequency annotation.
-- Replication and comparison with GTEx.
-- Identification of heterogeneity QTLs.
-- mashR-based multivariate effect-size modeling and fine-mapping.
+### 09. GWAS-QTL colocalization
 
-Scripts are organized into analytical stages `a1`–`a4`, with additional workflows under `MashR/`.
+`09_colocalization/` performs GWAS fine-mapping, GWAS–gene/locus pairing, GTOP QTL fine-mapping, SuSiE-coloc, and result integration.
 
-### 07. QTL enrichment
+### 10. SMR
 
-`07_QTL_enrichment/` evaluates the functional enrichment of QTLs.
-
-Two complementary approaches are implemented:
-
-- **torus** for enrichment of QTL associations in genomic annotations.
-- **S-LDSC** for enrichment of complex-trait heritability in QTL-derived annotations.
-
-### 08. GWAS-QTL colocalization
-
-`08_colocalization/` integrates GTOP molecular QTLs with GWAS signals.
-
-The workflow includes:
-
-1. GWAS locus definition and annotation.
-2. GWAS fine-mapping.
-3. QTL fine-mapping preparation.
-4. GWAS-QTL colocalization.
-5. Result integration and summarization.
-
-### 09. SMR
-
-`09_SMR/` contains the SMR workflow for integrating molecular QTL summary statistics with GWAS summary statistics.
+`10_SMR/` contains the workflow for integrating eQTL, sQTL, and transcript-usage QTL summary statistics with GWAS summary statistics using SMR.
 
 ## Reproducibility
 
-The workflows were developed for high-performance computing environments and use a combination of **Bash, Python, and R**.
-
-Most workflows require external reference data, including genome assemblies, gene annotations, genotype files, phenotype matrices, GWAS summary statistics, and/or external QTL resources. Paths in shell and R scripts should therefore be adapted to the local environment before execution.
-
-For a complete description of a specific workflow, consult:
-
-- the module-level README, where available;
-- the corresponding shell/Python/R entry-point script;
-- `Pipeline.md` for the overall analysis order.
+The workflows use Bash, Python, and R and are designed primarily for HPC environments. Many scripts contain study-specific paths, software environments, and scheduler settings that should be adapted before execution. Most modules require external reference resources such as genome assemblies, annotations, genotype data, LD resources, phenotype matrices, and GWAS/QTL summary statistics.
 
 ## Recommended execution order
 
-For reproducing the complete GTOP analysis, the modules are generally intended to be followed in this order:
-
 ```text
-00  Transcript detection
- ↓
-01  Molecular phenotype preparation
- ↓
-02  Variant calling and annotation
- ↓
-03  ASE / ASTS
- ↓
-04  QTL mapping
- ↓
-05  Fine-mapping
- ↓
-06  Population-specific QTL analyses
- ↓
-07  QTL enrichment
- ↓
-08  GWAS-QTL colocalization
- ↓
-09  SMR
+00 → 01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10
 ```
 
-Individual downstream modules can also be run independently when the required upstream inputs are available.
+Individual downstream modules can also be run independently when their required upstream inputs are available.
 
-## Software environment
+## Key software
 
-The repository combines R, Python, and command-line workflows and relies on third-party software packages used by individual modules. Because the exact software requirements can differ between modules, users should inspect the corresponding scripts before execution and install the relevant tools in their HPC environment.
-
-Key software/tools represented in the workflows include Bambu, FLAIR, Iso-Seq, SQANTI3, Salmon, RSEM, LeafCutter, TensorQTL, SuSiE, SuSiEx, mashR, torus, S-LDSC, locus-level colocalization workflows, and SMR.
-
-## Notes
-
-The scripts in this repository document the computational workflows used for the GTOP study. They are provided primarily to facilitate transparency and reproducibility of the published analyses. Large intermediate files, reference resources, and computationally intensive outputs are not necessarily distributed with the repository.
+The workflows incorporate, among others: Bambu, FLAIR, FLAMES, IsoQuant, Iso-Seq, IsoTools, TALON, TAMA, SQANTI3, Salmon, RSEM, LeafCutter, TensorQTL, MAJIQTL, lorals, isoLASER, longcallR, SuSiE, SuSiEx, mashR, torus, LDSC/S-LDSC, SuSiE-coloc, and SMR.
 
 ## Citation
 
 If you use the GTOP analysis workflows or derived results, please cite the GTOP study and the original software packages used in the corresponding analyses.
-
-> Zou X, Li X, Zhang T, et al. *A long-read multi-omics atlas broadens discovery of regulatory variation across 33 human tissues.*
