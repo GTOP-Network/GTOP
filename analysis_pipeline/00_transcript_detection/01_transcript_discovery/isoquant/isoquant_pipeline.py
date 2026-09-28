@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/08/31 15:00
-@Email   : xuechao@szbl.ac.cn
-@Desc    : Run per-sample IsoQuant transcript discovery.
-"""
 
 import os
 import shlex
