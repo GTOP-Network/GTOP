@@ -5,7 +5,7 @@
 # ==============================================================================
 
 #%% ------------------------ 0. prepare files (packages, input files, output files)
-CURRENT_DIR <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-12-compare_with_gtex_revision"
+CURRENT_DIR <- "/path/to/dir"
 setwd(CURRENT_DIR)
 
 suppressPackageStartupMessages({
@@ -17,7 +17,7 @@ suppressPackageStartupMessages({
 
 ## beta se values
 strong_beta_se <- vroom::vroom(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-23-he_QTL_revision/output/data/mash/noct_eqtl/Strong/strong_beta_se.MashR_input.txt.gz",
+    "/path/to/output/data/mash/noct_eqtl/Strong/strong_beta_se.MashR_input.txt.gz",
 ) %>%
     as.data.frame() %>%
     column_to_rownames("pair_id")
@@ -30,7 +30,7 @@ colnames(raw_beta) <- gsub("_slope", "", colnames(raw_beta))
 
 ## lfsr
 posterior_list <- readRDS(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-23-he_QTL_revision/output/data/mash/noct_eqtl/top_pairs_lead/m.s_zval.RDS",
+    "/path/to/output/data/mash/noct_eqtl/top_pairs_lead/m.s_zval.RDS",
 )
 lfsr_mash <- posterior_list$result$lfsr
 lfsr_mash <- as.data.frame(lfsr_mash)
@@ -61,7 +61,7 @@ sig_num_list <- rbindlist(lapply(names(new_tissue_change), function(x) {
     col2 <- new_tissue_change[x]
 
     portability_info <- readRDS(sprintf(
-        "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-12-compare_with_gtex_revision/output/data/snv_eqtl/portability/%s.rds",
+        "/path/to/output/data/snv_eqtl/portability/%s.rds",
         gsub("GTOP_", "", x)
     ))
     portability_info <- portability_info$portability_df
