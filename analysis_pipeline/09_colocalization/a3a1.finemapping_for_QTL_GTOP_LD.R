@@ -50,7 +50,7 @@ bfile_path <- sprintf(
     "/path/to/src/GTOP_hg38/splitbychr/gtop_snv.maf05.%s",
     CHRNAME
 )
-plink_bin <- "/lustre/home/tzhang/src/bin/plink"
+plink_bin <- "/path/to/src/bin/plink"
 
 # Verify that PLINK binary exists
 if (!file.exists(plink_bin)) {
