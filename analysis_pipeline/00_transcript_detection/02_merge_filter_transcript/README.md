@@ -20,7 +20,8 @@ Raw transcript QC summarizes per-sample transcript counts before and after filte
 ## 2. Merge within callers
 
 ```bash
-python 05_tama_run_multi_submit.py
+python 05_tama_run_multi_submit.py submit-config
+# After configuration jobs finish:
 python 05_tama_run_multi_submit.py submit-merge
 # After tissue-level jobs finish:
 python 06_tama_run_tissue.py
@@ -67,9 +68,9 @@ bash 13_junction_srs_run.sh merge
 ## 5. Construct final references
 
 ```bash
-python 09_sqanti3_run.py custom_filter
+python 09_sqanti3_run.py custom_filter_gt_1k
 # After filtering finishes:
-python 14_enhanced_gtf_run.py enhanced_gtf
+python 14_enhanced_gtf_run.py enhanced_gtf_gt_1k
 ```
 
 Reference construction writes the GTOP and enhanced GENCODE transcript references, associated annotation tables, and predicted protein sequences to `release/` for subsequent analysis.
