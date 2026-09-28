@@ -5,7 +5,7 @@
 # ==============================================================================
 
 #%% ------------------------ 0. prepare files (packages, input files, output files)
-PROJECT_DIR <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-11-fine_mapping_revision"
+PROJECT_DIR <- "path/to/dir"
 setwd(PROJECT_DIR)
 
 suppressPackageStartupMessages({
@@ -17,13 +17,13 @@ suppressPackageStartupMessages({
 })
 
 # ------------ input
-IN_EQTL_FILE <- "/media/london_B/zouxudong/2024-10-21-aGTEx-main/Revision_Nature/2026-05-25-joint-finemap/input/SuSiE_finemapping_summary/GTOP_finemapping.eQTL.snv_all_tissues.txt"
-IN_JUQTL_FILE <- "/media/london_B/zouxudong/2024-10-21-aGTEx-main/Revision_Nature/2026-05-25-joint-finemap/input/SuSiE_finemapping_summary/GTOP_finemapping.ju_sQTL.snv_all_tissues.txt"
-IN_TUQTL_FILE <- "/media/london_B/zouxudong/2024-10-21-aGTEx-main/Revision_Nature/2026-05-25-joint-finemap/input/SuSiE_finemapping_summary/GTOP_finemapping.tu_sQTL.snv_all_tissues.txt"
+IN_EQTL_FILE <- "/path/to/SuSiE_finemapping_summary/GTOP_finemapping.eQTL.snv_all_tissues.txt"
+IN_JUQTL_FILE <- "/path/to/SuSiE_finemapping_summary/GTOP_finemapping.ju_sQTL.snv_all_tissues.txt"
+IN_TUQTL_FILE <- "/path/to/SuSiE_finemapping_summary/GTOP_finemapping.tu_sQTL.snv_all_tissues.txt"
 
-PLINK_BIN <- "/media/bora_A/zhangt/src/bin/plink2"
-GTOP_BFILE <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/data/genotype/gtop/gtop_snv.maf05"
-KGP_BFILE <- "/media/bora_A/zhangt/src/data/1000G/five_ancestry_groups/EAS/1000G.EAS.maf01"
+PLINK_BIN <- "/path/to/src/bin/plink2"
+GTOP_BFILE <- "/path/to/data/genotype/gtop/gtop_snv.maf05"
+KGP_BFILE <- "/path/to/src/data/1000G/five_ancestry_groups/EAS/1000G.EAS.maf01"
 
 # ------------ output
 OUT_FM_FILE <- "output/data/fine_mapped_gtop_xqtl.txt"
@@ -124,13 +124,13 @@ length(unique(c(
 length(unique(eqtl_susie$phenotype_id)) # 8376
 
 eqtl_lead_qtl <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/snv_eqtl/07_summary/lead_qtl.txt.gz"
+    "/path/to/gtop/snv_eqtl/07_summary/lead_qtl.txt.gz"
 )
 juqtl_lead_qtl <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/snv_juqtl/07_summary/lead_qtl.txt.gz"
+    "/path/to/gtop/snv_juqtl/07_summary/lead_qtl.txt.gz"
 )
 tuqtl_lead_qtl <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/snv_tuqtl/07_summary/lead_qtl.txt.gz"
+    "/path/to/gtop/snv_tuqtl/07_summary/lead_qtl.txt.gz"
 )
 
 eqtl_susie <- merge(
