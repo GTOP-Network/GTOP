@@ -29,27 +29,6 @@ output_file <- sprintf(
 dir.create(dirname(output_file), recursive = TRUE, showWarnings = FALSE)
 
 
-# if (!file.exists("input/EAS_GWAS_sig_variants.txt")) {
-#     stop("xQTL file not found: input/EAS_GWAS_sig_variants.txt")
-# }
-# GWAS_sig_variants <- fread("input/EAS_GWAS_sig_variants.txt")
-# GWAS_sig_variants <- GWAS_sig_variants[
-#     !(GWAS_sig_variants$V2 == "chr6" &
-#         GWAS_sig_variants$V3 > 28510120 &
-#         GWAS_sig_variants$V3 < 33480577),
-# ]
-
-# sig_xqtl_path <- sprintf(
-#     "/lustre/home/tzhang/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/%s/06_nominal_slim/nom_thresh/%s.nom_thresh.txt.gz",
-#     QTLTYPE,
-#     TISSUENAME
-# )
-# if (!file.exists(sig_xqtl_path)) {
-#     stop("xQTL file not found: ", sig_xqtl_path)
-# }
-# sig_xQTL <- fread(sig_xqtl_path)
-# sig_GWAS_xQTL <- sig_xQTL[variant_id %in% GWAS_sig_variants$V5]
-# selected_gwas <- unique(GWAS_sig_variants$V1[GWAS_sig_variants$V5%in%sig_GWAS_xQTL$variant_id])
 
 # Load GWAS loci once
 message("Loading GWAS loci...")
@@ -59,7 +38,7 @@ GWAS_loci <- fread("input/EAS_GWAS_noMHC_all_sentinal_loci.txt")
 
 # Load xQTL lead variants
 xqtl_path <- sprintf(
-    "/lustre/home/tzhang/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/%s/04_xgene_info/%s.txt",
+    "/path/to/gtop/%s/04_xgene_info/%s.txt",
     QTLTYPE,
     TISSUENAME
 )
