@@ -2,8 +2,8 @@
 
 main(){
 
-#	s1_run_pca
-#	s2_prepare_covariates
+	s1_run_pca
+	s2_prepare_covariates
 }
 
 function s1_run_pca(){
