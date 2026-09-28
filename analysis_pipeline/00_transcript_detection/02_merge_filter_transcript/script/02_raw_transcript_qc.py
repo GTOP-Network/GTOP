@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/7/3 17:43
-@Email   : xuechao@szbl.ac.cn
-@Desc    : Count transcript numbers in raw tool GTF/GFF outputs.
-"""
 
 import logging
 import multiprocessing as mp
