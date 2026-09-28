@@ -7,7 +7,7 @@ library(ggplot2)
 library(patchwork)
 library(viridis)
 library(tidyr)
-
+library(dplyr)
 
 setwd("/path/to/dir/")
 tissue_info <- fread("/path/to/input/GTOP_tissue_info.csv")
@@ -168,7 +168,7 @@ for(t in unique(tissue)){
 
 final_mard <- rbindlist(res_list)
 
-# SD by Tissue ------------------------------------------------------------
+# MAE by Tissue ------------------------------------------------------------
 
 calc_pairwise_abs_diff <- function(log1, log2) {
   mean_log1 <- rowMeans(log1, na.rm = TRUE)
@@ -209,23 +209,23 @@ for(t in unique(tissue)){
   res_list_pairwise[[t]] <- pair_df
 }
 
-pairwise_all_sd <- do.call(rbind, res_list_pairwise)
+pairwise_all_mae <- do.call(rbind, res_list_pairwise)
 
 
 # combine three metrics -------------------------------------------------
 
 merged <- final_mard %>% 
-  left_join(final_cor_df, by = c("Transcript", "Tissue", "MeanExpr")) %>%
-  left_join(pairwise_all_sd, by = c("Transcript", "Tissue", "MeanExpr"))
+  dplyr::left_join(final_cor_df, by = c("Transcript", "Tissue", "MeanExpr")) %>%
+  dplyr::left_join(pairwise_all_mae, by = c("Transcript", "Tissue", "MeanExpr"))
 
-setnames(merged, old = c("diff_Salmon_RSEM", "Salmon_RSEM"), new = c("SD_Salmon_RSEM", "Cor_Salmon_RSEM"))
+setnames(merged, old = c("diff_Salmon_RSEM", "Salmon_RSEM"), new = c("MAE_Salmon_RSEM", "Cor_Salmon_RSEM"))
 
 merged <- merged %>% mutate(
   Tier1 = "Yes",
   Tier2 = ifelse(Cor_Salmon_RSEM > 0.5 | is.na(Cor_Salmon_RSEM), "Yes", "No"),
-  Tier3 = ifelse(Tier2 == "Yes" & (MeanExpr < 5 | MARD_Salmon_RSEM < 0.33 | SD_Salmon_RSEM < 0.33), "Yes", "No"))%>% 
+  Tier3 = ifelse(Tier2 == "Yes" & (MeanExpr < 5 | MARD_Salmon_RSEM < 0.33 | MAE_Salmon_RSEM < 0.33), "Yes", "No"))%>% 
   mutate(Tissue = as.integer(Tissue)) %>%
-  left_join(tissue_info %>% select(Tissue, Tissue_Code) %>% setnames("TissueName", "Tissue"), by = "Tissue")
+  dplyr::left_join(tissue_info %>% dplyr::select(Tissue, Tissue_Code) %>% setnames("TissueName", "Tissue"), by = "Tissue")
 
 # Filtering transcripts with highly inconsistent -----------------------------------------
 
@@ -236,17 +236,17 @@ sample_info <- data.table( Sample = colnames(ave_tpm)[-1])
 sample_info[, Tissue := sapply( strsplit(Sample, "-"),function(x) x[3])]
 sample_info$Tissue <- as.integer(sample_info$Tissue)
 
-outdir <- "./output/Salmon_RESM_Tier3_average_TPM"
+outdir <- "./output/Salmon_RSEM_Tier3_average_TPM"
 dir.create(outdir,showWarnings = FALSE)
 
 for(t in unique(sample_info$Tissue)){
   
   cat("Processing tissue:",t,"\n")
   samples <- sample_info[Tissue==t, Sample]
-  keep_tx <- merged2[ Tissue==t &Tier3=="Yes", unique(Transcript)]
+  keep_tx <- merged[ Tissue==t &Tier3=="Yes", unique(Transcript)]
   
   tpm <- ave_tpm[Transcript %in% keep_tx, c("Transcript",samples),with=FALSE ]
-  tissue_name <- unique(merged2[Tissue == t, TissueName] )
+  tissue_name <- unique(merged[Tissue == t, TissueName] )
   
   outfile <- file.path( outdir, paste0(tissue_name, ".filter.average_Salmon_RSEM_TPM.bed" ) )
   fwrite(tpm, outfile, sep="\t" )
