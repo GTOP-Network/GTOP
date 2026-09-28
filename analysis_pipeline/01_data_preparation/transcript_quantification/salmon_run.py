@@ -15,8 +15,8 @@ import pandas as pd
 PROJ_DIR = os.environ.get("PROJECT_ROOT")
 LOAD_BASE_ENV_CMD='source ~/.bashrc'
 
-RUN_LOG_DIR=f'{PROJ_DIR}/project/GTOP-RNA/20260815/run_log'
-OUTPUT_DIR=f'{PROJ_DIR}/project/GTOP-RNA/20260815/output/SRS/quantification'
+RUN_LOG_DIR=f'{PROJ_DIR}/path/to/run_log'
+OUTPUT_DIR=f'{PROJ_DIR}/path/to/output/SRS/quantification'
 # all samples
 passed_srRNA_sample_path=f'{PROJ_DIR}/raw_data/GMTiP/meta/RNA/SRS_passed_sample_id.csv'
 # add skin samples
@@ -38,8 +38,8 @@ fastq_dirs=[
     '/path/to/output_80m'
 ]
 
-RUN_LOG_DIR=f'{PROJ_DIR}/project/GTOP-RNA/20260815/run_log/SRS_downsampling'
-OUTPUT_DIR=f'{PROJ_DIR}/project/GTOP-RNA/20260815/output/SRS_downsampling_quant'
+RUN_LOG_DIR=f'{PROJ_DIR}/path/to/run_log/SRS_downsampling'
+OUTPUT_DIR=f'{PROJ_DIR}/path/to/output/SRS_downsampling_quant'
 
 
 NASFS1_FASTQ_COPY_DIR='/path/to/raw_data/GTOP/RNA/SRS/fastq'
