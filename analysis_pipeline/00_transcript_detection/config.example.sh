@@ -10,8 +10,8 @@ export FLNC_DIR="$GTOP_PROJECT_DIR/input/flnc"
 export FLAMES_FASTQ_DIR="$GTOP_PROJECT_DIR/input/flames_non_ig"
 export TISSUE_META="$GTOP_PROJECT_DIR/input/tissue_code.csv"
 export SRS_JUNCTION_DIR="$GTOP_PROJECT_DIR/input/srs_junctions"
-export FLAMES_ROOT=/lustre/home/lhgong/2026-02-26-mengxin/2026-05-12-flames/FLAMES
-# Server-side configuration from the supplied revision; override if relocated.
+export FLAMES_ROOT=/path/to/FLAMES
+# Path to the FLAMES configuration file.
 export FLAMES_CONFIG="$FLAMES_ROOT/gtop_LRS_RNA_config.json"
 export SQANTI3_DIR=/path/to/SQANTI3
 export TAMA_DIR=/path/to/tama
