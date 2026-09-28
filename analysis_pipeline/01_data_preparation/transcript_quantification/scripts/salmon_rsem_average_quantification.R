@@ -9,8 +9,8 @@ library(viridis)
 library(tidyr)
 
 
-setwd("/media/london_B/lixing/2024-08-29-TR-AsianGTEX/2026-05-07-Revision/2026-05-20-SRS-RNA-quantify/")
-tissue_info <- fread("/media/london_B/lixing/2024-08-29-TR-AsianGTEX/2025-03-14-LRS-TR-QTL/input/GTBMap_tissue_code_v2.csv")
+setwd("/path/to/dir/")
+tissue_info <- fread("path/to/input/GTBMap_tissue_code_v2.csv")
 
 # load data and filter low expression by Tissue -------------------------------------------------
 
