@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/10/6 01:42
-@Desc    : Description
-"""
 import logging
 import os
 import re
@@ -24,10 +19,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-# ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/project/GMTiP-RNA/20251031/long_read/HPC/output/enhanced_gtf/GTOP_novel-GENCODE_v47',
+# ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/path/to/long_read/HPC/output/enhanced_gtf/GTOP_novel-GENCODE_v47',
 #             'gencode': f'{PROJ_ROOT_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation'}
 
-ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/project/GMTiP-RNA/20260131/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47',}
+ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/path/to/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47',}
 salmon_bin=f'{PROJ_DIR}/software/salmon-latest_linux_x86_64/bin/salmon'
 
 ARGS = sys.argv[1:]
