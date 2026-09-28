@@ -38,8 +38,6 @@ df_gene %<>% select(Gene,chrom,TSS)
 df_gene$pos0 <- as.numeric(df_gene$TSS) - 1
 
 # -- load genotype individuals
-#df_gt <- fread("/lustre/home/xdzou/2024-10-21-GTBMap/2025-02-13-expression-quant/output/genotype/GMTiP.LRS131_SV.GT.psam",skip=1,header=F,sep="\t")
-#names(df_gt) <- c("INDS","SEX")
 df_gt <- fread("./input/new_header.txt",header=F,sep="\t")
 names(df_gt) <- c("INDS")
 
