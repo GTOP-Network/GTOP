@@ -1325,7 +1325,7 @@ class GTFAnnotation:
     def make_autosome_transcript_tab(self):
         keep_autosomes_only = True
         protein_coding_only = False
-        # wdir = f'/media/dubai/home/xuechao/project/GMTiP-RNA/20251031/long_read/HPC/output/enhanced_gtf'
+        # wdir = f'/path/to/long_read/HPC/output/enhanced_gtf'
         # files=['GTOP_novel-GENCODE_v47.gtf','GTOP_all.gtf']
         gtf_file = self.gtf_file
         wdir = os.path.dirname(gtf_file)
