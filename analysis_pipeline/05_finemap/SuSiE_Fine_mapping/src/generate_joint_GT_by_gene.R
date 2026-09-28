@@ -11,7 +11,7 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/flashfs1/scratch.global/xdzou/Fine_map_susie")
+setwd("/path/to/Fine_map_susie")
 GTdir <- paste0("./input/SNV_by_egenes/",opt$gene)
 
 gt_files <- list.files(path=GTdir,pattern=".vcf")
