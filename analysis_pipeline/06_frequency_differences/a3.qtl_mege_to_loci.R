@@ -5,7 +5,7 @@
 # ==============================================================================
 
 #%% ------------------------ 0. prepare files (packages, input files, output files)
-PROJECT_DIR <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-11-fine_mapping_revision"
+PROJECT_DIR <- "/path/to/dir"
 setwd(PROJECT_DIR)
 
 suppressPackageStartupMessages({
@@ -17,11 +17,11 @@ suppressPackageStartupMessages({
 
 # ------------ input
 IN_SUSIE_FILE <- "output/data/fine_mapped_gtop_xqtl.txt"
-IN_AF_FILE <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-09-gtop_gnomad_af_revision/output/data/integrated_freq.txt"
+IN_AF_FILE <- "path/to/output/data/integrated_freq.txt"
 
-PLINK_BIN <- "/media/bora_A/zhangt/src/bin/plink2"
-GTOP_BFILE <- "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/xqtl_atlas/data/genotype/gtop/gtop_snv.maf05"
-KGP_BFILE <- "/media/bora_A/zhangt/src/data/1000G/five_ancestry_groups/EAS/1000G.EAS.maf01"
+PLINK_BIN <- "/path/to/src/bin/plink2"
+GTOP_BFILE <- "/path/to/data/genotype/gtop/gtop_snv.maf05"
+KGP_BFILE <- "/path/to/src/data/1000G/five_ancestry_groups/EAS/1000G.EAS.maf01"
 
 
 theme_pub <- function(base_size = 12) {
@@ -612,7 +612,7 @@ lapply(c("snv_eqtl", "snv_juqtl", "snv_tuqtl"), function(tmp_qtl_type) {
 
 
 fd_eQTL <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-11-fine_mapping_revision/output/data/fm_freq/snv_eqtl_fm_rare.txt"
+    "/path/to/output/data/fm_freq/snv_eqtl_fm_rare.txt"
 )
 table(rowSums(fd_eQTL[, 2:6] < 0.1) > 0)
 table(rowSums(fd_eQTL[, 2:5] < 0.1) > 0)
@@ -626,12 +626,6 @@ tmp_data <- fd_eQTL[, .(
     SAS = sas,
     AMR = amr
 )]
-
-fwrite(
-    tmp_data,
-    "/media/london_A/mengxin/GTOP_code/fig-4/input/Fig4d.txt",
-    sep = "\t"
-)
 
 library(reticulate)
 
@@ -667,7 +661,7 @@ from geovar import *
 plt.rcParams["pdf.fonttype"] = 42
 
 geovar_test = GeoVar()
-geovar_test.add_freq_mat("/media/london_A/mengxin/GTOP_code/fig-4/input/Fig4d.txt")
+geovar_test.add_freq_mat("/path/to/GTOP_code/fig-4/input/Fig4d.txt")
 geovar_test.geovar_binning()
 
 geovar_plot = GeoVarPlot()
@@ -706,7 +700,7 @@ tissue_gene_summary <- tissue_gene_info |>
 tissue_gene_summary |> group_by(variable) |> summarise(mean = mean(count))
 
 color_df <- fread(
-    "/media/pacific/share/Datasets/Asian_GTEx/Metainfo/input/GMTiP_tissue_code_and_colors.csv"
+    "/path/to/GMTiP_tissue_code_and_colors.csv"
 )
 color_vec <- paste0("#", color_df$Tissue_Color_Code)
 names(color_vec) <- color_df$Tissue
@@ -728,19 +722,13 @@ ggplot(
 
 ggsave("output/figures/fm_freq/gene_count.pdf", width = 6, height = 4)
 
-fwrite(
-    tissue_gene_summary,
-    "/media/london_A/mengxin/GTOP_code/fig-4/input/Fig4e.txt",
-    sep = "\t"
-)
-
 
 ## fd_sQTLs
 fd_juQTL <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-11-fine_mapping_revision/output/data/fm_freq/snv_juqtl_fm_rare.txt"
+    "/path/to/output/data/fm_freq/snv_juqtl_fm_rare.txt"
 )
 fd_tuQTL <- fread(
-    "/media/bora_A/zhangt/2026-05-07-gtop_xqtl-Project/2026-05-11-fine_mapping_revision/output/data/fm_freq/snv_tuqtl_fm_rare.txt"
+    "/path/to/output/data/fm_freq/snv_tuqtl_fm_rare.txt"
 )
 fd_juQTL_gene <- gsub(";.+", "", fd_juQTL$gene_locus)
 fd_tuQTL_gene <- gsub(";.+", "", fd_tuQTL$gene_locus)
@@ -763,11 +751,6 @@ tmp_fd_sQTL <- fd_sQTL[, .(
     SAS = sas,
     AMR = amr
 )]
-fwrite(
-    tmp_fd_sQTL,
-    "/media/london_A/mengxin/GTOP_code/extend/extend_7/input/ext_Fig7a.txt",
-    sep = "\t"
-)
 
 
 # library(tidyverse)
@@ -882,7 +865,7 @@ from geovar import *
 plt.rcParams["pdf.fonttype"] = 42
 
 geovar_test = GeoVar()
-geovar_test.add_freq_mat("/media/london_A/mengxin/GTOP_code/extend/extend_7/input/ext_Fig7a.txt")
+geovar_test.add_freq_mat("/path/to/GTOP_code/extend/extend_7/input/ext_Fig7a.txt")
 geovar_test.geovar_binning()
 
 geovar_plot = GeoVarPlot()
