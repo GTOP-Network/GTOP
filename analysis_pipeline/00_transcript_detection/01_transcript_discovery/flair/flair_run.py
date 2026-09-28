@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/08/16 10:00
-@Email   : xuechao@szbl.ac.cn
-@Desc    : Submit per-sample FLAIR discovery and quantification jobs.
-"""
 
 import os
 from pathlib import Path
