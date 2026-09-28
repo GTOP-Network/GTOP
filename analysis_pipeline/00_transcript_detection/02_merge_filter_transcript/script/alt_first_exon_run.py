@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-@Author  : Chao Xue
-@Time    : 2026/5/21 10:46
-@Email   : xuechao@szbl.ac.cn
 @Desc    : Filter rules for alternative first exon:
     1. Novel transcripts with new first exons should only be accepted if the exon is at least 30 bases long
     2. and has no more than one SNV/mismatch per 30 nucleotides.
