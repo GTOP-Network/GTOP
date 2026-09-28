@@ -8,9 +8,9 @@
 
 
 # Example Usage:
-# ./script.sh <workpath> <ori_vcf> <refgenome> <samplelist> <inputbamdir> <reftrans> <refbed> <genetsv>
+# ./script.sh <wkpath> <ori_vcf> <refgenome> <samplelist> <inputbamdir> <reftrans> <refbed> <genetsv>
 
-workpath=$1     # Working directory: root path for all input/output files
+wkpath=$1     # Working directory: root path for all input/output files
 ori_vcf=$2      # Original VCF file: contains genotype data from all donors, used for variant filtering and ASE analysis
 refgenome=$3    # Reference genome file: FASTA format, used for sequence alignment
 samplelist=$4   # Sample list file: single column of sample IDs, specifies which samples to analyze (subset from ori_vcf)
@@ -20,9 +20,9 @@ refbed=$7       # Reference BED file: gene body coordinates in BED format, used 
 genetsv=$8      # Gene-transcript mapping file: TSV format with two columns (gene_name, transcript_name), defines transcript models
 
 
-provcfdir=$workpath/output/processed_vcf
-mapgenodir=$workpath/output/map_genome
-maptransdir=$workpath/output/map_trans
+provcfdir=$wkpath/output/processed_vcf
+mapgenodir=$wkpath/output/map_genome
+maptransdir=$wkpath/output/map_trans
 
 
 mkdir -p $provcfdir $mapgenodir $maptransdir $wkpath/output/ase $wkpath/output/asts
@@ -62,7 +62,7 @@ cd $mapgenodir/$sample
 ./scripts/hap_aligner.sh -f $mapgenodir/$sample/$sample.fasta.gz -G $provcfdir/$ind -o $mapgenodir/$sample
 
 
-fi
+done
 
 
 }
