@@ -34,7 +34,7 @@ do
     }
     done
     # extract_pairs
-    python /media/bora_A/zhangt/2025-05-07-EAS_specific_xQTL-Project/2025-09-30-mash/bin/MashR/extract_pairs_tjy.py ${dir_output}/${name}.nominal_files.txt ${dir_output}/strong_pairs.combined_signifpairs.txt.gz ${name} -o ${dir_output}
+    python /path/to/bin/MashR/extract_pairs_tjy.py ${dir_output}/${name}.nominal_files.txt ${dir_output}/strong_pairs.combined_signifpairs.txt.gz ${name} -o ${dir_output}
     ### output file: *.extracted_pairs.txt.gz
     # rm -f ${dir_output}/${name}.nominal_files.txt
 } &
