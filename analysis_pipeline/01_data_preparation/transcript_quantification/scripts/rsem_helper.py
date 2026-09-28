@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/1/5 09:13
-@Email   : xuechao@szbl.ac.cn
-@Desc    :  
-"""
 import argparse
 import csv
 import logging
