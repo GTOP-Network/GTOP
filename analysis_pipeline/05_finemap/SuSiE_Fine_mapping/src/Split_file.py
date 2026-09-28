@@ -5,9 +5,9 @@ from collections import defaultdict
 
 
 def split_qtl(tissue_name):
-	path="/lustre/home/xdzou/2024-10-21-GTBMap/2025-06-15-joint-split-gt-QTL/output/QTL_mapping/all_joint/cis_QTL/text_format/"
+	path="/path/to/2024-10-21-GTBMap/2025-06-15-joint-split-gt-QTL/output/QTL_mapping/all_joint/cis_QTL/text_format/"
 	qtl_file = path+tissue_name+".cis_eQTL.all_pairs.add_tstat.txt"
-#	snp_file = "/lustre/home/xdzou/data/GTEx_SNP_info.txt"
+#	snp_file = "/path/to/data/GTEx_SNP_info.txt"
 #	snp_info = {}
 #	fh = open(snp_file,'r')
 #	for line in fh.readlines():
@@ -52,7 +52,7 @@ def split_qtl(tissue_name):
 	caviar = dict((k, tuple(v)) for k, v in gene_dict_caviar.iteritems())
 	print(caviar)
 	for current_gene in d:
-		gene_directory="/lustre/home/xdzou/2022-08-05-altTSS_QTL-Project/2022-10-05-heritability/input/split_gene/"+tissue_name+"/"+current_gene
+		gene_directory="/path/to/2022-08-05-altTSS_QTL-Project/2022-10-05-heritability/input/split_gene/"+tissue_name+"/"+current_gene
 		if not os.path.exists(gene_directory):
 			os.makedirs(gene_directory)
 
