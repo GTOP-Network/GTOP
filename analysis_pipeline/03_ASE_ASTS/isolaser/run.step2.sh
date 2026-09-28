@@ -13,7 +13,7 @@ set -euo pipefail
 
 THREADS=$SLURM_CPUS_PER_TASK
 
-workdir="/path/to/myprojs/gtop/20251108-LR-RNAseq/isolaser"
+workdir="/path/to/isolaser"
 refg="${workdir}/ref/genome.fa"
 
 gtop_gtf="${workdir}/input/enhanced_gtf/GTOP.sorted.gtf.gz"
@@ -22,7 +22,7 @@ gtop_db="${workdir}/output/db"
 
 sampleids="${workdir}/input/sampleids.txt"
 sampleid=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "$sampleids")
-pbmm2_bam="/path/to/project/GMTiP-RNA/20251031/long_read/HPC/output/sample_based/${sampleid}/${sampleid}.flnc_mapped.bam"
+pbmm2_bam="/path/to/long_read/HPC/output/sample_based/${sampleid}/${sampleid}.flnc_mapped.bam"
 outdir="${workdir}/output/isolaser/${sampleid}"
 chrdir="${outdir}/chrs"
 mkdir -p $chrdir
@@ -87,14 +87,14 @@ function main() {
     source /path/to/anaconda3/bin/activate isoquant
     exec_bam2fq
     exec_minimap2
-    source /path/to/software/anaconda/anaconda3-2019.10-py37/bin/activate /path/to/dir/.conda/envs/isoLASER
+    source path/to/bin/activate /path/to/dir/.conda/envs/isoLASER
     filter_and_annotate
-    source /path/to/anaconda3/bin/activate isoquant
+    source /path/to/bin/activate isoquant
     bam_sort_index
-    source /path/to/software/anaconda/anaconda3-2019.10-py37/bin/activate /path/to/dir/.conda/envs/isoLASER
+    source /path/to/bin/activate /path/to/dir/.conda/envs/isoLASER
     exec_isolaser
     exec_isolaser_filter
-    source /path/to/anaconda3/bin/activate base
+    source /path/to/bin/activate base
     module load samtools
     exec_bgzip
 }
