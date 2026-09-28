@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/10/5 22:30
-@Desc    : Description
-"""
+
 import os
 import threading
 import subprocess
