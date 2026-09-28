@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/11/23 21:43
-@Email   : xuechao@szbl.ac.cn
-@Desc    :  
-"""
+
 import os
 import shlex
 import shutil
@@ -33,21 +28,21 @@ REF_TAG='enhanced'
 
 ## real data
 fastq_dirs=[
-    '/flashfs1/scratch.global/cxue/raw_data/GTOP/RNA/SRS/fastq',
-    '/flashfs1/scratch.global/cxue/raw_data/GTOP/RNA/SRS/fastq_merged',
-    '/lustre/home/xdzou/2024-10-21-GTBMap/2025-02-11-RNA-mapping/input/fastq',
+    '/path/to/raw_data/GTOP/RNA/SRS/fastq',
+    '/path/to/raw_data/GTOP/RNA/SRS/fastq_merged',
+    '/path/to/input/fastq',
 ]
 
 ## downsampling data
 fastq_dirs=[
-    '/flashfs1/scratch.global/lhgong/mengxin/output_80m'
+    '/path/to/output_80m'
 ]
 
 RUN_LOG_DIR=f'{PROJ_DIR}/project/GTOP-RNA/20260815/run_log/SRS_downsampling'
 OUTPUT_DIR=f'{PROJ_DIR}/project/GTOP-RNA/20260815/output/SRS_downsampling_quant'
 
 
-NASFS1_FASTQ_COPY_DIR='/flashfs1/scratch.global/cxue/raw_data/GTOP/RNA/SRS/fastq'
+NASFS1_FASTQ_COPY_DIR='/path/to/raw_data/GTOP/RNA/SRS/fastq'
 COPY_CHUNK_SIZE=64*1024*1024
 COPY_WORKERS=4
 COPY_PROGRESS_INTERVAL=5
