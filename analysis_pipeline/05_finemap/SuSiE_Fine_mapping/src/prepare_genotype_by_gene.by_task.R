@@ -11,8 +11,6 @@ library(dplyr)
 library(magrittr)
 
 setwd("/flashfs1/scratch.global/xdzou/2026-07-16-Finemapping")
-#genotype_bed <- "./input/GTOP_TR_LRS.PhaseI_160INDS.Miss85.AF95.AC1.dosage.nohomo.simpleTR.miss15.heterZy01.SD.AC_3.zscore.txt"
-#genotype_bed <- "./input/GTOP_SV_LRS.genotype_dosage.txt"
 genotype_bed <- "./input/GTOP_LRS_SRS.small_variants.autosome_X.maf_05.gt_dosage.txt"
 
 genelist <- paste0("./input/task/",opt$task)
