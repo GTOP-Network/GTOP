@@ -13,8 +13,8 @@ main(){
 
 function prepare_variants_gene_coordinates(){
 	currDir=`pwd`
-	phenotype_dir=/path/to/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/phenotype
-	genotype_dir=/path/to/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/genotype
+	phenotype_dir=/path/to/output/phenotype
+	genotype_dir=/path/to/output/genotype
 
 # prepare TSS coordinates
 	cat $phenotype_dir/*.bed|cut -f1-4|grep -v "phenotype_id"|sort -k1,1 -k2,2n|uniq > $currDir/input/TSS.GTOP_tested_genes.sorted.bed
@@ -79,31 +79,12 @@ DIR=$currDir
 " > $currDir/submit_prepare_pheno.${tissue}.slurm
 		echo '
 cd $SLURM_SUBMIT_DIR
-Rscript $DIR/src/prepare_pheno_by_gene.residual.tr.R -t $TISSUE -g $GeneList
+Rscript $DIR/src/prepare_pheno_by_gene.residual.R -t $TISSUE -g $GeneList
 
 echo "process end at:"
 date
 ' >> $currDir/submit_prepare_pheno.${tissue}.slurm
 		sbatch $currDir/submit_prepare_pheno.${tissue}.slurm
-	done
-}
-
-function run_prepare_phenotype_by_eGene_2(){
-	currDir=`pwd`
-	for tissue in `cat $currDir/input/SampleSize_by_tissue.txt|cut -f1`
-	do
-		echo $tissue
-		for gene in `cat $currDir/input/tissue_gene2/${tissue}_gene_list.txt|cut -f2`
-		do
-			echo $gene
-			outdir=$currDir/output/Finemapping_eQTL_sv_snv/${tissue}/${gene}
-			if [ ! -d "$outdir" ]
-			then
-				mkdir -p $outdir
-			fi
-
-			Rscript $currDir/src/prepare_pheno_by_gene_2.R -t $tissue -g $gene
-		done
 	done
 }
 
@@ -175,52 +156,6 @@ function add_genotype_to_each_gene(){
 	done
 }
 
-function run_prepare_genotype_by_eGene(){
-	currDir=`pwd`
-	for tissue in `cat $currDir/SampleSize_by_tissue.txt|cut -f1`
-	do
-		echo $tissue
-		outDir=/path/to/Fine_map_susie/output/$tissue
-		geneList=/path/to/Fine_map_susie/input/tissue_gene_snv/${tissue}_gene_list.txt
-		if [ ! -d "$outDir" ]
-		then
-			mkdir -p $outDir
-		fi
-		echo "#!/bin/bash
-#SBATCH --job-name=pre_SNV_$tissue
-#SBATCH --partition=cu-1
-#SBATCH --nodes=1
-#SBATCH --error=${tissue}_SNV.err
-#SBATCH --output=${tissue}_SNV.out
-
-TISSUE=$tissue
-GeneList=$geneList
-DIR=/flashfs1/scratch.global/xdzou/Fine_map_susie
-OUTdir=$outDir
-" > $currDir/submit_prepare_SNV.${tissue}.slurm
-		echo $'
-
-TSS=$DIR/input/TSS.GTOP_tested_genes.sorted.bed
-GTcoord=$DIR/input/GTOP_SNV.coord.sorted.bed
-
-module load bedtools2/2.29.2
-echo "get snp list..."
-for gene in `cat $GeneList|cut -f2`
-do
-	echo $gene
-	mkdir -p $OUTdir/$gene
-	cat $TSS|grep $gene|awk \'BEGIN{OFS="\\t"}{print $1,$2,$3,$4}\'|bedtools window -w 1000000 -a stdin -b $GTcoord|cut -f8 > $OUTdir/$gene/snp_list.txt
-done
-
-sleep 30
-echo "generate genotype matrix for each gene..."
-Rscript $DIR/src/prepare_genotype_by_gene.R -t $TISSUE
-
-' >> $currDir/submit_prepare_SNV.${tissue}.slurm
-		sbatch $currDir/submit_prepare_SNV.${tissue}.slurm
-	done
-
-}
 # susie
 function run_susie_analysis(){
 	currDir=`pwd`
@@ -229,7 +164,6 @@ function run_susie_analysis(){
 	do
 		echo $tissue
 		outDir=$wkdir/output/TR/$tissue
-#		geneList=$currDir/input/tissue_gene_tr/${tissue}_gene_list.txt
 		geneList=$currDir/input/${tissue}.remained_genes.TR.txt
 		if [ ! -d "$outDir" ]
 		then
@@ -255,7 +189,7 @@ do
 	echo $gene
 	if [ ! -f "$OUTdir/$gene/eTR_GT.SuSiE.rds" ]
 	then
-		Rscript $DIR/src/finemapping_tr.R $OUTdir/$gene 10 0.2 0 
+		Rscript $DIR/src/finemapping.R $OUTdir/$gene 10 0.2 0 
 	fi
 done
 
@@ -269,7 +203,7 @@ date
 
 # get the eGene list in all tissues, permutation FDR<0.05
 function get_tissue_gene_list(){
-	dir=/path/to/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/QTL_mapping
+	dir=/path/to/output/QTL_mapping
 	eGenes=GTOP.tr_egenes.all_tissues.FDR.05.txt
 	currdir=`pwd`
 
