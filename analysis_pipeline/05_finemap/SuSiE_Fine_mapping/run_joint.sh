@@ -24,7 +24,7 @@ function run_summarize_susie(){
 
 TISSUE=$tissue
 DIR=$currDir
-WKDIR=/flashfs1/scratch.global/xdzou/Fine_map_susie
+WKDIR=/path/to/Fine_map_susie
 " > $currDir/submit_summarize_susie.${tissue}.slurm
 		echo '
 cd $SLURM_SUBMIT_DIR
