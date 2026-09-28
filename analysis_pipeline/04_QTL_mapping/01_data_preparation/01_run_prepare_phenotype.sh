@@ -2,11 +2,11 @@
 
 main(){
 
-#	s1_run_rnaseqc
-#	s2_merge_rnaseqc
-#	s3__generate_expMat_gct_by_tissue
-#	s4_prepare_phenotype
-#	s5_generate_phenotype_bed
+	s1_run_rnaseqc
+	s2_merge_rnaseqc
+	s3__generate_expMat_gct_by_tissue
+	s4_prepare_phenotype
+	s5_generate_phenotype_bed
 }
 rawbam_dir=$curr_dir/input/bam
 
