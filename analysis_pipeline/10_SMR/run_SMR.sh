@@ -28,7 +28,7 @@ date
 
 module load R/4.1.2-anaconda3
 
-Rscript /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/bin/00_sort_esd.R ${xQTL_type}
+Rscript /path/to/bin/00_sort_esd.R ${xQTL_type}
 
 echo \"process will end at : \"
 
@@ -46,21 +46,21 @@ for xQTL_type in "eQTL" "tuQTL" "sQTL"
 do
 
 module load R/4.1.2-anaconda3
-realpath /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/input/esd_${xQTL_type}/*/*.esd > /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/input/${xQTL_type}.flist 
-Rscript /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/bin/01_make_flist.R ${xQTL_type}
+realpath /path/to/input/esd_${xQTL_type}/*/*.esd > /path/to/input/${xQTL_type}.flist 
+Rscript /path/to/bin/01_make_flist.R ${xQTL_type}
 
 done
 }
 
 
 make_besd_file(){
-for tiss in `ls /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/input/esd_eQTL`
+for tiss in `ls /path/to/input/esd_eQTL`
 do
 
 	for xQTL_type in "tuQTL" "sQTL" "eQTL"
 do
-smr="/flashfs1/scratch.global/hchen/biosoft/SMR_HEIDI_analysis/smr_Linux"
-my_flist=/flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/input/flist_${xQTL_type}/${xQTL_type}_${tiss}_sorted.flist
+smr="/path/to/smr_Linux"
+my_flist=/path/to/input/flist_${xQTL_type}/${xQTL_type}_${tiss}_sorted.flist
 
 echo "#!/bin/bash
 #SBATCH --job-name='make_esd_${xQTL_type}_${tiss}'
@@ -76,9 +76,9 @@ echo \"process will start at : \"
 
 date
 
-mkdir -p /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/input/mybesd_${xQTL_type}/
+mkdir -p /path/to/input/mybesd_${xQTL_type}/
 module load R/4.1.2-anaconda3
-${smr} --eqtl-flist ${my_flist} --make-besd --out /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/input/mybesd_${xQTL_type}/${tiss}
+${smr} --eqtl-flist ${my_flist} --make-besd --out /path/to/input/mybesd_${xQTL_type}/${tiss}
 echo \"process will end at : \"
 
 date
@@ -92,16 +92,16 @@ run_SMR(){
 
 for xQTL_type in "eQTL" "tuQTL" "sQTL"
 do
-for GWAS in `ls /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/input/GWASs/*/*ma`
+for GWAS in `ls /path/to/input/GWASs/*/*ma`
 do
 GWAS_name=`basename ${GWAS%.ma}`
-smr="/flashfs1/scratch.global/hchen/biosoft/SMR_HEIDI_analysis/smr_Linux"
-mkdir -p /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/slurm/run_smr
+smr="/path/to/smr_Linux"
+mkdir -p /path/to/slurm/run_smr
 
-	for tiss in `less /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/input/tissue.list`
+	for tiss in `less /path/to/input/tissue.list`
 	do
-	my_besd=/flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/input/mybesd_${xQTL_type}/${tiss}
-	smr_out=/flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/output/${xQTL_type}/${GWAS_name}/${GWAS_name}_${tiss}.smr
+	my_besd=/path/to/input/mybesd_${xQTL_type}/${tiss}
+	smr_out=/path/to/output/${xQTL_type}/${GWAS_name}/${GWAS_name}_${tiss}.smr
 
 if [ ! -f "${smr_out}" ]; then
 
@@ -119,10 +119,10 @@ echo \"process will start at : \"
 
 date
 
-mkdir -p /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/output/${xQTL_type}/${GWAS_name}
+mkdir -p /path/to/output/${xQTL_type}/${GWAS_name}
 module load R/4.1.2-anaconda3
-EAS_plink=/flashfs1/scratch.global/hchen/00data/g1000_eas
-my_smr=/flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/output/${xQTL_type}/${GWAS_name}/${GWAS_name}_${tiss}
+EAS_plink=/path/to/00data/g1000_eas
+my_smr=/path/to/output/${xQTL_type}/${GWAS_name}/${GWAS_name}_${tiss}
 ${smr} --bfile \${EAS_plink} \
 	--gwas-summary ${GWAS} \
 	--beqtl-summary ${my_besd} \
@@ -156,9 +156,9 @@ ${smr} --bfile \${EAS_plink} \
  
 echo \"process will end at : \"
 date
-" > /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/slurm/run_smr/run_smr_${xQTL_type}_${GWAS_name}_${tiss}.slurm
-cd /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/slurm/run_smr/log
-sbatch /flashfs1/scratch.global/hchen/2025-12-31-GTOP/2025-12-31-SMR/slurm/run_smr/run_smr_${xQTL_type}_${GWAS_name}_${tiss}.slurm
+" > /path/to/slurm/run_smr/run_smr_${xQTL_type}_${GWAS_name}_${tiss}.slurm
+cd /path/to/slurm/run_smr/log
+sbatch /path/to/slurm/run_smr/run_smr_${xQTL_type}_${GWAS_name}_${tiss}.slurm
 
 MAX_JOBS=150
 USER=hchen
