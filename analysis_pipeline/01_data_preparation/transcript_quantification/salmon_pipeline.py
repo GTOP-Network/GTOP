@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/10/6 01:42
-@Desc    : Description
-"""
+
 import logging
 import os
 import re
@@ -25,21 +21,21 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-# ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/project/GMTiP-RNA/20251031/long_read/HPC/output/enhanced_gtf/GTOP_novel-GENCODE_v47',
+# ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/path/to/GTOP_novel-GENCODE_v47',
 #             'gencode': f'{PROJ_ROOT_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation'}
 
-# ref_gtf_prefix = {ref_g: f'{PROJ_DIR}/project/TOPCODE/20260303/output/assemble/Merge/{ref_g}/{ref_g}.SRS_LRS.stringtie_merge'
+# ref_gtf_prefix = {ref_g: f'{PROJ_DIR}/path/to/output/assemble/Merge/{ref_g}/{ref_g}.SRS_LRS.stringtie_merge'
 #                   for ref_g in ['DSA_to_hg38','hg38']}
 
-# ref_gtf_prefix = {ref_g: f'{PROJ_DIR}/project/TOPCODE/20260303/output/assemble/Merge/{ref_g}/{ref_g}.expression_filtered.final'
+# ref_gtf_prefix = {ref_g: f'{PROJ_DIR}/path/to/output/assemble/Merge/{ref_g}/{ref_g}.expression_filtered.final'
 #              for ref_g in ['DSA_to_hg38']}
 #
-# ref_gtf_prefix = {ref_g: f'{PROJ_DIR}/project/TOPCODE/20260303/output/assemble/Merge/{ref_g}/{ref_g}.expression_filtered.final.ref_gene_id'
+# ref_gtf_prefix = {ref_g: f'{PROJ_DIR}/path/to/output/assemble/Merge/{ref_g}/{ref_g}.expression_filtered.final.ref_gene_id'
 #              for ref_g in ['DSA_to_hg38']}
 
-# ref_gtf_prefix = {'tier2': f'{PROJ_DIR}/project/GMTiP-RNA/20260131/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47-Tier2',}
+# ref_gtf_prefix = {'tier2': f'{PROJ_DIR}/path/to/output/LRS/isoform_discovery/merged/enhanced_gtf/GTOP_novel-GENCODE_v47-Tier2',}
 
-ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/project/GTOP-RNA/20260815/release/gtf/GTOP_novel-GENCODE_v47',}
+ref_gtf_prefix = {'enhanced': f'{PROJ_DIR}/path/to/release/gtf/GTOP_novel-GENCODE_v47',}
 # ref_gtf_prefix = {'gencode': f'{PROJ_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation',}
 
 salmon_bin=f'{PROJ_DIR}/software/salmon-latest_linux_x86_64/bin/salmon'
