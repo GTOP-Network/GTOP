@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-@Author  : Chao Xue
-@Time    : 2026/1/5 09:24
-@Email   : xuechao@szbl.ac.cn
 @Desc    :  
 Extract novel isoforms from SQANTI3 filtered GTF based on classification report.
 
