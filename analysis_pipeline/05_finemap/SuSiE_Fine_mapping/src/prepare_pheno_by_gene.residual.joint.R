@@ -11,10 +11,10 @@ library(data.table)
 library(dplyr)
 library(magrittr)
 
-setwd("/lustre/home/xdzou/2024-10-21-GTBMap/2026-02-03-GTOP_eQTL_Finemap_susie")
-#pheno_dir <- "/lustre/home/xdzou/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/Exp_residual/"
-pheno_dir <- "/lustre/home/xdzou/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/sQTL_residual/ju/" # juQTL
-#pheno_dir <- "/lustre/home/xdzou/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/sQTL_residual/tu/" # tuQTL
+setwd("/path/to/dir")
+pheno_dir <- "/path/to/output/Exp_residual/"
+#pheno_dir <- "/path/to/output/sQTL_residual/ju/" # juQTL
+#pheno_dir <- "/path/to/output/sQTL_residual/tu/" # tuQTL
 pheno_bed <- paste0(pheno_dir,opt$tissue,".residual_ztrans.txt")
 
 df_pheno <- fread(pheno_bed)
@@ -32,7 +32,7 @@ names(df_genes) <- c("Tissue","Gene")
 for(i in 1:dim(df_genes)[1]){
 	gene <- df_genes$Gene[i]
 	exp_gene <- as.numeric(df_mat[gene,])
-	outdir <- paste0("/flashfs1/scratch.global/xdzou/Fine_map_susie_ju/output/Joint/",opt$tissue,"/",gene)
+	outdir <- paste0("/path/to/output/Joint/",opt$tissue,"/",gene)
 	df_exp_gene <- data.frame(PID=inds,IID=inds,Exp=exp_gene)
 
 	if(file.exists(outdir)){
