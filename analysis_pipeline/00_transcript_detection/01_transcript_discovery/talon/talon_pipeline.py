@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/09/10
-@Email   : xuechao@szbl.ac.cn
-@Desc    : Execute TALON transcript discovery tasks.
-"""
 
 import glob
 import os
