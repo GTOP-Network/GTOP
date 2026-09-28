@@ -27,5 +27,5 @@ do
 }
 done
 
-/media/bora_A/zhangt/2025-05-07-EAS_specific_xQTL-Project/2025-09-30-mash/bin/MashR/combine_signif_pairs_tjy.py ${dir_output}/permutation_files.txt strong_pairs -o ${dir_output}
+/path/to/bin/MashR/combine_signif_pairs_tjy.py ${dir_output}/permutation_files.txt strong_pairs -o ${dir_output}
 #> output file: strong_pairs.combined_signifpairs.txt.gz
