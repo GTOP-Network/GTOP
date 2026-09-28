@@ -21,8 +21,8 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
-STAR_BIN_DIR='/lustre/home/cxue/software/STAR-2.7.3a/bin'
-RSEM_BIN_DIR='/lustre/home/cxue/software/RSEM-1.3.3'
+STAR_BIN_DIR='/path/to/software/STAR-2.7.3a/bin'
+RSEM_BIN_DIR='/path/to/software/RSEM-1.3.3'
 
 # ref_gtf_prefix = {'enhanced': f'{PROJ_ROOT_DIR}/project/GMTiP-RNA/20251031/long_read/HPC/output/enhanced_gtf/GTOP_novel-GENCODE_v47',
 #             'gencode': f'{PROJ_ROOT_DIR}/raw_data/GMTiP/ref/LRS/gencode.v47.annotation'}
