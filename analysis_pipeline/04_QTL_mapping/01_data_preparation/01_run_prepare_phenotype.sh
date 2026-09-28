@@ -9,6 +9,7 @@ main(){
 	s5_generate_phenotype_bed
 }
 rawbam_dir=$curr_dir/input/bam
+curr_dir=$(pwd)
 
 function s1_run_rnaseqc(){
 	curr_dir=`pwd`
