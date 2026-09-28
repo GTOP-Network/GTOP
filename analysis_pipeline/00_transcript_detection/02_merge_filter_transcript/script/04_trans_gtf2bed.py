@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/5/18 21:26
-@Email   : xuechao@szbl.ac.cn
-@Desc    :  
-"""
+
 
 import os
 from pathlib import Path
