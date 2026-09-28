@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2025/12/24 09:16
-@Email   : xuechao@szbl.ac.cn
-@Desc    :
-"""
+
 
 # -*- coding: utf-8 -*-
 """
