@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/08/31 16:30
-@Desc    : Submit IsoTools transcript discovery jobs.
-"""
 
 import os
 from pathlib import Path
