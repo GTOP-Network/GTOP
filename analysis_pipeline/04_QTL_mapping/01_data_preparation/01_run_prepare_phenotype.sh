@@ -66,7 +66,7 @@ date
 function s2_merge_rnaseqc(){
 	RNASeQCdir=$base_dir/output/RNASeQC_out
 	curr_dir=`pwd`
-	Rscript $curr_dir/script/merge_rnaseqc.R -p $RNASeQCdir
+	Rscript $curr_dir/scripts/merge_rnaseqc.R -p $RNASeQCdir
 }
 
 
@@ -75,7 +75,7 @@ function s3_generate_expMat_by_tissue(){
 	mkdir -p $curr_dir/output/reads_gct
 	mkdir -p $curr_dir/output/tpm_gct
 
-	Rscript ./script/prepare_exp_matrix_by_tissue.R
+	Rscript ./scripts/prepare_exp_matrix_by_tissue.R
 }
 
 function s4_prepare_phenotype(){
