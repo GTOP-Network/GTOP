@@ -25,7 +25,7 @@ GENENAME <- argvs[3]
 message(QTLTYPE, "\t", TISSUENAME, "\t", GENENAME)
 
 QTL_data <- fread(sprintf(
-    "/lustre/home/tzhang/2026-05-07-gtop_xqtl-Project/xqtl_atlas/gtop/%s/06_nominal_slim/split/%s/%s.txt.gz",
+    "/path/to/gtop/%s/06_nominal_slim/split/%s/%s.txt.gz",
     QTLTYPE,
     TISSUENAME,
     GENENAME
@@ -43,11 +43,11 @@ rownames(QTL_data) <- QTL_data$variant_id
 # ------------------------------------------------------------
 # Compute LD matrix using 1000G EAS reference panel
 # ------------------------------------------------------------
-# bfile_path <- sprintf("/media/bora_A/zhangt/src/data/1000G/five_ancestry_groups/EAS/splitbychr/1000G.EAS.maf01.%s", CHRNAME)
-# plink_bin  <- "/media/bora_A/zhangt/src/bin/plink"
+# bfile_path <- sprintf("/path/to/src/data/1000G/five_ancestry_groups/EAS/splitbychr/1000G.EAS.maf01.%s", CHRNAME)
+# plink_bin  <- "/path/to/src/bin/plink"
 
 bfile_path <- sprintf(
-    "/lustre/home/tzhang/src/GTOP_hg38/splitbychr/gtop_snv.maf05.%s",
+    "/path/to/src/GTOP_hg38/splitbychr/gtop_snv.maf05.%s",
     CHRNAME
 )
 plink_bin <- "/lustre/home/tzhang/src/bin/plink"
