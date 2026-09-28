@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-@Author  : Chao Xue
-@Time    : 2026/8/18 17:57
-@Email   : xuechao@szbl.ac.cn
-@Desc    : Export non-IG long reads from one or more pbmm2 BAM files as FASTQ.GZ.
-"""
 
 
 import os
