@@ -13,8 +13,8 @@ main(){
 
 function prepare_variants_gene_coordinates(){
 	currDir=`pwd`
-	phenotype_dir=/lustre/home/xdzou/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/phenotype
-	genotype_dir=/lustre/home/xdzou/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/genotype
+	phenotype_dir=/path/to/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/phenotype
+	genotype_dir=/path/to/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/genotype
 
 # prepare TSS coordinates
 	cat $phenotype_dir/*.bed|cut -f1-4|grep -v "phenotype_id"|sort -k1,1 -k2,2n|uniq > $currDir/input/TSS.GTOP_tested_genes.sorted.bed
@@ -60,7 +60,7 @@ function run_prepare_phenotype_by_eGene(){
 	for tissue in `cat $currDir/selected_tissues_11.txt|cut -f1`
 	do
 		echo $tissue
-		outDir=/flashfs1/scratch.global/xdzou/Fine_map_susie/output/TR/$tissue
+		outDir=/path/to/Fine_map_susie/output/TR/$tissue
 		geneList=$currDir/input/tissue_gene_tr/${tissue}_gene_list.txt
 		if [ ! -d "$outDir" ]
 		then
@@ -109,7 +109,7 @@ function run_prepare_phenotype_by_eGene_2(){
 
 function generate_vcf_by_gene(){
 	currDir=`pwd`
-	wkdir=/flashfs1/scratch.global/xdzou/Fine_map_susie
+	wkdir=/path/to/Fine_map_susie
 	outdir=$wkdir/input/SNV_by_egenes
 	mkdir -p $outdir
 
@@ -152,12 +152,12 @@ Rscript $DIR/src/prepare_genotype_by_gene.by_task.R -t $TASK
 }
 
 function add_genotype_to_each_gene(){
-	wkdir=/flashfs1/scratch.global/xdzou/Fine_map_susie
+	wkdir=/path/to/Fine_map_susie
 	currDir=`pwd`
 	for tissue in `cat $currDir/selected_tissues_11.txt|cut -f1`
 	do
 		echo $tissue
-		outDir=/flashfs1/scratch.global/xdzou/Fine_map_susie/output/SV/$tissue
+		outDir=/path/to/Fine_map_susie/output/SV/$tissue
 		geneList=$currDir/input/tissue_gene_sv/${tissue}_gene_list.txt
 		for gene in `cat $geneList|cut -f2`
 		do
@@ -180,8 +180,8 @@ function run_prepare_genotype_by_eGene(){
 	for tissue in `cat $currDir/SampleSize_by_tissue.txt|cut -f1`
 	do
 		echo $tissue
-		outDir=/flashfs1/scratch.global/xdzou/Fine_map_susie/output/$tissue
-		geneList=/flashfs1/scratch.global/xdzou/Fine_map_susie/input/tissue_gene_snv/${tissue}_gene_list.txt
+		outDir=/path/to/Fine_map_susie/output/$tissue
+		geneList=/path/to/Fine_map_susie/input/tissue_gene_snv/${tissue}_gene_list.txt
 		if [ ! -d "$outDir" ]
 		then
 			mkdir -p $outDir
@@ -224,7 +224,7 @@ Rscript $DIR/src/prepare_genotype_by_gene.R -t $TISSUE
 # susie
 function run_susie_analysis(){
 	currDir=`pwd`
-	wkdir=/flashfs1/scratch.global/xdzou/Fine_map_susie
+	wkdir=/path/to/Fine_map_susie
 	for tissue in `cat $currDir/selected_tissues_11.txt|cut -f1`
 	do
 		echo $tissue
@@ -269,7 +269,7 @@ date
 
 # get the eGene list in all tissues, permutation FDR<0.05
 function get_tissue_gene_list(){
-	dir=/lustre/home/xdzou/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/QTL_mapping
+	dir=/path/to/2024-10-21-GTBMap/2026-02-02-GTOP_eQTL_mapping/output/QTL_mapping
 	eGenes=GTOP.tr_egenes.all_tissues.FDR.05.txt
 	currdir=`pwd`
 
