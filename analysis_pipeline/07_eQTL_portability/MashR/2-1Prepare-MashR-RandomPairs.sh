@@ -26,6 +26,6 @@ do
     echo ${l} >> ${dir_output}/nominal_combined_files.txt
 }
 done
-/media/bora_A/zhangt/2025-05-07-EAS_specific_xQTL-Project/2025-09-30-mash/bin/MashR/combine_signif_pairs_tjy.py ${dir_output}/nominal_combined_files.txt nominal_pairs -o ${dir_output}
+/path/to/bin/MashR/combine_signif_pairs_tjy.py ${dir_output}/nominal_combined_files.txt nominal_pairs -o ${dir_output}
 ### output file: nominal_pairs.combined_signifpairs.txt.gz
 rm -f ${dir_output}/nominal_combined_files.txt
