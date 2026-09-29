@@ -4,46 +4,6 @@ This directory contains the code for GTOP data processing and downstream analyse
 
 Detailed instructions for running individual workflows are provided in the README files within the corresponding subdirectories.
 
-## Workflow overview
-
-```text
-Long-read RNA-seq + WGS + short-read RNA-seq + proteomics
-                    │
-                    ▼
-          00_transcript_detection
-                    │
-                    ├── Transcript discovery
-                    ├── Transcript integration/filtering
-                    ├── Transcript quantification
-                    └── Peptide validation
-                    │
-                    ▼
-          01_data_preparation
-                    │
-                    └── Gene / splice-junction / transcript phenotypes
-                    │
-                    ├──────────────────────┐
-                    ▼                      ▼
-          02_Variant_calling       03_ASE_ASTS
-                    │                      │
-                    └──────────┬───────────┘
-                               ▼
-                    04_QTL_mapping
-                               │
-                               ▼
-                       05_finemap
-                               │
-             ┌─────────────────┼─────────────────┐
-             ▼                 ▼                 ▼
-   06_frequency_differences  07_eQTL_portability  08_QTL_enrichment
-             │                 │                 │
-             └─────────────────┼─────────────────┘
-                               ▼
-                    09_colocalization
-                               │
-                               ▼
-                           10_SMR
-```
 
 ## Pipeline stages
 
