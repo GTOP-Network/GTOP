@@ -8,10 +8,13 @@ Detailed instructions for running individual workflows are provided in the READM
 ## Pipeline stages
 
 ###Transcript discovery 
+
 `00_transcript_detection/01_transcript_discovery/` | Seven complementary long-read transcript discovery approaches 
+
 **Input**
 PacBio full-length non-chimeric (FLNC) reads in FASTQ/BAM format and their alignments to hg38
 the hg38 reference genome FASTA; GENCODE v47 annotation GTF 
+
 **Output**
 Per-sample transcript annotations in GTF format generated independently by Bambu, FLAIR, FLAMES, IsoQuant, Iso-Seq, IsoTools, and TALON, together with caller-specific read-support information 
 
