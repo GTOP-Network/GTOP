@@ -6,6 +6,6 @@ This directory contains the scripts for generating Figure 4:
 * Figure 4C: The distribution of PIP for all variants in the fine-mapped CSs associated with eGene SAMD9L in the whole blood.
 * Figure 4D: Geographic frequencies of GTOP independent eQTLs across four continental groups, with MAF < 1% in at least one group.
 * Figure 4E: Number of eGenes regulated by fd-QTLs across AFR, EUR, SAS and AMR populations.
-* Figure 4F: the association with total bilirubin at the SLCO1B7 locus.
+* Figure 4F: The association with total bilirubin at the SLCO1B7 locus.
 * Figure 4G: Portability of GTOP eQTLs to GTEx. 
 
