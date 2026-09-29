@@ -49,7 +49,7 @@ fread("input/Supp_Fig37a.proportion_of_CS.txt") %>%
 # Supp.Fig.37b: enrichment by tissue and by SV or TR -----------------------
 
 dat <- readRDS("input/Supp_Fig37b.SVTR_lead_vs_SNV_lead_enrichment.RDS")
-color <- read.csv("/media/london_A/mengxin/GTOP_code/supp/supp_fig40.R4.Heritability-long-reads-coloc/input/GTOP_tissue_coloc_code", header = T) %>%
+color <- read.csv("/path/to/GTOP_tissue_coloc_code", header = T) %>%
   filter(Tissue %in% unique(dat$Tissue))
 dat$PIP <- factor(dat$PIP)
 model_p <- summary(lm(OR ~ PIP, data=dat[dat$Type=="SVTR" & dat$Pval<0.05,]))$fstatistic
