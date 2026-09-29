@@ -17,10 +17,9 @@ If you are having trouble accessing these data, please feel free to contact us t
 
 ## Code
 
-Code used for data processing and downstream analyses is made available in the [analysis_pipeline/](https://github.com/GTOP-Network/GTOP-Phase1/tree/main/analysis_pipeline) directory, along with READMEs describing how each script is run.
+Codes for GTOP data processing and downstream analyses are available in the [analysis_pipeline/](https://github.com/GTOP-Network/GTOP-Phase1/tree/main/analysis_pipeline) directory. Detailed instructions for running the pipelines are provided in the README files within this directory.
 
-Code used to produce major figures/panels in the manuscript is made available in the [figure_generation/](https://github.com/GTOP-Network/GTOP-Phase1/tree/main/figure_generation) directory.
-
+Codes for generating the figures presented in the manuscript are available in the [figure_generation/](https://github.com/GTOP-Network/GTOP-Phase1/tree/main/figure_generation) directory. Detailed instructions for running the figure-generation scripts are provided in the README file within this directory.
 
 ## The GTOP manuscript
 
