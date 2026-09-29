@@ -65,7 +65,7 @@ plt.close()
 
 
 ## Extended Data Fig.7b mash of eQTL portability ---------------------------------------------
-color_vec <- readRDS("input/tissue_color.RDS")
+color_vec <- readRDS("input/tissue_colors.RDS")
 
 count_df <- fread("./input/ext_Fig7b.txt")
 count_df$type2 <- factor(count_df$type2, levels = c("nominal", "mash"))
