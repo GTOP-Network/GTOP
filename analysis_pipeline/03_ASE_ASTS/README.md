@@ -18,7 +18,7 @@ The `run_LRS_ASE_lorals.sh` script processes long-read sequencing data to quanti
 |`process_vcf`|Processes the VCF file containing variants from all donors and generates a reference genome per haplotype for each donor.|
 |`hap_map`|Performs haplotype-aware mapping of long reads to the reference genome per haplotype of each donor.|
 |`hap_map_trans`|Aligns reads to the transcriptome.|
-|`ase_cal_chr`|Calculates and annotates the allelic coverage of each variant.|
+|`ase_cal`|Calculates and annotates the allelic coverage of each variant.|
 |`asts_cal_quant`|Calculates the number of reads containing the reference or alternate allele assigned to each transcript.|
 |`process_asts`|Aggregates and processes the ASTS quantification results, performing filtering and statistical tests.|
 

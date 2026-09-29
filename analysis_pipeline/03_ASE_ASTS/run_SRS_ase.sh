@@ -168,7 +168,7 @@ python $pwd/bin/ase_aggregate_by_individual.py \
   $PHASE_VCF_dir/${ind}_het.vcf.gz \
   $genebed \
   $pwd/input/wgEncodeCrgMapabilityAlign100mer.hg38.bigWig.bw \
-  $pwd/SNP_ASE_lamp/my_study.lamp_values.txt  \
+  $pwd/SNP_ASE_lamp/my_studyGTOP.lamp_values.txt  \
   $ind \
   -o $outpath
 

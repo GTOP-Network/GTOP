@@ -8,9 +8,9 @@
 
 
 # Example Usage:
-# ./script.sh <wkpath> <ori_vcf> <refgenome> <samplelist> <inputbamdir> <reftrans> <refbed> <genetsv>
+# ./script.sh <workpath> <ori_vcf> <refgenome> <samplelist> <inputbamdir> <reftrans> <refbed> <genetsv>
 
-wkpath=$1     # Working directory: root path for all input/output files
+workpath=$1     # Working directory: root path for all input/output files
 ori_vcf=$2      # Original VCF file: contains genotype data from all donors, used for variant filtering and ASE analysis
 refgenome=$3    # Reference genome file: FASTA format, used for sequence alignment
 samplelist=$4   # Sample list file: single column of sample IDs, specifies which samples to analyze (subset from ori_vcf)
@@ -20,9 +20,9 @@ refbed=$7       # Reference BED file: gene body coordinates in BED format, used 
 genetsv=$8      # Gene-transcript mapping file: TSV format with two columns (gene_name, transcript_name), defines transcript models
 
 
-provcfdir=$wkpath/output/processed_vcf
-mapgenodir=$wkpath/output/map_genome
-maptransdir=$wkpath/output/map_trans
+provcfdir=$workpath/output/processed_vcf
+mapgenodir=$workpath/output/map_genome
+maptransdir=$workpath/output/map_trans
 
 
 mkdir -p $provcfdir $mapgenodir $maptransdir $wkpath/output/ase $wkpath/output/asts
@@ -32,7 +32,7 @@ main(){
 process_vcf
 hap_map
 hap_map_trans
-ase_cal_chr
+ase_cal
 asts_cal_quant
 process_asts
 
@@ -62,7 +62,7 @@ cd $mapgenodir/$sample
 ./scripts/hap_aligner.sh -f $mapgenodir/$sample/$sample.fasta.gz -G $provcfdir/$ind -o $mapgenodir/$sample
 
 
-done
+fi
 
 
 }
@@ -95,13 +95,13 @@ done
 }
 
 
-ase_cal_chr(){
+ase_cal(){
 
 
 mkdir -p $wkpath/output/ase
 
 for sample in `ls $wkpath/output/map_genome/`; do
-for chr in chr{1..22};do 
+
 
 ind=`echo $sample| cut -d- -f1-2`
 
@@ -112,13 +112,15 @@ calc_ase -b $wkpath/output/map_genome/$sample/${sample}_reads_aln_sorted.merged.
 
 
 
-annotate_ase -i $wkpath/output/ase/$sample.${chr}.ase.tsv \
+annotate_ase -i $wkpath/output/ase/$sample.ase.tsv \
 -b $refbed \
 -f $provcfdir/${ind}_het.vcf.gz \
 -o $wkpath/output/ase/$sample.ase.annotated.tsv
 
 
 awk -F'\t' '!(\$15==1 || \$16==1 || \$17==1 || \$18==1 || \$19==1)' $wkpath/output/ase/$sample.ase.annotated.tsv > $wkpath/output/ase/$sample.ase.annotated.clean.tsv
+
+done
 
 
 }
