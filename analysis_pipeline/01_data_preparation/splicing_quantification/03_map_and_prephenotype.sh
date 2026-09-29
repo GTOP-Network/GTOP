@@ -4,7 +4,7 @@
 # Get args #
 #==========#
 
-GTFfile=$1 # Gencode GTF (not gzipped)
+GTFfile=$1 # GTF (not gzipped)
 leafcutterOutDir=$2 # Path to Leafcutter2 output directory
 leafcutterOutPrefix=$3 # Prefix of Leafcutter2 output files
 sampleLookupFile=$4
