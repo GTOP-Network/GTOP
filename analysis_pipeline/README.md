@@ -37,7 +37,6 @@ CAGE/TSS annotations and poly(A) motif list
 Merged, quality-filtered GTOP transcript catalogue and an enhanced reference combining GTOP novel transcripts with GENCODE v47; 
 transcript GTF/FASTA, annotation and QC tables, and predicted protein sequences 
 
-
 ### Transcript quantification 
 
 `00_transcript_detection/03_quantification/`——FLAIR transcript quantification 
@@ -49,7 +48,6 @@ Per-sample PacBio FLNC FASTQ files and the final GTOP transcript reference, incl
 **Output**
 
 Transcript-level read-count and TPM matrices across samples, plus gene-level count and TPM matrices aggregated from transcripts belonging to the same gene 
-
 
 ### Peptide validation 
 
@@ -88,16 +86,123 @@ Gene-level counts/TPM;
 WASP-filtered alignments and splicing phenotypes; 
 transcript-level count/TPM matrices and filtered, imputed, normalized transcript-usage phenotypes 
 
+### Variant calling 
+`02_Variant_calling/`——LRS/SRS small variants, population structure, and VEP annotation 
 
-| Variant calling | `02_Variant_calling/` | LRS/SRS small variants, population structure, and VEP annotation | LRS HiFi WGS BAM files and SRS WGS FASTQ files | Per-sample genotype VCFs from LRS and SRS WGS, plus a cohort-level merged and site-filtered VCF |
-| ASE/ASTS/ASJ | `03_ASE_ASTS/` | Short-read ASE, long-read ASE/ASTS, allele-specific splicing, and ASJ | WASP-filtered RNA BAMs, donor-specific heterozygous VCFs, reference/annotation files; long-read RNA/genomic data and phased genotypes; inputs for lorals, isoLASER, and longcallR | Allelic counts and ASE estimates; lorals ASE/ASTS results; isoLASER summaries and merged gVCF; longcallR phased RNA VCF/BAM and DNA-supported ASE/ASJ results |
-| QTL mapping | `04_QTL_mapping/` | eQTL, sQTL, TR-xQTL, and MAJIQTL | Phenotypes in BED/Parquet format; covariates; genotype data preferably in PLINK2 PGEN/PVAR/PSAM format | Nominal cis-QTL summary statistics for variant–phenotype pairs and permutation-mode phenotype-level statistics with empirical P-values for genome-wide FDR |
-| Fine-mapping | `05_finemap/` | SuSiE and cross-ancestry SuSiEx fine-mapping | Individual-level normalized phenotypes for each eGene locus and genotype matrices for variants within 1 Mb of the target eGene TSS | Tissue-level fine-mapping tables containing locus ID, variant ID, PIP, credible-set ID, credible-set size, credible-set purity, and tissue |
-| Frequency differences | `06_frequency_differences/` | Frequency-differentiated QTLs | gnomAD allele frequencies across ancestry groups; SuSiE fine-mapping results containing gene ID, variant ID, PIP, and credible-set ID | fd-QTL list, including independent loci and frequency-difference classifications across ancestry groups |
-| eQTL portability | `07_eQTL_portability/` | GTOP–GTEx portability and mashR analyses | GTOP and GTEx eQTL summary statistics | Six portability metrics and estimated proportions of portable eQTLs |
-| Enrichment | `08_QTL_enrichment/` | torus and S-LDSC enrichment analyses | torus: tensorQTL nominal QTL statistics and variant annotations; S-LDSC: significant QTL pairs, fine-mapping tables, reference genotypes, baselineLD resources, weights, and GWAS summary statistics | torus annotation-enrichment estimates with confidence intervals; S-LDSC heritability contributions, enrichment statistics, and annotation coefficients |
-| Colocalization | `09_colocalization/` | GWAS/QTL fine-mapping and colocalization | GWAS summary statistics and fine-mapping results; QTL summary statistics and fine-mapping results | Colocalization results from SuSiE-coloc, supplemented by coloc.abf analyses |
-| SMR | `10_SMR/` | Summary-data-based Mendelian randomization | GWAS and QTL summary statistics | SMR results including gene ID, SMR P-value, and HEIDI P-value |
+**Input**
+
+LRS HiFi WGS BAM files and SRS WGS FASTQ files 
+
+**Output**
+
+Per-sample genotype VCFs from LRS and SRS WGS, plus a cohort-level merged and site-filtered VCF
+
+### ASE/ASTS/ASJ 
+
+`03_ASE_ASTS/`——Short-read ASE, long-read ASE/ASTS, allele-specific splicing, and ASJ 
+
+**Input**
+
+WASP-filtered RNA BAMs, donor-specific heterozygous VCFs, reference/annotation files; 
+long-read RNA/genomic data and phased genotypes; 
+inputs for lorals, isoLASER, and longcallR 
+
+**Output**
+
+Allelic counts and ASE estimates; 
+lorals ASE/ASTS results; 
+isoLASER summaries and merged gVCF; 
+longcallR phased RNA VCF/BAM and DNA-supported ASE/ASJ results
+
+### QTL mapping 
+
+`04_QTL_mapping/`——eQTL, sQTL, TR-xQTL, and MAJIQTL 
+
+**Input**
+
+Phenotypes in BED/Parquet format;
+covariates; 
+genotype data preferably in PLINK2 PGEN/PVAR/PSAM format 
+
+**Output**
+
+Nominal cis-QTL summary statistics for variant–phenotype pairs and permutation-mode phenotype-level statistics with empirical P-values for genome-wide FDR
+
+### Fine-mapping 
+
+`05_finemap/`——SuSiE and cross-ancestry SuSiEx fine-mapping
+
+**Input**
+
+Individual-level normalized phenotypes for each eGene locus and genotype matrices for variants within 1 Mb of the target eGene TSS 
+
+**Output**
+
+Tissue-level fine-mapping tables containing locus ID, variant ID, PIP, credible-set ID, credible-set size, credible-set purity, and tissue
+
+### Frequency differences
+
+`06_frequency_differences/`——Frequency-differentiated QTLs 
+
+**Input**
+
+gnomAD allele frequencies across ancestry groups; 
+SuSiE fine-mapping results containing gene ID, variant ID, PIP, and credible-set ID
+
+**Output**
+
+fd-QTL list, including independent loci and frequency-difference classifications across ancestry groups
+
+### eQTL portability 
+
+`07_eQTL_portability/`——GTOP–GTEx portability and mashR analyses
+
+**Input**
+
+GTOP and GTEx eQTL summary statistics
+
+**Output**
+
+Six portability metrics and estimated proportions of portable eQTLs 
+
+### Enrichment
+
+`08_QTL_enrichment/`——torus and S-LDSC enrichment analyses
+
+**Input**
+
+torus: tensorQTL nominal QTL statistics and variant annotations; 
+S-LDSC: significant QTL pairs, fine-mapping tables, reference genotypes, baselineLD resources, weights, and GWAS summary statistics
+
+**Output**
+
+torus annotation-enrichment estimates with confidence intervals; 
+S-LDSC heritability contributions, enrichment statistics, and annotation coefficients 
+
+### Colocalization 
+
+`09_colocalization/`——GWAS/QTL fine-mapping and colocalization 
+
+**Input**
+
+GWAS summary statistics and fine-mapping results; 
+QTL summary statistics and fine-mapping results 
+
+**Output**
+
+Colocalization results from SuSiE-coloc, supplemented by coloc.abf analyses
+
+### SMR
+
+`10_SMR/`——Summary-data-based Mendelian randomization
+
+**Input**
+
+GWAS and QTL summary statistics
+
+**Output**
+
+SMR results including gene ID, SMR P-value, and HEIDI P-value 
 
 ## Directory structure
 
