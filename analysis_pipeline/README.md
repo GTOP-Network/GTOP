@@ -9,16 +9,35 @@ Detailed instructions for running individual workflows are provided in the READM
 
 ###Transcript discovery 
 
-`00_transcript_detection/01_transcript_discovery/` | Seven complementary long-read transcript discovery approaches 
+`00_transcript_detection/01_transcript_discovery/`——Seven complementary long-read transcript discovery approaches 
 
 **Input**
-PacBio full-length non-chimeric (FLNC) reads in FASTQ/BAM format and their alignments to hg38
+
+PacBio full-length non-chimeric (FLNC) reads in FASTQ/BAM format and their alignments to hg38;
 the hg38 reference genome FASTA; GENCODE v47 annotation GTF 
 
 **Output**
+
 Per-sample transcript annotations in GTF format generated independently by Bambu, FLAIR, FLAMES, IsoQuant, Iso-Seq, IsoTools, and TALON, together with caller-specific read-support information 
 
-| Transcript integration | `00_transcript_detection/02_merge_filter_transcript/` | FLNC support filtering, TAMA merging, SQANTI3 annotation, and enhanced GTF construction | Transcript annotations and read-support information from the seven discovery tools; PacBio FLNC reads and genome alignments; short-read splice-junction evidence from STAR; hg38 genome and GENCODE v47 annotation; CAGE/TSS annotations and poly(A) motif list | Merged, quality-filtered GTOP transcript catalogue and an enhanced reference combining GTOP novel transcripts with GENCODE v47; transcript GTF/FASTA, annotation and QC tables, and predicted protein sequences |
+###Transcript integration 
+
+`00_transcript_detection/02_merge_filter_transcript/`——FLNC support filtering, TAMA merging, SQANTI3 annotation, and enhanced GTF construction 
+
+**Input**
+
+Transcript annotations and read-support information from the seven discovery tools; 
+PacBio FLNC reads and genome alignments; 
+short-read splice-junction evidence from STAR; 
+hg38 genome and GENCODE v47 annotation; 
+CAGE/TSS annotations and poly(A) motif list 
+
+**Output**
+
+Merged, quality-filtered GTOP transcript catalogue and an enhanced reference combining GTOP novel transcripts with GENCODE v47; 
+transcript GTF/FASTA, annotation and QC tables, and predicted protein sequences 
+
+
 | Transcript quantification | `00_transcript_detection/03_quantification/` | FLAIR transcript quantification | Per-sample PacBio FLNC FASTQ files and the final GTOP transcript reference, including transcript sequences and annotations | Transcript-level read-count and TPM matrices across samples, plus gene-level count and TPM matrices aggregated from transcripts belonging to the same gene |
 | Peptide validation | `00_transcript_detection/04_peptide_validation/` | DIA-NN-based proteomic support | Tissue-matched DIA-MS data in mzML format; GENCODE v47 and predicted GTOP protein sequences; transcript annotations; long-read transcript TPM estimates; tissue metadata | Tissue-specific protein databases; DIA-NN peptide-evidence reports; per-tissue protein abundance matrices |
 | RNA phenotype preparation | `01_data_preparation/` | Gene-, splice-junction-, and transcript-level phenotypes | RNA-seq FASTQ files; donor-specific DNA VCFs; genome/reference annotations; enhanced GTOP transcript reference; tissue and sample metadata; exon/gene annotations | Gene-level counts/TPM; WASP-filtered alignments and splicing phenotypes; transcript-level count/TPM matrices and filtered, imputed, normalized transcript-usage phenotypes |
