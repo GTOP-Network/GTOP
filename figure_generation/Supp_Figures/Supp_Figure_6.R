@@ -15,9 +15,9 @@ library(scales)
 library(ggrastr)
 library(ggupset)
 
-source("geom_boxplot2.R")
-setwd("/path/to/GTOP_code/supp/supp_fig6/input")
 
+setwd("/path/to/GTOP_code/supp/supp_fig6/input")
+source("geom_boxplot2.R")
 
 # Supp.Fig.6a: Small variant number for deepvariant vs clair3  --------------------------------------------------------
 library(VennDiagram)
