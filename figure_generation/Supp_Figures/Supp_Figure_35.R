@@ -125,7 +125,7 @@ count_df$type <- factor(
   levels = c("raw", "sample_size+MAF")
 )
 
-color_vec <- readRDS("../../fig-4/input/tissue_color.RDS")
+color_vec <- readRDS("input/tissue_color.RDS")
 
 overview_plot <- ggplot(
   count_df,
