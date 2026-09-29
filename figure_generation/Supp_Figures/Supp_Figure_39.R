@@ -18,7 +18,7 @@ df_m<-readRDS("SVTR_enrich_causal_CS.compare_to_SNV.RDS")
 
 df_m$PIP_num <- df_m$PIP
 df_m$PIP <- factor(df_m$PIP)
-df_tissue_color <- read.csv("GMTiP_tissue_code_and_colors.csv",header = T)
+df_tissue_color <- read.csv("GTOP_tissue_code_and_colors.csv",header = T)
 df_tissue_color %<>% filter(Tissue %in% unique(df_m$Tissue))
 df_m$PIP_num <- as.numeric(as.character(df_m$PIP_num))
 
