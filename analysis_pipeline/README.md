@@ -7,7 +7,7 @@ Detailed instructions for running individual workflows are provided in the READM
 
 ## Pipeline stages
 
-###Transcript discovery 
+### Transcript discovery 
 
 `00_transcript_detection/01_transcript_discovery/`——Seven complementary long-read transcript discovery approaches 
 
@@ -20,7 +20,7 @@ the hg38 reference genome FASTA; GENCODE v47 annotation GTF
 
 Per-sample transcript annotations in GTF format generated independently by Bambu, FLAIR, FLAMES, IsoQuant, Iso-Seq, IsoTools, and TALON, together with caller-specific read-support information 
 
-###Transcript integration 
+### Transcript integration 
 
 `00_transcript_detection/02_merge_filter_transcript/`——FLNC support filtering, TAMA merging, SQANTI3 annotation, and enhanced GTF construction 
 
@@ -38,9 +38,57 @@ Merged, quality-filtered GTOP transcript catalogue and an enhanced reference com
 transcript GTF/FASTA, annotation and QC tables, and predicted protein sequences 
 
 
-| Transcript quantification | `00_transcript_detection/03_quantification/` | FLAIR transcript quantification | Per-sample PacBio FLNC FASTQ files and the final GTOP transcript reference, including transcript sequences and annotations | Transcript-level read-count and TPM matrices across samples, plus gene-level count and TPM matrices aggregated from transcripts belonging to the same gene |
-| Peptide validation | `00_transcript_detection/04_peptide_validation/` | DIA-NN-based proteomic support | Tissue-matched DIA-MS data in mzML format; GENCODE v47 and predicted GTOP protein sequences; transcript annotations; long-read transcript TPM estimates; tissue metadata | Tissue-specific protein databases; DIA-NN peptide-evidence reports; per-tissue protein abundance matrices |
-| RNA phenotype preparation | `01_data_preparation/` | Gene-, splice-junction-, and transcript-level phenotypes | RNA-seq FASTQ files; donor-specific DNA VCFs; genome/reference annotations; enhanced GTOP transcript reference; tissue and sample metadata; exon/gene annotations | Gene-level counts/TPM; WASP-filtered alignments and splicing phenotypes; transcript-level count/TPM matrices and filtered, imputed, normalized transcript-usage phenotypes |
+### Transcript quantification 
+
+`00_transcript_detection/03_quantification/`——FLAIR transcript quantification 
+
+**Input**
+
+Per-sample PacBio FLNC FASTQ files and the final GTOP transcript reference, including transcript sequences and annotations 
+
+**Output**
+
+Transcript-level read-count and TPM matrices across samples, plus gene-level count and TPM matrices aggregated from transcripts belonging to the same gene 
+
+
+### Peptide validation 
+
+`00_transcript_detection/04_peptide_validation/`——DIA-NN-based proteomic support 
+
+**Input**
+
+Tissue-matched DIA-MS data in mzML format; 
+GENCODE v47 and predicted GTOP protein sequences; 
+transcript annotations; 
+long-read transcript TPM estimates; 
+tissue metadata
+
+**Output**
+
+Tissue-specific protein databases;
+DIA-NN peptide-evidence reports; 
+per-tissue protein abundance matrices 
+
+### RNA phenotype preparation 
+
+`01_data_preparation/`——Gene-, splice-junction-, and transcript-level phenotypes 
+
+**Input**
+
+RNA-seq FASTQ files; 
+donor-specific DNA VCFs; 
+genome/reference annotations; 
+enhanced GTOP transcript reference; 
+tissue and sample metadata; 
+exon/gene annotations
+
+**Output**
+
+Gene-level counts/TPM; 
+WASP-filtered alignments and splicing phenotypes; 
+transcript-level count/TPM matrices and filtered, imputed, normalized transcript-usage phenotypes 
+
+
 | Variant calling | `02_Variant_calling/` | LRS/SRS small variants, population structure, and VEP annotation | LRS HiFi WGS BAM files and SRS WGS FASTQ files | Per-sample genotype VCFs from LRS and SRS WGS, plus a cohort-level merged and site-filtered VCF |
 | ASE/ASTS/ASJ | `03_ASE_ASTS/` | Short-read ASE, long-read ASE/ASTS, allele-specific splicing, and ASJ | WASP-filtered RNA BAMs, donor-specific heterozygous VCFs, reference/annotation files; long-read RNA/genomic data and phased genotypes; inputs for lorals, isoLASER, and longcallR | Allelic counts and ASE estimates; lorals ASE/ASTS results; isoLASER summaries and merged gVCF; longcallR phased RNA VCF/BAM and DNA-supported ASE/ASJ results |
 | QTL mapping | `04_QTL_mapping/` | eQTL, sQTL, TR-xQTL, and MAJIQTL | Phenotypes in BED/Parquet format; covariates; genotype data preferably in PLINK2 PGEN/PVAR/PSAM format | Nominal cis-QTL summary statistics for variant–phenotype pairs and permutation-mode phenotype-level statistics with empirical P-values for genome-wide FDR |
