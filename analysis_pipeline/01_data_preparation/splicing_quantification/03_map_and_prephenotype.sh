@@ -4,7 +4,7 @@
 # Get args #
 #==========#
 
-gencodeGTF=$1 # Gencode GTF (not gzipped)
+GTFfile=$1 # Gencode GTF (not gzipped)
 leafcutterOutDir=$2 # Path to Leafcutter2 output directory
 leafcutterOutPrefix=$3 # Prefix of Leafcutter2 output files
 sampleLookupFile=$4
@@ -46,12 +46,12 @@ fi
 python $phenotypeScript \
     $wkpath/tissue_group/alllist \
     $exonFile \
-    $gencodeGTF \
+    $GTFfile \
     ${leafcutterOutPrefix} \
     $sampleLookupFile \
     --leafcutter_dir $leafcutterScriptDir \
     --geneinfo $geneinfoFile \
-    -o $outDir
-
+    -o $outpath
+fi
 
 

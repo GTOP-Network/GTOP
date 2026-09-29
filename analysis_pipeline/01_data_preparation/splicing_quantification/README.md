@@ -27,7 +27,7 @@ The script takes six arguments:
 2. `Meta_data`: The second positional argument passed to the script, which specifies a metadata file containing two columns: Column 1: "tissue"; Column 2: "tissuecode", without header
 3. `juncDir`: Directory containing junction files
 4. `intronDir`: Directory to write output intron files
-5. `GTFfile`: The Gencode transcript GTF file
+5. `GTFfile`: The GTF file
 6. `reference`: The reference genome fasta file
 
 
@@ -42,7 +42,7 @@ The `03_map_and_phenotype.sh` script will filter out lowly expressed and low-com
 3. A file mapping introns to genes
 
 The script takes nine arguments:
-1. `gencodeGTF`: The Gencode transcript GTF file, used for mapping introns to genes
+1. `GTFfile`: The GTF file, used for mapping introns to genes
 2. `leafcutterOutDir`: The directory containing leafcutter2 files from the previous step
 3. `leafcutterOutPrefix`: Prefix of Leafcutter2 output files (i.e. everything before `.junction_counts.gz` and `.cluster_ratios.gz`)
 4. `sampleLookupFile`: A file mapping columns of the leafcutter files to sampleIDs (to be included in the output file). Should be a two-column tab-separated file
